@@ -1,0 +1,15 @@
+main: me.iatog.characterdialogue.CharacterDialoguePlugin
+version: 0.9
+name: CharacterDialogue
+author: iAtog
+softdepend:
+  - PlaceHolderAPI
+  - HolographicDisplays
+  - DecentHolograms
+  - floodgate
+  - ConditionalEvents
+  - Citizens
+  - ZNPCsPlus
+api-version: 1.20
+
+commands:

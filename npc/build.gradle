@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+version = project.findProperty('projectVersion')
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}

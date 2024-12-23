@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id "com.gradleup.shadow" version "8.3.5"
+}
+
+group = 'me.iatog.characterdialogue'
+version = '0.9'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'com.gradleup.shadow'
+
+    repositories {
+        mavenCentral()
+
+        maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/groups/public/" }
+        maven { url "https://repo.unnamed.team/repository/unnamed-public/" }
+        maven { url "https://repo.citizensnpcs.co/" }
+        maven { url "https://repo.codemc.io/repository/maven-public/" }
+        maven { url "https://repo.codemc.io/repository/maven-snapshots/" }
+        maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
+        maven { url "https://jitpack.io/" }
+        maven { url "https://repo.dmulloy2.net/repository/public/" }
+        maven { url "https://repo.opencollab.dev/main/" }
+        maven { url "https://repo.papermc.io/repository/maven-public/" }
+        maven { url "https://repo.pyr.lol/snapshots" }
+    }
+
+    dependencies {
+        compileOnly 'net.citizensnpcs:citizensapi:2.0.35-SNAPSHOT'
+        compileOnly 'net.md-5:bungeecord-chat:1.8-SNAPSHOT'
+        compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
+        compileOnly 'me.clip:placeholderapi:2.11.6'
+        compileOnly 'org.apache.logging.log4j:log4j-api:2.17.2'
+        compileOnly 'org.apache.logging.log4j:log4j-core:2.17.2'
+        compileOnly 'com.github.decentsoftware-eu:decentholograms:2.8.12'
+        compileOnly 'org.xerial:sqlite-jdbc:3.41.2.2'
+        compileOnly 'org.geysermc.geyser:api:2.4.2-SNAPSHOT'
+        compileOnly 'org.geysermc.floodgate:api:2.2.3-SNAPSHOT'
+        compileOnly 'com.github.ajneb97:ConditionalEvents:4.47.1'
+        compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
+        compileOnly "lol.pyr:znpcsplus-api:2.0.0-SNAPSHOT"
+    }
+}

@@ -1,0 +1,7 @@
+file-version: 1.0.0
+help-message:
+  - '&6&l> &8[&fCharacterDialogue&8] &7help'
+  - ' &7/characterdialogue reload &f- &eReload the plugin.'
+  - ' &7/characterdialogue clear-cache <player-name> &f- &eClear the memory cache for a player.'
+reload-message: "&aPlugin reloaded correctly"
+select-choice: '&aClick here to select &c#%str%'

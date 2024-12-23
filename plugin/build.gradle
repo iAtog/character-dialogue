@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+}
+
+version = project.findProperty('projectVersion')
+
+dependencies {
+    implementation('org.bstats:bstats-bukkit:3.0.2')
+    implementation('dev.dejvokep:boosted-yaml:1.3.5')
+    implementation('dev.dejvokep:boosted-yaml-spigot:1.5')
+    implementation('me.fixeddev:commandflow-universal:0.6.0')
+    implementation('me.fixeddev:commandflow-bukkit:0.6.0')
+    implementation 'dev.triumphteam:triumph-gui:3.1.11'
+
+    implementation project(':npc')
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+shadowJar {
+    archiveBaseName.set("character-dialogue")
+
+    from project(':npc').sourceSets.main.output
+
+    relocate 'me.fixeddev.commandflow', "me.iatog.characterdialogue.lib.commandflow"
+    relocate 'com.google.gson', "me.iatog.characterdialogue.lib.gson"
+    relocate 'dev.dejvokep.boostedyaml', 'me.iatog.characterdialogue.lib.boostedyaml'
+    relocate 'net.kyori', 'me.iatog.characterdialogue.lib.kyori'
+    relocate 'org.intellij', 'me.iatog.characterdialogue.lib.intellij'
+    relocate 'org.jetbrains', 'me.iatog.characterdialogue.lib.jetbrains'
+    relocate 'org.bstats', 'me.iatog.characterdialogue.lib.bstats'
+    relocate 'dev.triumphteam.gui', 'me.iatog.characterdialogue.lib.triumphgui'
+}
+
+tasks.register('copyJars', Copy) {
+    //from project(':api').tasks.named('jar')
+    from tasks.named('shadowJar')
+    into "$rootDir/build"
+}
+
+tasks.named('shadowJar').configure {
+    finalizedBy copyJars
+}

@@ -1,0 +1,40 @@
+choices:
+  king:
+    continue:
+      type: message
+      message: Ask what happened 3 decades ago
+      argument: '%user% I want you to tell me the events of 3 decades ago.'
+    cancel_choice:
+      type: destroy
+      message: I forgot what I was going to say
+      argument: '%npc% Oh, so don''t quote me at all!'
+    quick_question:
+      type: destroy
+      message: Ask for Daniel
+      argument: '%npc% Who is Daniel?'
+  king2:
+    continue:
+      type: start_dialogue
+      message: Do you know who Aphrodisius was?
+      argument: aphrodisius
+    hey-remember-what-you-can-name-what-you-want:
+      type: continue
+      message: Inquire about calls for proposals
+      argument: '%user% When are the covocations to become a soldier of the kingdom?'
+  choice-examplee:
+    teleport:
+      type: dialogue
+      message: I want to go to 0, 0
+      argument: 'TELEPORT: current,0,63,0'
+    continue:
+      type: continue
+      message: Hey, you better keep talking
+    cancel:
+      type: destroy
+      message: Hey, I don't want to hear that anymore.
+      argument: '&e[NPC] &b%npc_name%&f: Oh, all right, then don''t come on your
+          knees and ask me.'
+    forget:
+      type: message
+      message: I don't want to talk about it...
+      argument: '&e[NPC] &b%npc_name%&f: Well, I''ll keep telling you'
