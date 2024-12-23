@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.6.0'
 }
 
 version = project.findProperty('projectVersion')
@@ -46,4 +47,25 @@ tasks.register('copyJars', Copy) {
 
 tasks.named('shadowJar').configure {
     finalizedBy copyJars
+}
+
+bukkit {
+    name = 'CharacterDialogue'
+    main = 'me.iatog.characterdialogue.CharacterDialoguePlugin'
+    apiVersion = '1.20'
+    version = project.findProperty('projectVersion')
+    author = 'iAtog'
+    softDepend = [
+            'PlaceHolderAPI',
+            'HolographicDisplays',
+            'DecentHolograms',
+            'floodgate',
+            'ConditionalEvents',
+            'Citizens',
+            'ZNPCsPlus'
+    ]
+    load = 'POSTWORLD'
+    commands {
+
+    }
 }
