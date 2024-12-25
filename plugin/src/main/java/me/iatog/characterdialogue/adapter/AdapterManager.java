@@ -2,6 +2,7 @@ package me.iatog.characterdialogue.adapter;
 
 import me.iatog.characterdialogue.adapter.citizens.CitizensAdapter;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.adapter.fancynpcs.FancyNPCsAdapter;
 import me.iatog.characterdialogue.adapter.znpcsplus.ZNPCsAdapter;
 import me.iatog.characterdialogue.api.events.AdapterNPCInteractEvent;
 import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
@@ -32,12 +33,14 @@ public class AdapterManager {
             this.adapter = new CitizensAdapter();
         } else if(Bukkit.getPluginManager().isPluginEnabled("ZNPCsPlus")) {
             this.adapter = new ZNPCsAdapter();
+        } else if(Bukkit.getPluginManager().isPluginEnabled("FancyNpcs")) {
+            this.adapter = new FancyNPCsAdapter();
         }
 
         if(this.adapter != null) {
             this.adapter.registerEvents(main);
             this.adapter.loadNPCs();
-            main.getLogger().info("Using " + this.adapter.getNPCs() + "!");
+            main.getLogger().info("Using " + this.adapter.getName() + "!");
         }
     }
 

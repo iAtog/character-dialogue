@@ -13,6 +13,10 @@ subprojects {
     repositories {
         mavenCentral()
 
+        flatDir {
+            dirs '../libs'
+        }
+
         maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/groups/public/" }
         maven { url "https://repo.unnamed.team/repository/unnamed-public/" }
@@ -25,6 +29,7 @@ subprojects {
         maven { url "https://repo.opencollab.dev/main/" }
         maven { url "https://repo.papermc.io/repository/maven-public/" }
         maven { url "https://repo.pyr.lol/snapshots" }
+        maven { url "https://repo.fancyplugins.de/releases" }
     }
 
     dependencies {
