@@ -45,11 +45,13 @@ public class ControlUtil {
         AdaptedNPC clone = npc.copy();
 
         clone.spawn(spawnLocation);
-        registry.addNPC(npc, clone);
+        ControlData controlData = registry.addNPC(npc, clone);
+        controlData.setHideOriginal(true);
         hologramLibrary.hideHologram(player, npc.getId());
 
         clone.hideForAll();
         clone.show(player);
+
         npc.hide(player);
 
         context.getSession().sendDebugMessage("Now clone of npc is following the player", "FollowMethod");
@@ -62,7 +64,7 @@ public class ControlUtil {
         if(data == null) {
             return;
         }
-
+        data.setHideOriginal(false);
         data.getOriginal().show(player);
         data.getCopy().destroy();
         hologramLibrary.showHologram(player, data.getOriginal().getId());

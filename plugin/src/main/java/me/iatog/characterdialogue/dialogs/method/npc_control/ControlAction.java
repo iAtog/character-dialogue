@@ -55,8 +55,7 @@ public enum ControlAction {
             Location newLocation = ctx.util().getConfigLocation(configuration, ctx.player().getLocation());
 
             if(newLocation == null) {
-                ctx.plugin().getLogger().warning("Invalid coordinates specified in pose action.");
-                ctx.context().destroy();
+                ctx.plugin().getLogger().warning("Invalid coordinates specified in teleport action.");
             } else {
                 clone.unfollow(ctx.player());
                 clone.teleport(newLocation);
@@ -64,10 +63,10 @@ public enum ControlAction {
                 if(configuration.getBoolean("lookPlayer", false)) {
                     clone.faceLocation(ctx.player());
                 }
-
-                ctx.context().next();
             }
         }
+
+        ctx.context().next();
     }),
     MOVE_TO((ctx) -> {
         ctx.player().sendMessage("Disabled.");
@@ -112,7 +111,7 @@ public enum ControlAction {
 
         if(recordName == null || recordName.isEmpty()) {
             ctx.plugin().getLogger().warning("No record name specified in record action.");
-            ctx.context().destroy();
+            ctx.context().next();
             return;
         }
 
@@ -120,7 +119,7 @@ public enum ControlAction {
 
         if(locations == null) {
             ctx.plugin().getLogger().warning("Record '" + recordName + "' not found.");
-            ctx.context().destroy();
+            ctx.context().next();
             return;
         }
 

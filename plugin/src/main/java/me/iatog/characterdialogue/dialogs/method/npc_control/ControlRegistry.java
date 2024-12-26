@@ -25,8 +25,10 @@ public class ControlRegistry {
         return npcMap.get(npcId);
     }
 
-    public void addNPC(AdaptedNPC original, AdaptedNPC clone) {
-        this.npcMap.put(original.getId(), new ControlData(original, clone));
+    public ControlData addNPC(AdaptedNPC original, AdaptedNPC clone) {
+        ControlData data = new ControlData(original, clone);
+        this.npcMap.put(original.getId(), data);
+        return data;
     }
 
     public ControlData removeNPC(String npcId) {

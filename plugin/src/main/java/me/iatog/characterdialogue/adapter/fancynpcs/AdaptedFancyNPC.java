@@ -8,15 +8,15 @@ import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.follow.FollowingNPC;
 import me.iatog.characterdialogue.path.PathRunnable;
 import me.iatog.characterdialogue.path.RecordLocation;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class AdaptedFancyNPC implements AdaptedNPC {
 
@@ -34,12 +34,12 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public String getName() {
-        return npc.getData().getName();
+        return npc.getData().getDisplayName();
     }
 
     @Override
     public String getId() {
-        return npc.getData().getId();
+        return npc.getData().getName();
     }
 
     @Override
@@ -47,36 +47,30 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         return npc.getData().getLocation();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public AdaptedNPC copy() {
-        final Npc copied = FancyNpcsPlugin.get().getNpcAdapter().apply(
-              new NpcData(
-                    UUID.randomUUID().toString(),
-                    "",
-                    UUID.randomUUID(),
-                    npc.getData().getDisplayName(),
-                    npc.getData().getSkin(),
-                    npc.getData().getLocation().clone(),
-                    npc.getData().isShowInTab(),
-                    npc.getData().isSpawnEntity(),
-                    npc.getData().isCollidable(),
-                    npc.getData().isGlowing(),
-                    npc.getData().getGlowingColor(),
-                    npc.getData().getType(),
-                    new ConcurrentHashMap<>(npc.getData().getEquipment()),
-                    npc.getData().isTurnToPlayer(),
-                    npc.getData().getOnClick(),
-                    new ConcurrentHashMap<>(npc.getData().getActions()),
-                    npc.getData().getInteractionCooldown(),
-                    npc.getData().getScale(),
-                    new ConcurrentHashMap<>(npc.getData().getAttributes()),
-                    npc.getData().isMirrorSkin()
-              ));
+        NpcData data = new NpcData(getId() + "-" + generateId(5) + "_cloned",
+              UUID.randomUUID(),
+              npc.getData().getLocation().clone());
+        data.setType(npc.getData().getType());
+        data.setCollidable(false);
+        if(npc.getData().getType() == EntityType.PLAYER) {
+            data.setSkin(npc.getData().getSkin());
+        }
+
+        data.applyAllAttributes(npc);
+        data.setLocation(npc.getData().getLocation());
+        data.setCollidable(npc.getData().isCollidable());
+        data.setDisplayName("");
+
+        final Npc copied = FancyNpcsPlugin.get().getNpcAdapter().apply(data);
+
         copied.setSaveToFile(false);
         copied.create();
         FancyNpcsPlugin.get().getNpcManager().registerNpc(copied);
-
-        return adapter.adapt(npc);
+        
+        return adapter.adapt(copied);
     }
 
     @Override
@@ -88,6 +82,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
     public void destroy() {
         npc.removeForAll();
         FancyNpcsPlugin.get().getNpcManager().removeNpc(npc);
+        npc.updateForAll();
     }
 
     @Override
@@ -98,6 +93,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
     @Override
     public void teleport(Location location) {
         npc.getData().setLocation(location);
+        npc.moveForAll(false);
     }
 
     @Override
@@ -137,12 +133,16 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public void show(Player player) {
-        npc.spawn(player);
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            npc.spawn(player);
+        });
     }
 
     @Override
     public void hide(Player player) {
-        npc.remove(player);
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            npc.remove(player);
+        });
     }
 
     @Override
