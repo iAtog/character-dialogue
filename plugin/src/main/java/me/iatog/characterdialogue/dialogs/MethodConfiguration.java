@@ -40,7 +40,7 @@ public class MethodConfiguration {
 
     public String getString(String key) {
         Object value = get(key);
-
+        if(value == null) return null;
         if (value instanceof String) {
             return (String) value;
         } else {
