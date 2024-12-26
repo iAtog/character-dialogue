@@ -64,12 +64,20 @@ public class ApiImplementation implements CharacterDialogueAPI {
 
     @Override
     public void reloadHolograms() {
+        if(!main.getAdapter().getName().equals("Citizens Adapter")) {
+            return;
+        }
+
         hologramLibrary.reloadHolograms();
     }
 
     @Override
     public void loadHologram(String npcId) {
        // NPC citizensNpc = CitizensAPI.getNPCRegistry().getById(npcId);
+        if(!main.getAdapter().getName().equals("Citizens Adapter")) {
+            return;
+        }
+
         AdaptedNPC npc = main.getAdapter().getById(npcId);
 
         if (npc == null) {

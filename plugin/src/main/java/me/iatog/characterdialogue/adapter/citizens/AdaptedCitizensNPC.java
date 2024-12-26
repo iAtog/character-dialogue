@@ -67,8 +67,8 @@ public class AdaptedCitizensNPC implements AdaptedNPC {
     }
 
     @Override
-    public void faceLocation(Location location) {
-        npc.faceLocation(location);
+    public void faceLocation(Player player) {
+        npc.faceLocation(player.getLocation());
     }
 
     @Override

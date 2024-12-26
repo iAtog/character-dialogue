@@ -18,7 +18,7 @@ public interface AdaptedNPC {
     void destroy();
     void spawn(Location location);
     void teleport(Location location);
-    void faceLocation(Location location);
+    void faceLocation(Player player);
 
     void follow(Player player);
     void unfollow(Player player);
@@ -26,5 +26,16 @@ public interface AdaptedNPC {
     void show(Player player);
     void hide(Player player);
     void hideForAll();
+
+    default String generateId(int length) {
+        StringBuilder str = new StringBuilder();
+        String a = "abcdefghijkmnopqrstuvwxyz1234567890";
+
+        for (int i=0;i<length;i++) {
+            str.append(a.charAt(i));
+        }
+
+        return str.toString();
+    }
 
 }
