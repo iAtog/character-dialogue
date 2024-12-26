@@ -3,8 +3,10 @@ package me.iatog.characterdialogue.adapter.fancynpcs;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcData;
+import de.oliver.fancynpcs.api.utils.NpcEquipmentSlot;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
+import me.iatog.characterdialogue.enums.EquipmentType;
 import me.iatog.characterdialogue.follow.FollowingNPC;
 import me.iatog.characterdialogue.path.PathRunnable;
 import me.iatog.characterdialogue.path.RecordLocation;
@@ -13,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
@@ -98,8 +101,43 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public void faceLocation(Player player) {
-        //Vector vec = npc.getData().getLocation().toVector().subtract(location.toVector());
         npc.lookAt(player, player.getLocation());
+    }
+
+    @Override
+    public void equip(Player player, EquipmentType type, ItemStack item) {
+        NpcEquipmentSlot slot = parseSlot(type);
+        if(slot == null) {
+            main.getLogger().warning("Invalid equipment type provided in NPC_CONTROL type");
+            return;
+        }
+        npc.getData().addEquipment(slot, item);
+        npc.update(player);
+    }
+
+    private NpcEquipmentSlot parseSlot(EquipmentType type) {
+        switch(type) {
+            case HEAD -> {
+                return NpcEquipmentSlot.HEAD;
+            }
+            case BODY -> {
+                return NpcEquipmentSlot.CHEST;
+            }
+            case LEGS -> {
+                return NpcEquipmentSlot.LEGS;
+            }
+            case BOOTS -> {
+                return NpcEquipmentSlot.FEET;
+            }
+            case MAIN_HAND -> {
+                return NpcEquipmentSlot.MAINHAND;
+            }
+            case OFF_HAND -> {
+                return NpcEquipmentSlot.OFFHAND;
+            }
+        }
+
+        return null;
     }
 
     @Override

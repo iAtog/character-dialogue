@@ -1,6 +1,7 @@
 package me.iatog.characterdialogue.adapter.znpcsplus;
 
 import lol.pyr.znpcsplus.hologram.HologramImpl;
+import lol.pyr.znpcsplus.libraries.packetevents.impl.util.SpigotConversionUtil;
 import lol.pyr.znpcsplus.npc.NpcImpl;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import lol.pyr.znpcsplus.api.NpcApiProvider;
@@ -8,6 +9,7 @@ import lol.pyr.znpcsplus.api.entity.EntityProperty;
 import lol.pyr.znpcsplus.api.npc.NpcEntry;
 import lol.pyr.znpcsplus.util.NpcLocation;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.enums.EquipmentType;
 import me.iatog.characterdialogue.follow.FollowingNPC;
 import me.iatog.characterdialogue.path.PathRunnable;
 import me.iatog.characterdialogue.path.RecordLocation;
@@ -15,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
@@ -108,6 +111,41 @@ public class AdaptedZNPC implements AdaptedNPC {
     @Override
     public void faceLocation(Player player) {
         npc.getNpc().setLocation(npc.getNpc().getLocation().lookingAt(player.getLocation()));
+    }
+
+    @Override
+    public void equip(Player player, EquipmentType type, ItemStack item) {
+        EntityProperty<?> property = NpcApiProvider.get().getPropertyRegistry().getByName(propertyToEquipmentType(type));
+
+        if(property == null || item == null || player == null) {
+            return;
+        }
+
+        lol.pyr.znpcsplus.libraries.packetevents.api.protocol.item.ItemStack i = SpigotConversionUtil.fromBukkitItemStack(item);
+        setProperty(npc, property, i);
+    }
+
+    public String propertyToEquipmentType(EquipmentType type) {
+        switch(type) {
+            case HEAD -> {
+                return "helmet";
+            }
+            case BODY -> {
+                return "chestplate";
+            }
+            case LEGS -> {
+                return "leggings";
+            }
+            case BOOTS -> {
+                return "boots";
+            }
+            case OFF_HAND -> {
+                return "offhand";
+            }
+            default -> {
+                return "hand";
+            }
+        }
     }
 
     @Override

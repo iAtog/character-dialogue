@@ -1,8 +1,10 @@
 package me.iatog.characterdialogue.adapter;
 
+import me.iatog.characterdialogue.enums.EquipmentType;
 import me.iatog.characterdialogue.path.RecordLocation;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public interface AdaptedNPC {
     void spawn(Location location);
     void teleport(Location location);
     void faceLocation(Player player);
+    void equip(Player player, EquipmentType type, ItemStack item);
 
     void follow(Player player);
     void unfollow(Player player);

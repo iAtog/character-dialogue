@@ -3,6 +3,7 @@ package me.iatog.characterdialogue.adapter.citizens;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.dialogs.method.npc_control.trait.FollowPlayerTrait;
+import me.iatog.characterdialogue.enums.EquipmentType;
 import me.iatog.characterdialogue.path.PathTrait;
 import me.iatog.characterdialogue.path.RecordLocation;
 import net.citizensnpcs.api.event.SpawnReason;
@@ -10,6 +11,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -69,6 +71,11 @@ public class AdaptedCitizensNPC implements AdaptedNPC {
     @Override
     public void faceLocation(Player player) {
         npc.faceLocation(player.getLocation());
+    }
+
+    @Override
+    public void equip(Player player, EquipmentType type, ItemStack item) {
+        // not implemented
     }
 
     @Override
