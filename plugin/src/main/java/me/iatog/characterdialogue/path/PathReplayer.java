@@ -8,7 +8,6 @@ public class PathReplayer {
 
     private final List<RecordLocation> paths;
     private final AdaptedNPC npc;
-    private boolean teleport;
 
     public PathReplayer(List<RecordLocation> paths, AdaptedNPC npc) {
         this.paths = paths;

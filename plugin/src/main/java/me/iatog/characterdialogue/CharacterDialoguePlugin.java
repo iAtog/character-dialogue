@@ -11,6 +11,7 @@ import me.iatog.characterdialogue.hook.Hooks;
 import me.iatog.characterdialogue.api.interfaces.FileFactory;
 import me.iatog.characterdialogue.libraries.ApiImplementation;
 import me.iatog.characterdialogue.libraries.Cache;
+import me.iatog.characterdialogue.libraries.Services;
 import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
 import me.iatog.characterdialogue.util.TextUtils;
@@ -44,6 +45,8 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private PathStorage pathStorage;
     private AdapterManager adapterManager;
 
+    private Services services;
+
     /**
      * I only set this method for third party plugins, I do not use this method and
      * even less abuse it. <br>
@@ -66,6 +69,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        this.services = new Services(this);
         this.metrics = new Metrics(this, 24112);
 
         try {
@@ -124,6 +128,10 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     @SuppressWarnings("unchecked")
     public <T> NPCAdapter<T> getAdapter() {
         return (NPCAdapter<T>) adapterManager.getAdapter();
+    }
+
+    public Services getServices() {
+        return services;
     }
 
     /**

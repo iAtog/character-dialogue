@@ -16,7 +16,7 @@ import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

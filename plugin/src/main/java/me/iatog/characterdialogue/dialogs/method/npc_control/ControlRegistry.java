@@ -12,7 +12,7 @@ public class ControlRegistry {
 
     private final UUID playerId;
 
-    // Integer = the original npc id
+    // String = the original npc id
     // FollowData = original and his clone
     private final Map<String, ControlData> npcMap;
 

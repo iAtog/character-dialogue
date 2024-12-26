@@ -45,6 +45,8 @@ public class PluginLoader implements Loader {
         NPCControlMethod.registries.forEach((_uuid, npcs) -> {
             npcs.clearAll();
         });
+
+        main.getServices().getFollowingNPC().removeAll();
     }
 
     public List<Loader> getLoaders() {

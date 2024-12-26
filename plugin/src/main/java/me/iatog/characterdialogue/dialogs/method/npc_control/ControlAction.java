@@ -30,7 +30,7 @@ public enum ControlAction {
         ControlData playerRegistry = registry.get(ctx.targetNPC().getId());
 
         if(playerRegistry != null) {
-            ctx.util().toggleFollow(playerRegistry.getCopy(), ctx.player(), true);
+            playerRegistry.getCopy().follow(ctx.player());
         }
 
         ctx.context().next();
@@ -40,12 +40,12 @@ public enum ControlAction {
         ControlData playerRegistry = registry.get(ctx.targetNPC().getId());
 
         if(playerRegistry != null) {
-            ctx.util().toggleFollow(playerRegistry.getCopy(), ctx.player(), false);
+            playerRegistry.getCopy().unfollow(ctx.player());
         }
 
         ctx.context().next();
     }),
-    POSE((ctx) -> {
+    TELEPORT((ctx) -> {
         ControlRegistry registry = registries.get(ctx.player().getUniqueId());
         ControlData data = registry.get(ctx.targetNPC().getId());
         MethodConfiguration configuration = ctx.context().getConfiguration();
@@ -58,11 +58,11 @@ public enum ControlAction {
                 ctx.plugin().getLogger().warning("Invalid coordinates specified in pose action.");
                 ctx.context().destroy();
             } else {
-                ctx.util().toggleFollow(clone, ctx.player(), false);
+                clone.unfollow(ctx.player());
                 clone.teleport(newLocation);
 
                 if(configuration.getBoolean("lookPlayer", false)) {
-                    clone.faceLocation(ctx.player().getLocation());
+                    clone.faceLocation(ctx.player());
                 }
 
                 ctx.context().next();
@@ -125,6 +125,7 @@ public enum ControlAction {
         }
 
         if(data != null) {
+            data.getCopy().unfollow(ctx.player());
             PathReplayer replayer = new PathReplayer(locations, data.getCopy());
             replayer.startReplay();
         } else {

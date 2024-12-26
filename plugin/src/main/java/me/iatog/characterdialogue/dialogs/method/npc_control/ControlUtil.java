@@ -47,21 +47,12 @@ public class ControlUtil {
         clone.spawn(spawnLocation);
         registry.addNPC(npc, clone);
         hologramLibrary.hideHologram(player, npc.getId());
-        //clone.setName(colorize(context.getSession().getDialogue().getDisplayName()));
+
         clone.hideForAll();
         clone.show(player);
         npc.hide(player);
 
-        toggleFollow(clone, player, true);
         context.getSession().sendDebugMessage("Now clone of npc is following the player", "FollowMethod");
-    }
-
-    public void toggleFollow(@NotNull AdaptedNPC npc, Player player, boolean follow) {
-       if(follow) {
-           npc.follow(player);
-       } else {
-           npc.unfollow(player);
-       }
     }
 
     public void removeRegistered(@NotNull Player player, AdaptedNPC original) {

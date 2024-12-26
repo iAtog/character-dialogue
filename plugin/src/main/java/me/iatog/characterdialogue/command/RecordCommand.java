@@ -52,7 +52,7 @@ public class RecordCommand implements CommandClass {
             int second = 0;
             @Override
             public void run() {
-                if(second == 5) {
+                if(second >= 5) {
                     recorder.startRecording();
                     this.cancel();
                 } else {
@@ -122,6 +122,7 @@ public class RecordCommand implements CommandClass {
             player.sendMessage("Record not found.");
             return;
         }
+
         if(npc == null) {
             player.sendMessage("NPC not found.");
             return;
