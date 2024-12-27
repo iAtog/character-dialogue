@@ -10,7 +10,7 @@ import lol.pyr.znpcsplus.api.npc.NpcEntry;
 import lol.pyr.znpcsplus.util.NpcLocation;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.enums.EquipmentType;
-import me.iatog.characterdialogue.follow.FollowingNPC;
+import me.iatog.characterdialogue.dialogs.method.npc_control.follow.FollowingNPC;
 import me.iatog.characterdialogue.path.PathRunnable;
 import me.iatog.characterdialogue.path.RecordLocation;
 import org.bukkit.Bukkit;

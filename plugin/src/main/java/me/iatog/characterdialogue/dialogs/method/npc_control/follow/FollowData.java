@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.follow;
+package me.iatog.characterdialogue.dialogs.method.npc_control.follow;
 
 import java.util.UUID;
 

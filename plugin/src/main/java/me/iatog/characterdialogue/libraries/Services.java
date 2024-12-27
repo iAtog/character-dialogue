@@ -1,7 +1,7 @@
 package me.iatog.characterdialogue.libraries;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
-import me.iatog.characterdialogue.follow.FollowingNPC;
+import me.iatog.characterdialogue.dialogs.method.npc_control.follow.FollowingNPC;
 
 public class Services {
 
