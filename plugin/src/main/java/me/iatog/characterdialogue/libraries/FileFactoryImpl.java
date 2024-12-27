@@ -5,6 +5,7 @@ import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
 import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
+import dev.dejvokep.boostedyaml.spigot.SpigotSerializer;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.interfaces.FileFactory;
 
@@ -19,6 +20,7 @@ public class FileFactoryImpl implements FileFactory {
     private YamlDocument lang;
     private YamlDocument playerCache;
     private YamlDocument choices;
+    private YamlDocument items;
 
     private final CharacterDialoguePlugin main;
 
@@ -34,9 +36,11 @@ public class FileFactoryImpl implements FileFactory {
                   languageVersion.getLoaderSettings(), languageVersion.getUpdaterSettings());
             this.playerCache = createYamlDocument("player-cache.yml");
             this.choices = createYamlDocument("choices.yml");
+            this.items = YamlDocument.create(getFile("items.yml"),
+                  getResource("items.yml", main), GeneralSettings.builder()
+                  .setSerializer(SpigotSerializer.getInstance()).build());
         } catch (IOException e) {
-            main.getLogger().severe("Plugin folder files load failed");
-            e.printStackTrace();
+            main.getLogger().severe("Plugin folder files load failed: " + e.getMessage());
         }
     }
 
@@ -77,15 +81,18 @@ public class FileFactoryImpl implements FileFactory {
         return playerCache;
     }
 
+    public YamlDocument getItems() {
+        return items;
+    }
+
 
     @Override
     public void reload() throws IOException {
         config.reload();
-        //dialogs.reload();
         lang.reload();
         playerCache.reload();
         choices.reload();
-
+        items.reload();
         //main.getAllDialogues().forEach(YamlFile::reload);
     }
 }

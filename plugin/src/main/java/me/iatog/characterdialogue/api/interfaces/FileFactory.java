@@ -14,5 +14,7 @@ public interface FileFactory {
 
     YamlDocument getChoicesFile();
 
+    YamlDocument getItems();
+
     void reload() throws IOException;
 }

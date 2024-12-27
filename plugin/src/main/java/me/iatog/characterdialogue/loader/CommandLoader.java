@@ -16,11 +16,13 @@ import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.part.dialogue.DialoguePartFactory;
 import me.iatog.characterdialogue.part.group.GroupPartFactory;
 import me.iatog.characterdialogue.part.gui.GUIPartFactory;
+import me.iatog.characterdialogue.part.item.ItemStackPartFactory;
 import me.iatog.characterdialogue.part.method.DialogMethodArgument;
 import me.iatog.characterdialogue.part.method.MethodPartFactory;
 import me.iatog.characterdialogue.part.npc.NPCPartFactory;
 import me.iatog.characterdialogue.part.record.RecordPartFactory;
 import me.iatog.characterdialogue.path.Record;
+import org.bukkit.inventory.ItemStack;
 
 public class CommandLoader implements Loader {
 
@@ -41,6 +43,7 @@ public class CommandLoader implements Loader {
         injector.bindFactory(AdaptedNPC.class, new NPCPartFactory(main));
         injector.bindFactory(GUI.class, new GUIPartFactory(main));
         injector.bindFactory(Record.class, new RecordPartFactory(main));
+        injector.bindFactory(ItemStack.class, new ItemStackPartFactory(main));
 
         this.builder = new AnnotatedCommandTreeBuilderImpl(injector);
     }

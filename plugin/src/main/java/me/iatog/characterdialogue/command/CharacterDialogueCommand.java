@@ -34,7 +34,8 @@ import static me.iatog.characterdialogue.util.TextUtils.colorize;
       DialogueCommands.class,
       MethodCommands.class,
       GroupsCommands.class,
-      RecordCommand.class
+      RecordCommand.class,
+      ItemCommands.class
 })
 public class CharacterDialogueCommand implements CommandClass {
 
@@ -46,6 +47,9 @@ public class CharacterDialogueCommand implements CommandClass {
      * /characterdialogue dialogue start <name> [player]
      * /characterdialogue dialogue list
      * /characterdialogue assign <npc>
+     * /characterdialogue item gui
+     * /characterdialogue item save <id>
+     * /characterdialogue item give <id>
      * /characterdialogue gui
      */
 

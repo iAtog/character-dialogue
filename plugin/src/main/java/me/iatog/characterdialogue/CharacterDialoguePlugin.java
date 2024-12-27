@@ -69,7 +69,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        this.services = new Services(this);
         this.metrics = new Metrics(this, 24112);
 
         try {
@@ -93,6 +92,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
         loader.load();
 
+        this.services = new Services(this);
         getLogger().info(TextUtils.colorize("&aLoaded in " + (System.currentTimeMillis() - startup) + "ms"));
     }
 
