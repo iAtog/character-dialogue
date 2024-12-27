@@ -6,6 +6,7 @@ import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.dialogs.method.npc_control.data.ActionData;
 import me.iatog.characterdialogue.dialogs.method.npc_control.data.ControlData;
 import me.iatog.characterdialogue.enums.EquipmentType;
+import me.iatog.characterdialogue.libraries.ItemManager;
 import me.iatog.characterdialogue.path.PathReplayer;
 import me.iatog.characterdialogue.path.RecordLocation;
 import org.bukkit.Location;
@@ -162,25 +163,34 @@ public enum ControlAction {
                     Material material = Material.valueOf(mat.toUpperCase());
                     itemStack = new ItemStack(material);
                 } catch(Exception ex) {
-                    ctx.plugin().getLogger().severe("Invalid item material provided '" + mat + "' in npc_control method");
+                    ctx.plugin().getLogger().severe("Invalid item material provided '" + mat +
+                          "' in npc_control method: " + ex.getMessage());
                     ctx.context().next();
                     return;
                 }
             } else {
-                // TODO: Item builder from JSON stuff
+                String itemId = configuration.getString("item");
+                ItemManager itemManager = ctx.plugin().getServices().getItemManager();
+
+                if(itemId == null || !itemManager.existsItem(itemId)) {
+                    ctx.plugin().getLogger().warning("The item '" + itemId + "' was not found.");
+                    ctx.context().next();
+                    return;
+                }
+
+                itemStack = itemManager.getItem(itemId);
             }
 
             try {
                 if(itemStack != null) {
                     EquipmentType equipmentType = EquipmentType.valueOf(equipment.toUpperCase());
                     clone.equip(ctx.player(), equipmentType, itemStack);
-                    ctx.context().next();
                 }
-            } catch (EnumConstantNotPresentException ex) {
-                ex.printStackTrace();
-                ctx.context().next();
+            } catch (Exception ex) {
+                ctx.plugin().getLogger().severe("Error while equipping item to npc: " + ex.getMessage());
             }
 
+            ctx.context().next();
         }
     });
 
