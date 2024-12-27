@@ -1,8 +1,13 @@
 package me.iatog.characterdialogue.listeners;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.api.dialog.Dialogue;
+import me.iatog.characterdialogue.database.DialogPersistence;
+import me.iatog.characterdialogue.session.DialogSession;
+import me.iatog.characterdialogue.session.InitializeSession;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
@@ -36,6 +41,42 @@ public class PlayerJoinListener implements Listener {
 
             if (effect != null && effect.getAmplifier() == 4) {
                 player.removePotionEffect(PotionEffectType.SLOW);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onJoinPersistence(PlayerJoinEvent event) {
+        DialogPersistence persistence = main.getServices().getDialogPersistence();
+        Player player = event.getPlayer();
+
+        if(persistence.hasStoredSession(player)) {
+            DialogSession session = persistence.createSession(player);
+
+            if(session == null) {
+                main.getLogger().severe("Error while restoring dialogue session: session is null");
+                return;
+            }
+            persistence.deleteSession(player);
+
+            Dialogue dialogue = session.getDialogue();
+
+            if(!dialogue.isMovementAllowed()) {
+                main.getApi().disableMovement(player);
+            }
+
+            player.sendMessage("Restoring session:");
+            List<String> lines = dialogue.getPersistentLines();
+            main.getCache().getDialogSessions().put(player.getUniqueId(), session);
+
+            if(lines != null && !lines.isEmpty()) {
+                InitializeSession initializeSession = new InitializeSession(main, lines, player, session);
+
+                initializeSession.start((x) -> {
+                    session.start();
+                }, 0);
+            } else {
+                session.start();
             }
         }
     }

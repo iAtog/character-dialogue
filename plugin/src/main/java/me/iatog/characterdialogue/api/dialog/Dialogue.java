@@ -11,38 +11,28 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public interface Dialogue {
+    boolean isPersistent();
+    List<String> getPersistentLines();
+
     String getName();
-
     List<String> getLines();
-
     ClickType getClickType();
-
     String getDisplayName();
-
     DialogHologram getHologram();
-
     List<String> getFirstInteractionLines();
 
     boolean isFirstInteractionEnabled();
-
     boolean start(Player player, boolean debug, AdaptedNPC npc);
-
     boolean startFirstInteraction(Player player, boolean log, AdaptedNPC npc);
-
     DialoguePermission getPermissions();
-
     boolean isMovementAllowed();
-
     default boolean start(@NotNull Player player, @Nullable AdaptedNPC npc) {
         return start(player, false, npc);
     }
-
     YamlDocument getDocument();
-
     default Section getSection() {
         return getDocument().getSection("dialogue." + getName());
     }
-
     boolean isSlowEffectEnabled();
 
     class DialoguePermission {

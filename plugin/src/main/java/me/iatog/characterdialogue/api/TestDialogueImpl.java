@@ -13,6 +13,16 @@ import java.util.List;
 
 public class TestDialogueImpl implements Dialogue {
     @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
+    public List<String> getPersistentLines() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return "Test";
     }

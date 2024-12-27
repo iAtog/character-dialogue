@@ -243,7 +243,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
         ExecuteMethodEvent event = new ExecuteMethodEvent(player, method, ClickType.ALL, - 999, npcName);
         Bukkit.getPluginManager().callEvent(event);
 
-        if (! event.isCancelled()) {
+        if (!event.isCancelled()) {
             MethodContext context = new MethodContext(player, session, configuration, onComplete, npc);
 
             try {

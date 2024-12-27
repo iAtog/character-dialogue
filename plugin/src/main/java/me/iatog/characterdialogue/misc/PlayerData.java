@@ -17,7 +17,7 @@ public class PlayerData {
 
     public PlayerData(UUID uuid, List<String> readedDialogs, boolean removeEffect, double lastSpeed) {
         this.uuid = uuid;
-        this.readedDialogs = new ArrayList<>();
+        this.readedDialogs = readedDialogs;
         this.removeEffect = removeEffect;
         this.lastSpeed = lastSpeed;
     }
@@ -50,7 +50,4 @@ public class PlayerData {
         return readedDialogs;
     }
 
-    public void addDialog(String dialog) {
-        this.readedDialogs.add(dialog);
-    }
 }

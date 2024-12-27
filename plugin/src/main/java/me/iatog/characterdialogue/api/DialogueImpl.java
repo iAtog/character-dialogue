@@ -19,6 +19,7 @@ public class DialogueImpl implements Dialogue {
 
     private String dialogName;
     private List<String> lines;
+    private List<String> onJoin;
     private ClickType clickType;
     private String displayName;
     private DialogHologram hologram;
@@ -27,13 +28,14 @@ public class DialogueImpl implements Dialogue {
 
     private boolean movement;
     private boolean slowEffect;
+    private boolean persistent;
 
     private CharacterDialoguePlugin main;
 
     public DialogueImpl(CharacterDialoguePlugin instance, String dialogName, YamlDocument dialogsFile) {
         Section section = dialogsFile.getSection("dialogue." + dialogName);
 
-        if (! dialogsFile.contains("dialogue." + dialogName)) {
+        if (!dialogsFile.contains("dialogue." + dialogName)) {
             instance.getLogger().severe("No dialogue named \"" + dialogName + "\" was found.");
             return;
         }
@@ -45,6 +47,11 @@ public class DialogueImpl implements Dialogue {
         this.firstInteraction = section.getStringList("first-interaction");
         this.displayName = section.getString("display-name", "John the NPC");
         this.dialogName = dialogName;
+        this.persistent = section.getBoolean("persistent", false);
+
+        if(section.contains("on-join") && persistent) {
+            this.onJoin = section.getStringList("on-join");
+        }
 
         if (section.getBoolean("hologram.enabled", false)) {
             boolean enabled = section.getBoolean("hologram.enabled");
@@ -68,6 +75,16 @@ public class DialogueImpl implements Dialogue {
     }
 
     //public DialogueImpl(String dialogName) { this(CharacterDialoguePlugin.getInstance(), dialogName); }
+
+    @Override
+    public boolean isPersistent() {
+        return persistent;
+    }
+
+    @Override
+    public List<String> getPersistentLines() {
+        return onJoin;
+    }
 
     @Override
     public String getName() {
