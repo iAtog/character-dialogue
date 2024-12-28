@@ -13,10 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class GiveMethod extends DialogMethod<CharacterDialoguePlugin> {
     // give{material=flint, amount=32, name="Super flint"}
-    private final CharacterDialoguePlugin main;
     public GiveMethod(CharacterDialoguePlugin main) {
-        super("give");
-        this.main = main;
+        super("give", main);
 
         addConfigurationType("material", ConfigurationType.TEXT);
         addConfigurationType("amount", ConfigurationType.INTEGER);
@@ -31,7 +29,7 @@ public class GiveMethod extends DialogMethod<CharacterDialoguePlugin> {
 
         if(configuration.contains("item")) {
             String itemId = configuration.getString("item");
-            ItemManager itemManager = main.getServices().getItemManager();
+            ItemManager itemManager = getProvider().getServices().getItemManager();
 
             if(!itemManager.existsItem(itemId)) {
                 getProvider().getLogger().severe("No item found with name: " + itemId);
