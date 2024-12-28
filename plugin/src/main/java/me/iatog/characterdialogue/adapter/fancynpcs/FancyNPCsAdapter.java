@@ -29,7 +29,7 @@ public class FancyNPCsAdapter extends NPCAdapter<Npc> {
         List<String> list = new ArrayList<>();
 
         for(Npc npc : FancyNpcsPlugin.get().getNpcManager().getAllNpcs()) {
-            list.add(npc.getData().getId());
+            list.add(npc.getData().getName());
         }
 
         return list;
