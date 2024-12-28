@@ -28,12 +28,10 @@ public class CacheLoader implements Loader {
               new SoundMethod(main),
               new BroadcastMethod(),
               new WaitMethod(main),
-              //new DispatchCommandMethod(),
               new CommandMethod(main),
               new TeleportMethod(),
               new EffectMethod(main),
               new SendServerMethod(main),
-              //new LegacyChoiceMethod(main),
               new SneakMethod(main),
               new ConditionalMethod(main),
               new GiveMethod(main),
@@ -43,7 +41,8 @@ public class CacheLoader implements Loader {
               new StartDialogueMethod(main),
               new NPCControlMethod(main),
               new ChoiceMethod(main),
-              new ConditionalEventsMethod(main)
+              new ConditionalEventsMethod(main),
+              new RemoveItemMethod(main)
         );
 
         main.registerChoices(
