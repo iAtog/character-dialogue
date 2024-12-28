@@ -21,7 +21,7 @@ import java.util.UUID;
 public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> implements Listener {
 
     public static final Map<UUID, ControlRegistry> registries = new HashMap<>();
-    private Map<String, NPCControlAction> actions = new HashMap<>();
+    private final Map<String, NPCControlAction> actions;
     private final ControlUtil util;
 
     // Custom actions | default = start
@@ -35,6 +35,7 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
     public NPCControlMethod(CharacterDialoguePlugin main) {
         super("npc_control", main);
         this.util = new ControlUtil(main);
+        this.actions = new HashMap<>();
 
         addConfigurationType("action", ConfigurationType.TEXT);
         addConfigurationType("npcId", ConfigurationType.INTEGER);
@@ -67,11 +68,13 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
 
         if(action == null) {
             getProvider().getLogger().severe("Error while executing npc_control method: no action specified.");
+            context.destroy();
             return;
         }
 
-        if(actions.containsKey(action.toLowerCase())) {
-            getProvider().getLogger().severe("Error while executing npc_control method: action " + action + " not found.");
+        if(!actions.containsKey(action.toLowerCase())) {
+            getProvider().getLogger().severe("Error while executing npc_control method: action '" + action + "' not found.");
+            context.destroy();
             return;
         }
 
@@ -94,7 +97,7 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
         }
 
         NPCControlAction controlAction = actions.get(action.toLowerCase());
-        ActionData data = new ActionData(context, util, npc);
+        ActionData data = new ActionData(context, util, targetNpc);
 
         controlAction.execute(data);
     }

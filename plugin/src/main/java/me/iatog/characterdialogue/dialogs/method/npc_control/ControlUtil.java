@@ -29,7 +29,6 @@ public class ControlUtil {
 
         if(registry.isOnRegistry(npcId)) {
             context.getSession().sendDebugMessage("NPC (" +npcId+ ") is already cloned.", "FollowMethod");
-            context.next();
             return;
         }
 
