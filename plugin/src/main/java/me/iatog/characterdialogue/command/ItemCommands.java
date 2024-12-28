@@ -2,6 +2,7 @@ package me.iatog.characterdialogue.command;
 
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.libraries.ItemManager;
@@ -18,52 +19,53 @@ public class ItemCommands implements CommandClass {
     private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
 
     @Command(
-          names = "gui"
+          names = "gui",
+          permission = "characterdialogue.command.item.gui"
     )
     public void seeGui(@Sender Player player) {
-        player.sendMessage(TextUtils.colorize("Opening items GUI..."));
+        player.sendMessage(main.language("command.gui.success", "items"));
         main.getGUIFactory().getGui("items").load(player);
     }
 
     @Command(
-          names = "save"
+          names = "save",
+          permission = "characterdialogue.command.item.save"
     )
-    public void saveItem(@Sender Player player, String id) {
+    public void saveItem(@Sender Player player, @OptArg("") String id) {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if(itemInHand.getAmount() <= 0 || itemInHand.getType() == Material.AIR) {
-            player.sendMessage(TextUtils.colorize("&cYou must have an item in your main hand."));
+            player.sendMessage(main.language(true, "command.item.no-hand"));
             return;
         }
 
         if(id == null || id.isEmpty()) {
-            player.sendMessage(TextUtils.colorize("&cYou must enter the item ID."));
+            player.sendMessage(main.language(true, "command.item.no-id"));
             return;
         }
 
         ItemManager manager = main.getServices().getItemManager();
 
         if(manager.existsItem(id)) {
-            player.sendMessage(TextUtils.colorize("&cThere's already an item with this ID."));
+            player.sendMessage(main.language(true, "command.item.already-exists"));
             return;
         }
 
         manager.saveItem(id, itemInHand);
-        player.sendMessage(TextUtils.colorize("&aThe item &7'&8" + id + "&7'&a has been successfully saved."));
+        player.sendMessage(main.language(true, "command.item.success"));
     }
 
     @Command(
-          names = "give"
+          names = "give",
+          permission = "characterdialogue.command.item.give"
     )
     public void giveItem(@Sender Player player, ItemStack item) {
-        ItemManager manager = main.getServices().getItemManager();
-
         if(item == null) {
-            player.sendMessage(TextUtils.colorize("&cNo item was found."));
+            player.sendMessage(main.language(true, "command.item.not-found"));
             return;
         }
 
         player.getInventory().addItem(item);
-        player.sendMessage(TextUtils.colorize("&aYou have obtained the item correctly"));
+        player.sendMessage(main.language(true, "command.item.give-success"));
     }
 }

@@ -10,6 +10,7 @@ import me.iatog.characterdialogue.api.TestDialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.dialogs.MethodConfiguration;
 import me.iatog.characterdialogue.dialogs.MethodContext;
+import me.iatog.characterdialogue.enums.CompletedType;
 import me.iatog.characterdialogue.part.method.DialogMethodArgument;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
@@ -20,6 +21,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Command(
       names = "method",
@@ -28,21 +31,23 @@ import java.util.UUID;
 )
 public class MethodCommands implements CommandClass {
 
+    private CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
+
     @Command(names = "")
     public void list(@Sender CommandSender sender) {
-        sender.sendMessage("hola");
+        sender.sendMessage(main.language("command.method.list-title"));
+        main.getCache().getMethods().forEach((id, method) -> {
+            String description = method.getDescription();
+            String line = main.language("command.method.list-line", id.toLowerCase(), description);
+            sender.sendMessage(line);
+        });
     }
 
     @Command(names = "execute")
-    @Usage("<method> <arguments>")
-    public void execute(@Sender Player sender, DialogMethodArgument method, @ConsumeAll List<String> args) {
-        if (method == null) {
-            sender.sendMessage(TextUtils.colorize("&cMethod not found"));
-            return;
-        }
-
+    @Usage("<methodLine>")
+    public void execute(@Sender Player sender, @ConsumeAll List<String> args) {
         if (args == null || args.isEmpty()) {
-            sender.sendMessage(TextUtils.colorize("&cInvalid arguments provided."));
+            sender.sendMessage(main.language(true, "command.method.no-args"));
             return;
         }
 
@@ -50,25 +55,44 @@ public class MethodCommands implements CommandClass {
         for (String arg : args)
             arguments.append(" ").append(arg);
 
-        CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
+        Matcher matcher = main.getApi().getLineRegex().matcher(arguments.toString());
+
+        if(!matcher.find()) {
+            sender.sendMessage(main.language(true, "command.method.invalid-line"));
+            return;
+        }
+
+        String methodName = matcher.group(1).toLowerCase().trim();
+        if (!main.getCache().getMethods().containsKey(methodName)) {
+            sender.sendMessage(main.language(true, "command.method.invalid-method", methodName));
+            return;
+        }
+
         Map<UUID, DialogSession> sessions = main.getCache().getDialogSessions();
 
         if (sessions.containsKey(sender.getUniqueId())) {
-            sender.sendMessage(TextUtils.colorize("&cYou cant run this command while a dialogue session."));
+            sender.sendMessage(main.language(true, "command.method.on-session"));
             return;
         }
 
         Dialogue dialogue = new TestDialogueImpl();
         DialogSession session = new DialogSession(main, sender, dialogue);
         sessions.put(sender.getUniqueId(), session);
-        MethodConfiguration config = new MethodConfiguration(arguments.toString().trim(), "");
 
-        MethodContext context = new MethodContext(sender, session, config, SingleUseConsumer.create((res) -> {
-            sessions.remove(sender.getUniqueId());
-            sender.sendMessage(TextUtils.colorize("&8[&eCharacterDialogue&8] &aMethod &8'&7" + method.getName() + "&8' &aexecuted correctly with result: " + res));
-        }), null);
+        SingleUseConsumer<CompletedType> onComplete = SingleUseConsumer.create((res) -> {
+                  sessions.remove(sender.getUniqueId());
+                  sender.sendMessage(main.language(true, "command.method.executed",
+                        methodName, res.toString().toLowerCase()));
+        });
 
-        method.getMethod().execute(context);
+        main.getApi().runDialogueExpression(
+              sender,
+              arguments.toString(),
+              "MethodCommand",
+              onComplete,
+              session,
+              null
+        );
     }
 
 }

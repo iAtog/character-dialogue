@@ -4,7 +4,9 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.annotated.annotation.Switch;
+import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.command.CommandSender;
@@ -15,6 +17,9 @@ import org.bukkit.entity.Player;
       permission = "characterdialogue.command.dialogue")
 public class DialogueCommands implements CommandClass {
 
+    private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
+
+    @Usage("<dialogueName> [player] [-debug]")
     @Command(names = "start", desc = "Run a dialogue")
     public void dialoguesCommand(
           @Sender CommandSender sender,
@@ -24,13 +29,13 @@ public class DialogueCommands implements CommandClass {
     ) {
         Player target;
         if (dialogue == null) {
-            sender.sendMessage(TextUtils.colorize("&cDialogue with that name was not found."));
+            sender.sendMessage(main.language(true, "command.dialogue.not-found"));
             return;
         }
 
         if (playerOpt == null) {
-            if (! (sender instanceof Player)) {
-                sender.sendMessage(TextUtils.colorize("&cYou need to specify the target player."));
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(main.language(true, "command.dialogue.console"));
                 return;
             }
 
@@ -39,7 +44,8 @@ public class DialogueCommands implements CommandClass {
             target = playerOpt;
         }
 
-        sender.sendMessage(TextUtils.colorize("&aStarted '&c" + dialogue.getName() + "&a' dialogue for &c" + target.getName() + "&a."));
+        sender.sendMessage(main.language(true, "command.dialogue.success",
+              dialogue.getName(), target.getName()));
         dialogue.start(target, debug, null);
     }
 

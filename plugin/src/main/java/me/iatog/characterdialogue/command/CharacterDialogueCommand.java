@@ -54,16 +54,14 @@ public class CharacterDialogueCommand implements CommandClass {
      */
 
     private final CharacterDialoguePlugin main;
-    private final YamlDocument language;
 
     public CharacterDialogueCommand(CharacterDialoguePlugin main) {
         this.main = main;
-        this.language = this.main.getFileFactory().getLanguage();
     }
 
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        sender.sendMessage(translateList(language.getStringList("help-message")).toArray(String[]::new));
+        sender.sendMessage(main.languageList("help-message"));
     }
 
     @Command(names = "reload",
@@ -75,7 +73,9 @@ public class CharacterDialogueCommand implements CommandClass {
         try {
             main.getFileFactory().reload();
         } catch (IOException e) {
-            main.getLogger().severe("Error reloading CharacterDialogue files.");
+            main.getLogger().severe(main.language("command.reload.error"));
+            e.printStackTrace();
+            sender.sendMessage(main.language(true, "command.reload.error"));
         }
 
         main.getApi().reloadHolograms();
@@ -84,17 +84,16 @@ public class CharacterDialogueCommand implements CommandClass {
 
         reloadDialogues(sender, cache);
 
-        sender.sendMessage(colorize("&aLoaded " + cache.getDialogues().size() + " dialogues."));
-
-        sender.sendMessage(colorize(language.getString("reload-message")));
+        sender.sendMessage(main.language(true, "loaded-dialogues", cache.getDialogues().size()));
+        sender.sendMessage(main.language(true, "command.reload.success"));
     }
 
     @Command(names = "clear-cache",
           permission = "characterdialogue.clear-cache",
           desc = "Clear a player memory cache")
     public void clearCache(CommandSender sender, Player target) {
-        if (target == null || ! target.isOnline()) {
-            sender.sendMessage(colorize("&cThe player isn't online."));
+        if (target == null || !target.isOnline()) {
+            sender.sendMessage(main.language("general.offline-player"));
             return;
         }
 
@@ -112,10 +111,10 @@ public class CharacterDialogueCommand implements CommandClass {
             done = true;
         }
 
-        if (! done) {
-            sender.sendMessage(colorize("&cThat player doesn't have any data in the memory cache."));
+        if (!done) {
+            sender.sendMessage(main.language(true, "command.clear-cache.no-data"));
         } else {
-            sender.sendMessage(colorize("&aCleared " + target.getName() + "'s cache"));
+            sender.sendMessage(main.language(true, "command.clear-cache.success"));
         }
     }
 
@@ -127,12 +126,12 @@ public class CharacterDialogueCommand implements CommandClass {
     @Usage("<dialogue> [npcId]")
     public void assignNpc(@Sender CommandSender sender, Dialogue dialogue, AdaptedNPC npc) {
         if (dialogue == null) {
-            sender.sendMessage(colorize("&8[&cCD&8] &cThe dialogue was not found."));
+            sender.sendMessage(main.language(true, "command.assign.no-dialogue"));
             return;
         }
 
         if (npc == null) {
-            sender.sendMessage(colorize("&8[&cCD&8] &cNpc not found."));
+            sender.sendMessage(main.language(true, "command.assign.no-npc"));
             return;
         }
 
@@ -141,11 +140,10 @@ public class CharacterDialogueCommand implements CommandClass {
         try {
             config.save();
         } catch (IOException e) {
-            sender.sendMessage(colorize("&8[&cCD&8] &cError saving data."));
+            sender.sendMessage(main.language("command.assign.error"));
             return;
         }
-        sender.sendMessage(colorize(String.format("&8[&cCD&8] &aThe npc '%s' was assigned to '%s' dialogue.",
-              npc.getName(), dialogue.getName())));
+        sender.sendMessage(main.language("command.assign.success", npc.getName(), dialogue.getName()));
     }
 
     @Command(
@@ -154,20 +152,14 @@ public class CharacterDialogueCommand implements CommandClass {
     )
     public void openGUI(@Sender Player player, GUI gui) {
         if (gui == null) {
+            player.sendMessage(main.language("command.gui.not-found"));
             return;
         }
 
         gui.load(player);
-        player.sendMessage(colorize("&aLoaded the gui!"));
+        player.sendMessage(main.language(true, "command.gui.success", gui.getPath()));
     }
 
-    private List<String> translateList(List<String> list) {
-        List<String> newList = new ArrayList<>();
-        list.forEach((line) -> {
-            newList.add(colorize(line));
-        });
-        return newList;
-    }
 
     private void reloadDialogues(CommandSender sender, Cache cache) {
         try {
@@ -185,7 +177,7 @@ public class CharacterDialogueCommand implements CommandClass {
             }
 
         } catch (IOException exception) {
-            sender.sendMessage("Error loading all dialogues");
+            sender.sendMessage(main.language("command.reload.dialogue-error"));
             exception.printStackTrace();
             return;
         }

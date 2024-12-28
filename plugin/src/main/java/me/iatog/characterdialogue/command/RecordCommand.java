@@ -35,12 +35,17 @@ public class RecordCommand implements CommandClass {
 
     @Command(
           names = "start",
-          permission = "characterdialogue.command.path.create",
+          permission = "characterdialogue.command.replay",
           desc = "Start recording the path"
     )
     public void startRecording(@Sender Player sender, String name) {
         if(isPresent(sender)) {
-            sender.sendMessage(colorize("&cYou are already in a recording, use &7/characterd record stop &cto stop it."));
+            sender.sendMessage(main.language(true, "command.record.in-recording"));
+            return;
+        }
+
+        if(storage.getAllPaths().containsKey(name)) {
+            sender.sendMessage(main.language(true, "command.record.already-exists"));
             return;
         }
 
@@ -54,9 +59,10 @@ public class RecordCommand implements CommandClass {
             public void run() {
                 if(second >= 5) {
                     recorder.startRecording();
+                    sender.sendMessage(main.language(true, "command.record.guide"));
                     this.cancel();
                 } else {
-                    sender.sendMessage(colorize("&aStarting in " + (5 - second) + "s"));
+                    sender.sendMessage(main.language(true, "command.record.starting", String.valueOf(5 - second)));
                     second++;
                 }
             }
@@ -64,25 +70,28 @@ public class RecordCommand implements CommandClass {
     }
 
     @Command(
-          names = "stop"
+          names = "stop",
+          permission = "characterdialogue.command.replay"
+
     )
     public void stopRecording(@Sender Player sender) {
         if(!isPresent(sender)) {
-            sender.sendMessage(colorize("&cYou are not currently on a recording."));
+            sender.sendMessage(main.language(true, "command.record.not-recording"));
             return;
         }
 
         PathRecorder recorder = recorders.get(sender.getUniqueId());
         recorder.stopRecording(true);
-        sender.sendMessage(colorize("&aRecording &8'&c" + recorder.getName() + "&8'&a has been saved."));
+        sender.sendMessage(main.language(true, "command.record.saved"));
     }
 
     @Command(
-          names = "view"
+          names = "view",
+          permission = "characterdialogue.command.replay.view"
     )
     public void recordData(@Sender Player sender, Record record) {
         if(record == null) {
-            sender.sendMessage(colorize("&cRecord not found."));
+            sender.sendMessage(main.language(true, "command.record.not-found"));
             return;
         }
 
@@ -92,44 +101,46 @@ public class RecordCommand implements CommandClass {
         RecordLocation firstPoint = path.getFirst();
         RecordLocation lastPoint = path.getLast();
 
-        sender.sendMessage(colorize("&eRecord&f: &c&l" + record.name()));
-        sender.sendMessage(colorize("&eTotal Points&8: &f" + totalPoints));
-        sender.sendMessage(colorize("&eFirst Point&8: " + formatLocation(firstPoint)));
-        sender.sendMessage(colorize("&eLast Point&8: " + formatLocation(lastPoint)));
-        sender.sendMessage(colorize("&eEstimated duration&8: &a" + String.format("%.2f", durationSeconds) + " seconds"));
+        sender.sendMessage(main.language("command.record.view.record", record.name()));
+        sender.sendMessage(main.language("command.record.view.total", totalPoints));
+        sender.sendMessage(main.language("command.record.view.first", formatLocation(firstPoint)));
+        sender.sendMessage(main.language("command.record.view.last", formatLocation(lastPoint)));
+        sender.sendMessage(main.language("command.record.view.duration", String.format("%.2f", durationSeconds)));
     }
 
     @Command(
-          names = "cancel"
+          names = "cancel",
+          permission = "characterdialogue.command.replay"
     )
     public void cancelRecording(@Sender Player sender) {
         if(!isPresent(sender)) {
-            sender.sendMessage(colorize("&cYou are not currently on a recording."));
+            sender.sendMessage(main.language(true, "command.record.not-recording"));
             return;
         }
 
         PathRecorder recorder = recorders.get(sender.getUniqueId());
         recorder.stopRecording(false);
         recorders.remove(sender.getUniqueId());
-        sender.sendMessage(colorize("&aRecording cancelled (not saved)"));
+        sender.sendMessage(main.language(true, "command.record.cancelled"));
     }
 
     @Command(
-          names = "replay"
+          names = "replay",
+          permission = "characterdialogue.command.viewreplay"
     )
     public void replay(@Sender Player player, Record record, AdaptedNPC npc) {
         if(record == null) {
-            player.sendMessage("Record not found.");
+            player.sendMessage(main.language(true, "command.record.not-found"));
             return;
         }
 
         if(npc == null) {
-            player.sendMessage("NPC not found.");
+            player.sendMessage(main.language(true, "command.record.no-npc"));
             return;
         }
 
         PathReplayer replay = new PathReplayer(record.locations(), npc);
-        player.sendMessage(colorize("&aStarting recorded replay."));
+        player.sendMessage(main.language(true, "command.record.replaying", npc.getName()));
         replay.startReplay();
     }
 

@@ -19,6 +19,8 @@ import java.util.Objects;
 )
 public class GroupsCommands implements CommandClass {
 
+    private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
+
     @Command(
           names = "create",
           permission = "characterdialogue.create"
@@ -26,14 +28,14 @@ public class GroupsCommands implements CommandClass {
     public void create(@Sender CommandSender sender, @OptArg String groupName) {
         CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
         if (groupName == null || groupName.isEmpty()) {
-            sender.sendMessage(TextUtils.colorize("&cGroup name is empty"));
+            sender.sendMessage(main.language(true, "command.group.no-group.specified"));
             return;
         }
 
         File file = new File(main.getDataFolder() + "/dialogues/" + groupName + ".yml");
 
         if (file.exists()) {
-            sender.sendMessage(TextUtils.colorize("&cThis group already exists."));
+            sender.sendMessage(main.language(true, "command.group.already-exists", groupName));
             return;
         }
 
@@ -41,13 +43,13 @@ public class GroupsCommands implements CommandClass {
             YamlDocument newGroup = YamlDocument.create(file, Objects.requireNonNull(main.getResource("dialogue-template.yml")));
 
             main.getAllDialogues().add(newGroup);
-            sender.sendMessage(TextUtils.colorize("&8[&cCD&8] &7Dialog &8'&a" + groupName + "&8'&7 has been created"));
+            sender.sendMessage(main.language(true, "command.group.created-success", groupName));
         } catch (IOException e) {
-            sender.sendMessage(TextUtils.colorize("Fatal error while creating dialogue file."));
+            sender.sendMessage(main.language(true, "command.group.error", groupName));
             e.printStackTrace();
         }
     }
-
+/*
     @Command(
           names = "edit",
           permission = "characterdialogue.groups.edit"
@@ -59,16 +61,16 @@ public class GroupsCommands implements CommandClass {
             return;
         }
 
-        sender.sendMessage(TextUtils.colorize("&c" + group.getName()));
+        sender.sendMessage(TextUtils.colorize("&c" + group.getName()));*/
 /*
         boolean success = false;
 
         for(YamlDocument groupDocument : main.getAllDialogues()) {
             String name = Objects.requireNonNull(groupDocument.getFile()).getName().split("\\.")[0];
 
-        }*/
+        }
 
 
-    }
+    }*/
 
 }

@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static me.iatog.characterdialogue.util.TextUtils.colorize;
+
 public class CharacterDialoguePlugin extends JavaPlugin {
 
     private static CharacterDialoguePlugin instance;
@@ -216,6 +218,30 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
     public GUIFactory getGUIFactory() {
         return guiFactory;
+    }
+
+    public String language(boolean prefix, String route, Object ...format) {
+        YamlDocument lang = getFileFactory().getLanguage();
+        String prefixed = prefix ? "&8[&cCD&8] " : "";
+
+        return TextUtils.colorize(prefixed + lang.getString(route, route).formatted(format));
+    }
+
+    public String language(String route, Object ...format) {
+        return language(false, route, format);
+    }
+
+    public String[] languageList(String route, Object ...format) {
+        YamlDocument lang = getFileFactory().getLanguage();
+        return translateList(lang.getStringList(route), format).toArray(String[]::new);
+    }
+
+    private List<String> translateList(List<String> list, Object ...format) {
+        List<String> newList = new ArrayList<>();
+        list.forEach((line) -> {
+            newList.add(colorize(line.formatted(format)));
+        });
+        return newList;
     }
 
 }
