@@ -36,10 +36,10 @@ public class NPCPart implements ArgumentPart {
         }
 
         List<String> suggest = new ArrayList<>();
-        for (String npc : main.getAdapter().getInMemoryNPCs()) {
-            if(next.startsWith(npc) || next.isEmpty()) {
+        for (String npc : main.getAdapter().getNPCs()) {
+            if(npc.toLowerCase().startsWith(next.toLowerCase()) || next.isEmpty()) {
                 suggest.add(npc);
-            };
+            }
         }
 
         return suggest;
@@ -48,11 +48,6 @@ public class NPCPart implements ArgumentPart {
     @Override
     public List<AdaptedNPC> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
         String possibleNpc = stack.next();
-
-        if (!isNum(possibleNpc)) {
-            return Collections.emptyList();
-        }
-
         AdaptedNPC npc = main.getAdapter().getById(possibleNpc);
 
         if (npc == null) {
@@ -60,14 +55,5 @@ public class NPCPart implements ArgumentPart {
         }
 
         return Collections.singletonList(npc);
-    }
-
-    private boolean isNum(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
     }
 }
