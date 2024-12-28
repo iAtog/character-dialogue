@@ -36,7 +36,7 @@ public class CacheLoader implements Loader {
               //new LegacyChoiceMethod(main),
               new SneakMethod(main),
               new ConditionalMethod(main),
-              new GiveMethod(),
+              new GiveMethod(main),
               new TalkMethod(main),
               new TitleMethod(),
 
