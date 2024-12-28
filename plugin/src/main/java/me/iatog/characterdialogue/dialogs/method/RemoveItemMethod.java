@@ -21,13 +21,16 @@ public class RemoveItemMethod extends DialogMethod<CharacterDialoguePlugin> {
         ItemManager manager = getProvider().getServices().getItemManager();
         MethodConfiguration configuration = context.getConfiguration();
         String itemId = configuration.getString("item");
+        int amount = configuration.getInteger("amount", 1);
 
         if(!configuration.contains("item") || itemId == null || !manager.existsItem(itemId)) {
             getProvider().getLogger().severe("No item found/specified in remove_item method.");
-            context.next();
         } else {
-            ItemStack itemStack = manager.getItem(itemId);
+            ItemStack itemStack = manager.getItem(itemId).clone();
+            itemStack.setAmount(amount <= 0 ? 1 : amount);
             context.getPlayer().getInventory().remove(itemStack);
         }
+
+        context.next();
     }
 }
