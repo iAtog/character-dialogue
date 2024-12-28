@@ -31,6 +31,8 @@ public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
         addConfigurationType("condition", ConfigurationType.TEXT);
         addConfigurationType("ifTrue", ConfigurationType.TEXT);
         addConfigurationType("ifFalse", ConfigurationType.TEXT);
+
+        setDescription("A condition is created to divert the dialog according to your preference.");
     }
 
     @Override

@@ -30,6 +30,7 @@ public class SneakMethod extends DialogMethod<CharacterDialoguePlugin> implement
         this.waitingPlayers = new HashMap<>();
 
         setupRunnable();
+        setDescription("Wait for the player to sneak to continue the dialogue.");
     }
 
     @Override

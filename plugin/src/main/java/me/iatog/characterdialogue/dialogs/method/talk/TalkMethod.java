@@ -44,6 +44,8 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
         addConfigurationType("pitch", ConfigurationType.FLOAT);
         addConfigurationType("tickSpeed", ConfigurationType.INTEGER);
         addConfigurationType("skip", ConfigurationType.BOOLEAN);
+
+        setDescription("Performs a speech animation to the player");
     }
 
     @Override

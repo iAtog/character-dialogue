@@ -13,6 +13,8 @@ public abstract class DialogMethod<T extends JavaPlugin> {
     private final List<String> dependencies;
     private boolean disabled;
 
+    private String description = "No description provided.";
+
     private final Map<String, ConfigurationType> configurationTypes;
 
     public DialogMethod(String id, T provider) {
@@ -77,5 +79,13 @@ public abstract class DialogMethod<T extends JavaPlugin> {
         if (Bukkit.getPluginManager().isPluginEnabled(name)) {
             runnable.run();
         }
+    }
+
+    protected void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

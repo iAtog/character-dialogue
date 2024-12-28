@@ -9,6 +9,7 @@ public class StartDialogueMethod extends DialogMethod<CharacterDialoguePlugin> {
 
     public StartDialogueMethod(CharacterDialoguePlugin provider) {
         super("start_dialogue", provider);
+        setDescription("Starts another dialog from the beginning");
     }
 
     @Override

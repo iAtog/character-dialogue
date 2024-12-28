@@ -19,7 +19,7 @@ public class GiveMethod extends DialogMethod<CharacterDialoguePlugin> {
         addConfigurationType("material", ConfigurationType.TEXT);
         addConfigurationType("amount", ConfigurationType.INTEGER);
         addConfigurationType("name", ConfigurationType.TEXT);
-
+        setDescription("Gives an item to the player, it can be a custom item.");
     }
 
     @Override

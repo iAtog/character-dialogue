@@ -8,6 +8,8 @@ public class SendMethod extends DialogMethod<CharacterDialoguePlugin> {
 
     public SendMethod() {
         super("send");
+
+        setDescription("Sends a message to the player");
     }
 
     @Override

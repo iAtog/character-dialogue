@@ -25,20 +25,7 @@ public class ChoiceMethod extends DialogMethod<CharacterDialoguePlugin> {
     // 'choice{type=chat, timeout=15}: choice_sample'
     // 'choice{type=bedrock, timeout=20}: choice_sample'
     // 'choice{type=gui, timeout=0}: no_cooldown_choice'
-    public static final Map<UUID, BukkitTask> taskList;
-
-    static {
-        taskList = new HashMap<>();
-    }
-
-    /**
-     * defaults:
-     * type = chat
-     * cooldown = 10
-     * <p>
-     * choice: choice_sample | TYPE = chat & COOLDOWN = 10
-     * choice{type=bedrock_gui}: choice_sample
-     */
+    public static final Map<UUID, BukkitTask> taskList= new HashMap<>();
 
     private final Map<UUID, ChoiceSession> sessions;
     private final boolean floodgateEnabled;
@@ -47,9 +34,13 @@ public class ChoiceMethod extends DialogMethod<CharacterDialoguePlugin> {
         super("choice", provider);
         this.sessions = provider.getCache().getChoiceSessions();
         this.floodgateEnabled = Bukkit.getPluginManager().isPluginEnabled("floodgate");
+
         addConfigurationType("type", ConfigurationType.TEXT);
         addConfigurationType("timeout", ConfigurationType.INTEGER);
+
         Bukkit.getPluginManager().registerEvents(new ChoiceChatTypeListener(provider), provider);
+
+        setDescription("Displays options to the player");
     }
 
     @Override

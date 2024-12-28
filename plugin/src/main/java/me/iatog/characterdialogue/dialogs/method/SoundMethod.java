@@ -17,6 +17,7 @@ public class SoundMethod extends DialogMethod<CharacterDialoguePlugin> {
         addConfigurationType("sound", ConfigurationType.TEXT);
         addConfigurationType("volume", ConfigurationType.FLOAT);
         addConfigurationType("pitch", ConfigurationType.FLOAT);
+        setDescription("Plays a sound to the player");
     }
 
     @Override

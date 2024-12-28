@@ -15,6 +15,7 @@ public class SendServerMethod extends DialogMethod<CharacterDialoguePlugin> {
     public SendServerMethod(CharacterDialoguePlugin main) {
         super("send_server", main);
         addConfigurationType("channel", ConfigurationType.TEXT);
+        setDescription("Switches the player to another server in the proxy");
     }
 
     @Override

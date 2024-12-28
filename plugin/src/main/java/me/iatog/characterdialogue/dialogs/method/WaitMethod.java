@@ -11,6 +11,7 @@ public class WaitMethod extends DialogMethod<CharacterDialoguePlugin> {
 
     public WaitMethod(CharacterDialoguePlugin main) {
         super("wait", main);
+        setDescription("Wait a few seconds before proceeding");
     }
 
     @Override

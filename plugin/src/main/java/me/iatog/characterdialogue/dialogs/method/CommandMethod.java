@@ -14,7 +14,9 @@ public class CommandMethod extends DialogMethod<CharacterDialoguePlugin> {
     // command{sender=player}: kit newbie
     public CommandMethod(CharacterDialoguePlugin main) {
         super("command", main);
+
         addConfigurationType("sender", ConfigurationType.TEXT);
+        setDescription("Execute a command, choose whether it is for the player or the console.");
     }
 
     @Override

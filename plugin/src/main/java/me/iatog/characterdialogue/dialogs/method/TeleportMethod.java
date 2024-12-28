@@ -21,6 +21,8 @@ public class TeleportMethod extends DialogMethod<CharacterDialoguePlugin> {
         addConfigurationType("yaw", ConfigurationType.FLOAT);
         addConfigurationType("pitch", ConfigurationType.FLOAT);
         addConfigurationType("world", ConfigurationType.TEXT);
+
+        setDescription("Teleports the player");
     }
 
     @Override

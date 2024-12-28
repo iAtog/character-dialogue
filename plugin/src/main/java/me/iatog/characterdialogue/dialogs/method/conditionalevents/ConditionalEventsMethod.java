@@ -32,9 +32,12 @@ public class ConditionalEventsMethod extends DialogMethod<CharacterDialoguePlugi
             Bukkit.getPluginManager().registerEvents(new ConditionalEventListener(), provider);
             handleTimeouts();
         });
+
         addConfigurationType("action", ConfigurationType.TEXT);
         addConfigurationType("timeout", ConfigurationType.INTEGER);
         addConfigurationType("pause", ConfigurationType.BOOLEAN);
+
+        setDescription("Wait for a ConditionalEvents event to execute.");
     }
 
     @Override

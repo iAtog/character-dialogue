@@ -20,6 +20,8 @@ public class EffectMethod extends DialogMethod<CharacterDialoguePlugin> {
         addConfigurationType("seconds", ConfigurationType.INTEGER);
         addConfigurationType("amplifier", ConfigurationType.INTEGER);
         addConfigurationType("clear", ConfigurationType.BOOLEAN);
+
+        setDescription("Applies a potion effect to the player");
     }
 
     @Override

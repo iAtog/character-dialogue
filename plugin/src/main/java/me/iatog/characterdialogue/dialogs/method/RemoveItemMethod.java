@@ -14,6 +14,7 @@ public class RemoveItemMethod extends DialogMethod<CharacterDialoguePlugin> {
         super("remove_item", provider);
 
         addConfigurationType("item", ConfigurationType.TEXT);
+        setDescription("Removes a specific item from the player");
     }
 
     @Override

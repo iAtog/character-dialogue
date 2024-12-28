@@ -15,6 +15,8 @@ public class TitleMethod extends DialogMethod<CharacterDialoguePlugin> {
         addConfigurationType("fadeIn", ConfigurationType.INTEGER);
         addConfigurationType("stay", ConfigurationType.INTEGER);
         addConfigurationType("fadeOut", ConfigurationType.INTEGER);
+
+        setDescription("Displays a title/subtitle to the player");
     }
 
     @Override

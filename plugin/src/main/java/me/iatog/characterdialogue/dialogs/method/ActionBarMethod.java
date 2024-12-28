@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 public class ActionBarMethod extends DialogMethod<CharacterDialoguePlugin> {
     public ActionBarMethod() {
         super("actionbar");
+        setDescription("Displays an actionbar to the player");
     }
 
     @SuppressWarnings("deprecation")
