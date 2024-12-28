@@ -2,7 +2,6 @@ package me.iatog.characterdialogue.dialogs.method.talk;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.enums.CompletedType;
-import me.iatog.characterdialogue.enums.TalkType;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
 import org.bukkit.Sound;

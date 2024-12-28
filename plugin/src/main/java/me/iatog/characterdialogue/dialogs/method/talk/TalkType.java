@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.enums;
+package me.iatog.characterdialogue.dialogs.method.talk;
 
 import me.iatog.characterdialogue.util.TextUtils;
 import net.md_5.bungee.api.ChatMessageType;
@@ -42,17 +42,16 @@ public enum TalkType {
 
     TalkType(TriConsumer<Player, String, String> consumer) {
         this.consumer = consumer;
-
     }
 
     public static String[] getEmptyList() {
         List<String> list = new ArrayList<>();
 
         for (int i = 0; i < 40; i++) {
-            list.add(ChatColor.translateAlternateColorCodes('&', "&7"));
+            list.add(TextUtils.colorize("&7"));
         }
 
-        return list.stream().toArray(String[]::new);
+        return list.toArray(String[]::new);
     }
 
     public void execute(Player target, String message, String npcName) {
