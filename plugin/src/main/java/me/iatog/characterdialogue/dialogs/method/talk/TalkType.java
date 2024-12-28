@@ -4,12 +4,12 @@ import me.iatog.characterdialogue.util.TextUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.logging.log4j.util.TriConsumer;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public enum TalkType {
 
     ACTION_BAR((player, text, npcName) -> {
