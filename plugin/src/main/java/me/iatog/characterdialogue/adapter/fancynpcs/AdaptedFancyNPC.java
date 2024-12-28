@@ -37,7 +37,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public String getName() {
-        return npc.getData().getDisplayName();
+        return npc.getData().getName();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         data.applyAllAttributes(npc);
         data.setLocation(npc.getData().getLocation());
         data.setCollidable(npc.getData().isCollidable());
-        data.setDisplayName("");
+        data.setDisplayName("<empty>");
 
         final Npc copied = FancyNpcsPlugin.get().getNpcAdapter().apply(data);
 
