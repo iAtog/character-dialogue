@@ -96,8 +96,14 @@ public class DialogSession implements Session {
             this.startNext();
         });
 
-        main.getApi().runDialogueExpression(getPlayer(), lines.get(getCurrentIndex()), displayName,
-              consumer, this, this.npc);
+        main.getApi().runDialogueExpression(
+              getPlayer(),
+              lines.get(getCurrentIndex()),
+              displayName,
+              consumer,
+              this,
+              this.npc
+        );
     }
 
     public boolean hasNext() {

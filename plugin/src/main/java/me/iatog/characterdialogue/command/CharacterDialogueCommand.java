@@ -63,7 +63,7 @@ public class CharacterDialogueCommand implements CommandClass {
 
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        sender.sendMessage(translateList(language.getStringList("help-message")).stream().toArray(String[]::new));
+        sender.sendMessage(translateList(language.getStringList("help-message")).toArray(String[]::new));
     }
 
     @Command(names = "reload",
@@ -132,7 +132,7 @@ public class CharacterDialogueCommand implements CommandClass {
         }
 
         if (npc == null) {
-            sender.sendMessage(colorize("&8[&cCD&8] &cNo npc selected."));
+            sender.sendMessage(colorize("&8[&cCD&8] &cNpc not found."));
             return;
         }
 

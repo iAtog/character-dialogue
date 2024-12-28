@@ -237,6 +237,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
             String msg = "Tried to run a disabled method: " + methodName;
             session.sendDebugMessage(msg, "runExpression");
             main.getLogger().warning(msg);
+            onComplete.accept(CompletedType.CONTINUE);
             return;
         }
 
@@ -271,6 +272,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
                 session.sendDebugMessage("Exception during &8\"&c" + methodName + "&8\"&7 method execution.",
                       "runExpression");
                 main.getLogger().severe("Exception while executing " + methodName + " method.");
+                main.getLogger().severe("Dialogue: " + session.getDialogue().getName() + " | Line: " + session.getCurrentIndex());
                 exception.printStackTrace();
                 session.destroy();
             }
