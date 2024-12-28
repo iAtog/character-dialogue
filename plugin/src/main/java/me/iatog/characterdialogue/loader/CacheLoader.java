@@ -42,7 +42,8 @@ public class CacheLoader implements Loader {
               new NPCControlMethod(main),
               new ChoiceMethod(main),
               new ConditionalEventsMethod(main),
-              new RemoveItemMethod(main)
+              new RemoveItemMethod(main),
+              new ActionBarMethod()
         );
 
         main.registerChoices(
