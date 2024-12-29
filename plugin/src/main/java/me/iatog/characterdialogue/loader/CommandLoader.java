@@ -11,6 +11,8 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.command.CharacterDialogueCommand;
+import me.iatog.characterdialogue.command.translator.MessageTranslation;
+import me.iatog.characterdialogue.command.usage.PluginUsageBuilder;
 import me.iatog.characterdialogue.dialogs.Group;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.command.part.dialogue.DialoguePartFactory;
@@ -33,6 +35,10 @@ public class CommandLoader implements Loader {
     public CommandLoader(CharacterDialoguePlugin main) {
         this.main = main;
         this.commandManager = new BukkitCommandManager("CharacterDialogue");
+
+        this.commandManager.setTranslator(new MessageTranslation(main));
+        this.commandManager.setUsageBuilder(new PluginUsageBuilder(main));
+
         PartInjector injector = PartInjector.create();
         injector.install(new DefaultsModule());
         injector.install(new BukkitModule());
@@ -51,8 +57,7 @@ public class CommandLoader implements Loader {
     @Override
     public void load() {
         registerCommands(
-              new CharacterDialogueCommand(main)//,
-              //new DialogueCommands()
+              new CharacterDialogueCommand(main)
         );
     }
 

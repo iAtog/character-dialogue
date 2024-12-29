@@ -46,6 +46,11 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
         addConfigurationType("yaw", ConfigurationType.FLOAT);
         addConfigurationType("pitch", ConfigurationType.FLOAT);
 
+
+        addConfigurationType("lookPlayer", ConfigurationType.BOOLEAN);
+        addConfigurationType("item", ConfigurationType.TEXT);
+        addConfigurationType("material", ConfigurationType.TEXT);
+
         setDescription("Control an NPC by creating a clone");
 
         // Registering actions
