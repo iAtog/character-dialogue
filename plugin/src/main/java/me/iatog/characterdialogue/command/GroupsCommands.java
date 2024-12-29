@@ -28,7 +28,7 @@ public class GroupsCommands implements CommandClass {
     public void create(@Sender CommandSender sender, @OptArg String groupName) {
         CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
         if (groupName == null || groupName.isEmpty()) {
-            sender.sendMessage(main.language(true, "command.group.no-group.specified"));
+            sender.sendMessage(main.language(true, "command.group.no-group-specified"));
             return;
         }
 
