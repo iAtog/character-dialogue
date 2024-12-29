@@ -17,7 +17,7 @@ public class PathStorage {
 
     public PathStorage(CharacterDialoguePlugin main) {
         this.gson = new Gson();
-        File dbFile = new File(main.getDataFolder(), "path_storage.db");
+        File dbFile = new File(main.getDataFolder(), "database.db");
         this.dbPath = "jdbc:sqlite:" + dbFile.getAbsolutePath();
 
         createTable();

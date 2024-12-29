@@ -18,7 +18,7 @@ public class DialogPersistence {
 
     public DialogPersistence(CharacterDialoguePlugin main) {
         this.main = main;
-        File dbFile = new File(main.getDataFolder(), "sessions.db");
+        File dbFile = new File(main.getDataFolder(), "database.db");
         this.url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
 
         createTable();
