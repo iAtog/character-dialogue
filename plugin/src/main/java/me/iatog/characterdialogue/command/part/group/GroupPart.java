@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.part.group;
+package me.iatog.characterdialogue.command.part.group;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.fixeddev.commandflow.CommandContext;

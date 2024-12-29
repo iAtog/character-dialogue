@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.part.record;
+package me.iatog.characterdialogue.command.part.gui;
 
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.exception.ArgumentParseException;
@@ -6,20 +6,20 @@ import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
-import me.iatog.characterdialogue.path.PathStorage;
-import me.iatog.characterdialogue.path.Record;
+import me.iatog.characterdialogue.gui.GUI;
+import me.iatog.characterdialogue.gui.GUIFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RecordPart implements ArgumentPart {
+public class GUIPart implements ArgumentPart {
+    private final CharacterDialoguePlugin main;
     private final String name;
-    private PathStorage storage;
 
-    public RecordPart(String name, CharacterDialoguePlugin main) {
+    public GUIPart(CharacterDialoguePlugin main, String name) {
+        this.main = main;
         this.name = name;
-        this.storage = main.getPathStorage();
     }
 
     @Override
@@ -31,10 +31,11 @@ public class RecordPart implements ArgumentPart {
         }
 
         List<String> suggest = new ArrayList<>();
+        GUIFactory factory = main.getGUIFactory();
 
-        for(String name : storage.getAllPaths().keySet()) {
-            if(next.isEmpty() || name.toLowerCase().startsWith(next.toLowerCase())) {
-                suggest.add(name.toLowerCase());
+        for (String c : factory.getKeys()) {
+            if (next.isEmpty() || c.startsWith(next)) {
+                suggest.add(c);
             }
         }
 
@@ -42,14 +43,16 @@ public class RecordPart implements ArgumentPart {
     }
 
     @Override
-    public List<Record> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
-        String possible = stack.next();
+    public List<GUI> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
+        String gui = stack.next().toLowerCase();
+        GUIFactory factory = main.getGUIFactory();
 
-        if (storage.getPath(possible) == null) {
+        if (! factory.existsGUI(gui)) {
             return Collections.emptyList();
         }
 
-        return Collections.singletonList(new Record(possible, storage.getPath(possible)));
+        return Collections.singletonList(factory.getGui(gui));
+
     }
 
     @Override

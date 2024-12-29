@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.part.method;
+package me.iatog.characterdialogue.command.part.method;
 
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.exception.ArgumentParseException;

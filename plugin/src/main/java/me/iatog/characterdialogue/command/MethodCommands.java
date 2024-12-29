@@ -8,13 +8,9 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.TestDialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
-import me.iatog.characterdialogue.dialogs.MethodConfiguration;
-import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.enums.CompletedType;
-import me.iatog.characterdialogue.part.method.DialogMethodArgument;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
-import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Command(
       names = "method",

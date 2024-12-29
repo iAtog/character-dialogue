@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.part.group;
+package me.iatog.characterdialogue.command.part.group;
 
 import me.fixeddev.commandflow.annotated.part.PartFactory;
 import me.fixeddev.commandflow.part.CommandPart;

@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.part.gui;
+package me.iatog.characterdialogue.command.part.record;
 
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.exception.ArgumentParseException;
@@ -6,20 +6,20 @@ import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
-import me.iatog.characterdialogue.gui.GUI;
-import me.iatog.characterdialogue.gui.GUIFactory;
+import me.iatog.characterdialogue.path.PathStorage;
+import me.iatog.characterdialogue.path.Record;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GUIPart implements ArgumentPart {
-    private final CharacterDialoguePlugin main;
+public class RecordPart implements ArgumentPart {
     private final String name;
+    private PathStorage storage;
 
-    public GUIPart(CharacterDialoguePlugin main, String name) {
-        this.main = main;
+    public RecordPart(String name, CharacterDialoguePlugin main) {
         this.name = name;
+        this.storage = main.getPathStorage();
     }
 
     @Override
@@ -31,11 +31,10 @@ public class GUIPart implements ArgumentPart {
         }
 
         List<String> suggest = new ArrayList<>();
-        GUIFactory factory = main.getGUIFactory();
 
-        for (String c : factory.getKeys()) {
-            if (next.isEmpty() || c.startsWith(next)) {
-                suggest.add(c);
+        for(String name : storage.getAllPaths().keySet()) {
+            if(next.isEmpty() || name.toLowerCase().startsWith(next.toLowerCase())) {
+                suggest.add(name.toLowerCase());
             }
         }
 
@@ -43,16 +42,14 @@ public class GUIPart implements ArgumentPart {
     }
 
     @Override
-    public List<GUI> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
-        String gui = stack.next().toLowerCase();
-        GUIFactory factory = main.getGUIFactory();
+    public List<Record> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
+        String possible = stack.next();
 
-        if (! factory.existsGUI(gui)) {
+        if (storage.getPath(possible) == null) {
             return Collections.emptyList();
         }
 
-        return Collections.singletonList(factory.getGui(gui));
-
+        return Collections.singletonList(new Record(possible, storage.getPath(possible)));
     }
 
     @Override

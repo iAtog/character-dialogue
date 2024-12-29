@@ -1,4 +1,4 @@
-package me.iatog.characterdialogue.part.npc;
+package me.iatog.characterdialogue.command.part.npc;
 
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.exception.ArgumentParseException;
