@@ -12,6 +12,7 @@ import me.iatog.characterdialogue.api.interfaces.FileFactory;
 import me.iatog.characterdialogue.libraries.ApiImplementation;
 import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.libraries.Services;
+import me.iatog.characterdialogue.loader.Loader;
 import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
 import me.iatog.characterdialogue.util.TextUtils;
@@ -200,7 +201,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
             if (files != null) {
                 for (File file : files) {
                     if (! file.isFile()) continue;
-                    YamlDocument yamlDocument = YamlDocument.create(file); // Objects.requireNonNull(getResource(folderName + "/" + file.getName()))
+                    YamlDocument yamlDocument = YamlDocument.create(file);
 
                     dialogues.add(yamlDocument);
                 }
@@ -223,8 +224,15 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     public String language(boolean prefix, String route, Object ...format) {
         YamlDocument lang = getFileFactory().getLanguage();
         String prefixed = prefix ? "&8[&cCD&8] " : "";
+        String result;
 
-        return TextUtils.colorize(prefixed + lang.getString(route, route).formatted(format));
+        if(format.length == 0) {
+            result = lang.getString(route, route);
+        } else {
+            result = lang.getString(route, route).formatted(format);
+        }
+
+        return TextUtils.colorize(prefixed + result);
     }
 
     public String language(String route, Object ...format) {
@@ -234,6 +242,11 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     public String[] languageList(String route, Object ...format) {
         YamlDocument lang = getFileFactory().getLanguage();
         return translateList(lang.getStringList(route), format).toArray(String[]::new);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getLoader(Class<T> loader) {
+        return (T) this.loader.getLoaders().get(loader);
     }
 
     private List<String> translateList(List<String> list, Object ...format) {

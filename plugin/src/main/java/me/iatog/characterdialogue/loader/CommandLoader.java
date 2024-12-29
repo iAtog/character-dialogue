@@ -61,6 +61,10 @@ public class CommandLoader implements Loader {
         );
     }
 
+    public BukkitCommandManager getCommandManager() {
+        return commandManager;
+    }
+
     public void registerCommands(CommandClass... commands) {
         for (CommandClass command : commands) {
             commandManager.registerCommands(builder.fromClass(command));

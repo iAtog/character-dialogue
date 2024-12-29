@@ -200,7 +200,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
     @Override
     public void runDialogueExpression(Player player, String dialog, String rawNpcName,
                                       SingleUseConsumer<CompletedType> onComplete, DialogSession session, AdaptedNPC npc) {
-        Matcher matcher = lineRegex.matcher(dialog);
+        Matcher matcher = lineRegex.matcher(dialog.trim());
         String npcName = TextUtils.colorize(rawNpcName);
 
         if(dialog.startsWith("#")) { // To leave notes, if necessary
@@ -211,7 +211,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
         if (!matcher.find()) {
             session.sendDebugMessage("Line '" + dialog + "' don't match.", "runExpression");
             main.getLogger().warning("Line '" + dialog + "' don't match in " + session.getDialogue().getName());
-            session.destroy();
+            onComplete.accept(CompletedType.DESTROY);
             return;
         }
 
@@ -222,7 +222,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
 
         if (!main.getCache().getMethods().containsKey(methodName)) {
             main.getLogger().warning("The method \"" + methodName + "\" doesn't exists");
-            session.destroy();
+            onComplete.accept(CompletedType.CONTINUE);
             return;
         }
         session.sendDebugMessage("Running method '" + methodName + "'", "API:197");
@@ -274,7 +274,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
                 main.getLogger().severe("Exception while executing " + methodName + " method.");
                 main.getLogger().severe("Dialogue: " + session.getDialogue().getName() + " | Line: " + session.getCurrentIndex());
                 exception.printStackTrace();
-                session.destroy();
+                onComplete.accept(CompletedType.DESTROY);
             }
         } else {
             session.sendDebugMessage("Method execution cancelled by external plugin", "API:208");

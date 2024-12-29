@@ -26,14 +26,14 @@ public class DialogSession implements Session {
     private final List<String> lines;
     private final String displayName;
     private final AdaptedNPC npc;
-    private final Dialogue dialogue;
+    private Dialogue dialogue;
     private int index = 0;
     private boolean stop;
 
     private boolean debug;
     private boolean isDestroyed;
-    private final boolean slowEffect;
-    private final boolean persistent;
+    private boolean slowEffect;
+    private boolean persistent;
 
     public DialogSession(CharacterDialoguePlugin main, Player player, List<String> lines, ClickType clickType,
                          AdaptedNPC npc, String displayName, String dialogueName) {
@@ -44,16 +44,21 @@ public class DialogSession implements Session {
         this.displayName = displayName;
         this.dialogue = main.getCache().getDialogues().get(dialogueName);
         this.npc = npc;
-        this.slowEffect = this.dialogue.isSlowEffectEnabled();
-        this.persistent = this.dialogue.isPersistent();
+
+        if(this.dialogue != null) {
+            this.slowEffect = this.dialogue.isSlowEffectEnabled();
+            this.persistent = this.dialogue.isPersistent();
+        }
     }
 
     public DialogSession(CharacterDialoguePlugin main, Player player, Dialogue dialogue, AdaptedNPC npc) {
         this(main, player, dialogue.getLines(), dialogue.getClickType(), npc, dialogue.getDisplayName(), dialogue.getName());
+        this.dialogue = dialogue;
     }
 
     public DialogSession(CharacterDialoguePlugin main, Player player, Dialogue dialogue) {
         this(main, player, dialogue, null);
+        this.dialogue = dialogue;
     }
 
     public void start(int index) {

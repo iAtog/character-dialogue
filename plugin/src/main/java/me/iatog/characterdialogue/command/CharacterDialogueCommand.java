@@ -6,6 +6,7 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.annotated.annotation.Usage;
+import me.fixeddev.commandflow.bukkit.BukkitCommandManager;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
@@ -13,8 +14,10 @@ import me.iatog.characterdialogue.api.DialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.libraries.Cache;
+import me.iatog.characterdialogue.loader.CommandLoader;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 
@@ -54,14 +57,42 @@ public class CharacterDialogueCommand implements CommandClass {
      */
 
     private final CharacterDialoguePlugin main;
+    private final List<CommandInfo> info;
 
     public CharacterDialogueCommand(CharacterDialoguePlugin main) {
         this.main = main;
+        this.info = new ArrayList<>();
+
+        addCommands();
+    }
+
+    private void addCommands() {
+        addCommand("characterd reload", "", "Reload the plugin and files");
+        addCommand("characterd clear-cache", "<player>", "Clear player info");
+        addCommand("characterd dialogue", "", "Use some dialogues.");
+        addCommand("characterd method", "", "Try some methods.");
+        addCommand("characterd assign", "<npcId>", "Assign a dialogue to a npc");
+        addCommand("characterd item", "", "Manage custom items");
+        addCommand("characterd gui", "<name>", "Open registered guis");
+        addCommand("characterd record", "", "Manage recordings");
+    }
+
+    private void addCommand(String name, String usage, String description) {
+        info.add(new CommandInfo(name, usage, description));
     }
 
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        sender.sendMessage(main.languageList("help-message"));
+        String input = main.language("command-info");
+        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
+
+        for(CommandInfo cmd : info) {
+            sender.sendMessage(
+                  input.replace("%command%", cmd.name())
+                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
+                        .replace("%description%", cmd.desc())
+            );
+        }
     }
 
     @Command(names = "reload",
@@ -88,6 +119,7 @@ public class CharacterDialogueCommand implements CommandClass {
         sender.sendMessage(main.language(true, "command.reload.success"));
     }
 
+    @Usage("<player>")
     @Command(names = "clear-cache",
           permission = "characterdialogue.clear-cache",
           desc = "Clear a player memory cache")
@@ -118,12 +150,12 @@ public class CharacterDialogueCommand implements CommandClass {
         }
     }
 
+    @Usage("<dialogue> [npcId]")
     @Command(
           names = "assign",
           permission = "characterdialogue.assign",
           desc = "Assign a dialogue to npc"
     )
-    @Usage("<dialogue> [npcId]")
     public void assignNpc(@Sender CommandSender sender, Dialogue dialogue, AdaptedNPC npc) {
         if (dialogue == null) {
             sender.sendMessage(main.language(true, "command.assign.no-dialogue"));
@@ -146,6 +178,7 @@ public class CharacterDialogueCommand implements CommandClass {
         sender.sendMessage(main.language("command.assign.success", npc.getName(), dialogue.getName()));
     }
 
+    @Usage("<name>")
     @Command(
           names = "gui",
           permission = "characterdialogue.gui"
@@ -159,7 +192,6 @@ public class CharacterDialogueCommand implements CommandClass {
         gui.load(player);
         player.sendMessage(main.language(true, "command.gui.success", gui.getPath()));
     }
-
 
     private void reloadDialogues(CommandSender sender, Cache cache) {
         try {

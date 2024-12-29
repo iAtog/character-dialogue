@@ -4,16 +4,16 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.OptArg;
+import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
-import me.iatog.characterdialogue.dialogs.Group;
-import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+@Usage("create <fileName>")
 @Command(
       names = "group"
 )
@@ -21,6 +21,7 @@ public class GroupsCommands implements CommandClass {
 
     private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
 
+    @Usage("<fileName>")
     @Command(
           names = "create",
           permission = "characterdialogue.create"

@@ -7,18 +7,17 @@ import me.iatog.characterdialogue.util.TextUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class PluginLoader implements Loader {
 
     private final CharacterDialoguePlugin main;
-    private final List<Loader> loaders;
+    //private final List<Loader> loaders;
+    private final Map<Class<? extends Loader>, Loader> loaders;
 
     public PluginLoader(CharacterDialoguePlugin main) {
         this.main = main;
-        this.loaders = new ArrayList<>();
+        this.loaders = new HashMap<>();
     }
 
     @Override
@@ -40,7 +39,9 @@ public class PluginLoader implements Loader {
 
     @Override
     public void unload() {
-        loaders.forEach(Loader::unload);
+        loaders.forEach((clazz, loader) -> {
+            loader.unload();
+        });
         loaders.clear();
         NPCControlMethod.registries.forEach((_uuid, npcs) -> {
             npcs.clearAll();
@@ -49,7 +50,7 @@ public class PluginLoader implements Loader {
         main.getServices().getFollowingNPC().removeAll();
     }
 
-    public List<Loader> getLoaders() {
+    public Map<Class<? extends Loader>, Loader> getLoaders() {
         return loaders;
     }
 
@@ -59,8 +60,7 @@ public class PluginLoader implements Loader {
 
     private void append(Loader loader) {
         loader.load();
-        this.loaders.add(loader);
-        //main.getLogger().info("Loaded: " + loader.getClass().getSimpleName());
+        this.loaders.put(loader.getClass(), loader);
     }
 
 }

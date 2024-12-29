@@ -3,18 +3,17 @@ package me.iatog.characterdialogue.command;
 import com.google.gson.Gson;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.path.Record;
 import me.iatog.characterdialogue.path.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
@@ -26,13 +25,43 @@ public class RecordCommand implements CommandClass {
     public static final Map<UUID, PathRecorder> recorders = new HashMap<>();
     private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
     private final Gson gson;
-    private final PathStorage storage;
+    private final PathStorage storage = main.getPathStorage();
+    private final List<CommandInfo> info;
 
     public RecordCommand() {
         this.gson = new Gson();
-        storage = main.getPathStorage();
+        this.info = new ArrayList<>();
+        addCommands();
     }
 
+    private void addCommands() {
+        addCommand("characterd record start", "<name>", "Create a new recording");
+        addCommand("characterd record stop", "", "Stop current recording");
+        addCommand("characterd record cancel", "", "Cancel current recording");
+        addCommand("characterd record view", "<name>", "View recording info");
+        addCommand("characterd record delete", "<name>", "Delete an recording.");
+        addCommand("characterd record replay", "<name> <npc>", "Replay recording on a npc");
+    }
+
+    private void addCommand(String name, String usage, String description) {
+        info.add(new CommandInfo(name, usage, description));
+    }
+
+    @Command(names = "", desc = "Main command")
+    public void mainCommand(CommandSender sender) {
+        String input = main.language("command-info");
+        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
+
+        for(CommandInfo cmd : info) {
+            sender.sendMessage(
+                  input.replace("%command%", cmd.name())
+                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
+                        .replace("%description%", cmd.desc())
+            );
+        }
+    }
+
+    @Usage("<newName>")
     @Command(
           names = "start",
           permission = "characterdialogue.command.replay",
@@ -72,7 +101,6 @@ public class RecordCommand implements CommandClass {
     @Command(
           names = "stop",
           permission = "characterdialogue.command.replay"
-
     )
     public void stopRecording(@Sender Player sender) {
         if(!isPresent(sender)) {
@@ -85,11 +113,12 @@ public class RecordCommand implements CommandClass {
         sender.sendMessage(main.language(true, "command.record.saved"));
     }
 
+    @Usage("<name>")
     @Command(
           names = "view",
-          permission = "characterdialogue.command.replay.view"
+          permission = "characterdialogue.command.record.view"
     )
-    public void recordData(@Sender Player sender, Record record) {
+    public void recordData(CommandSender sender, Record record) {
         if(record == null) {
             sender.sendMessage(main.language(true, "command.record.not-found"));
             return;
@@ -108,6 +137,22 @@ public class RecordCommand implements CommandClass {
         sender.sendMessage(main.language("command.record.view.duration", String.format("%.2f", durationSeconds)));
     }
 
+    @Usage("<name>")
+    @Command(
+          names = "delete",
+          desc = "Delete recording",
+          permission = "characterdialogue.command.record.delete"
+    )
+    public void deleteRecording(CommandSender sender, Record record) {
+        if(record == null) {
+            sender.sendMessage(main.language(true, "command.record.not-found"));
+            return;
+        }
+
+        storage.removePath(record.name());
+        sender.sendMessage(main.language(true, "command.record.deleted", record.name()));
+    }
+
     @Command(
           names = "cancel",
           permission = "characterdialogue.command.replay"
@@ -124,6 +169,7 @@ public class RecordCommand implements CommandClass {
         sender.sendMessage(main.language(true, "command.record.cancelled"));
     }
 
+    @Usage("<name> <npc>")
     @Command(
           names = "replay",
           permission = "characterdialogue.command.viewreplay"

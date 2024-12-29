@@ -14,10 +14,13 @@ import me.iatog.characterdialogue.util.SingleUseConsumer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
+
+import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 @Command(
       names = "method",
@@ -26,9 +29,38 @@ import java.util.regex.Matcher;
 )
 public class MethodCommands implements CommandClass {
 
-    private CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
+    private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
+    private final List<CommandInfo> info;
 
-    @Command(names = "")
+    public MethodCommands() {
+        this.info = new ArrayList<>();
+        addCommands();
+    }
+
+    private void addCommands() {
+        addCommand("characterd method list", "", "List all registered methods");
+        addCommand("characterd method execute", "<methodLine>", "Execute dialogue line");
+    }
+
+    private void addCommand(String name, String usage, String description) {
+        info.add(new CommandInfo(name, usage, description));
+    }
+
+    @Command(names = "", desc = "Main command")
+    public void mainCommand(CommandSender sender) {
+        String input = main.language("command-info");
+        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
+
+        for(CommandInfo cmd : info) {
+            sender.sendMessage(
+                  input.replace("%command%", cmd.name())
+                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
+                        .replace("%description%", cmd.desc())
+            );
+        }
+    }
+
+    @Command(names = "list")
     public void list(@Sender CommandSender sender) {
         sender.sendMessage(main.language("command.method.list-title"));
         main.getCache().getMethods().forEach((id, method) -> {
@@ -38,8 +70,8 @@ public class MethodCommands implements CommandClass {
         });
     }
 
-    @Command(names = "execute")
     @Usage("<methodLine>")
+    @Command(names = "execute")
     public void execute(@Sender Player sender, @ConsumeAll List<String> args) {
         if (args == null || args.isEmpty()) {
             sender.sendMessage(main.language(true, "command.method.no-args"));
@@ -48,9 +80,9 @@ public class MethodCommands implements CommandClass {
 
         StringBuilder arguments = new StringBuilder();
         for (String arg : args)
-            arguments.append(" ").append(arg);
+            arguments.append(arg).append(" ");
 
-        Matcher matcher = main.getApi().getLineRegex().matcher(arguments.toString());
+        Matcher matcher = main.getApi().getLineRegex().matcher(arguments.toString().trim());
 
         if(!matcher.find()) {
             sender.sendMessage(main.language(true, "command.method.invalid-line"));

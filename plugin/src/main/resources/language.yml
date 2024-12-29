@@ -1,32 +1,44 @@
-file-version: 2 
-help-message:
-  - '&6&l> &8[&fCharacterDialogue&8] &7help'
-  - ' &7/characterdialogue reload &f- &eReload the plugin.'
-  - ' &7/characterdialogue clear-cache <player-name> &f- &eClear the memory cache for a player.'
+file-version: '1'
+command-info: '&c&l> &c/%command% &e%usage%&8| &7%description%'
 select-choice: '&aClick here to select &c#%str%'
-loaded-dialogues: "&aLoaded %s dialogues."
+loaded-dialogues: '&aLoaded %s dialogues.'
 general:
-  offline-player: "&cThe specified player isn't online."
+  offline-player: '&cThe specified player isn''t online.'
+  only-player: '&cOnly players can execute this command.'
+  no-permission: '&cYou do not have permissions to execute this command.'
 command:
+  usage: '&c&l>> &cUsage&7:&a %s%s'
   reload:
-    error: 'Error while reloading CharacterDialogue files.'
-    success: "&aCharacterDialogue reloaded correctly"
+    error: Error while reloading CharacterDialogue files.
+    success: '&aCharacterDialogue reloaded correctly'
     dialogue-error: '&cError loading all dialogues'
   clear-cache:
-    no-data: "&cThat player doesn't have any data in the memory cache."
-    success: "&aCleared %s cache"
+    no-data: '&cThat player doesn''t have any data in the memory cache.'
+    success: '&aCleared %s cache'
   assign:
     no-dialogue: '&cThe dialogue was not found.'
-    no-npc: '&cThe specified was npc not found.'
+    no-npc: '&cThe specified npc was not found.'
     error: '&cError while saving npc.'
-    success: "&aThe npc '%s' was assigned to '%s' dialogue."
+    success: '&aThe npc ''%s'' was assigned to ''%s'' dialogue.'
   gui:
     not-found: '&cNo gui has been found with that name.'
     success: '&aGUI opened: %s'
   dialogue:
     not-found: '&cA dialogue with that name was not found.'
     console: '&cYou need to specify the target player.'
-    success: "&aStarted '&c%s&a' dialogue for &c%s&a."
+    success: '&aStarted ''&c%s&a'' dialogue for &c%s&a.'
+    info:
+      title: '&7&m&l             &r&7[ &bDialogue Info &7]&m&l             '
+      id: '&6ID: &a%s'
+      display-name: '&6Display Name: &a%s'
+      lines: '&6Total lines: &a%s'
+      file: '&6File: &a%s'
+      click-type: '&6Click type: &a%s'
+      persistence:
+        persistent: '&6Persistent: &c%s'
+        total: '&6On join lines: &c%s'
+      first-interaction:
+        lines: '&6First interaction lines: &c%s'
   group:
     no-group-specified: '&cYou must write the name of the group.'
     already-exists: '&cThe group "%s" already exists.'
@@ -35,18 +47,18 @@ command:
   item:
     no-hand: '&cYou must have an item in your main hand.'
     no-id: '&cYou must enter the item ID.'
-    already-exists: "&cThere's already an item with this ID."
-    success: "&aThe item &7'&8%s&7'&a has been successfully saved."
+    already-exists: '&cThere''s already an item with this ID.'
+    success: '&aThe item &7''&8%s&7''&a has been successfully saved.'
     not-found: '&cNo item was found.'
     give-success: '&aYou have obtained the item correctly.'
   method:
-    list-title: "&aList of methods:"
-    list-line: "&8>> &a%s - %s"
-    invalid-line: "&cInvalid line provided, structure: &7<&amethodName&7>&8{&7<&aconfiguration&7>&8}&7: <&aargument&7>"
-    no-args: "&cInvalid arguments provided."
-    invalid-method: "&cInvalid method provided: %s."
-    on-session: "&cYou cant run this command while in a dialogue session."
-    exectuted: "&aMethod &8'&7%s&8' &aexecuted correctly with result: %s"
+    list-title: '&aList of methods:'
+    list-line: '&8>> &a%s - %s'
+    invalid-line: '&cInvalid line provided, structure: &7<&amethodName&7>&8{&7<&aconfiguration&7>&8}&7: <&aargument&7>'
+    no-args: '&cInvalid arguments provided.'
+    invalid-method: '&cInvalid method provided: %s.'
+    on-session: '&cYou cant run this command while in a dialogue session.'
+    executed: '&aMethod &8''&7%s&8'' &aexecuted correctly with result: %s'
   record:
     in-recording: '&cYou are already in a recording, use &6/characterd record stop &cto stop it.'
     not-recording: '&cYou are not currently on a recording.'
@@ -55,12 +67,13 @@ command:
     not-found: '&cRecording not found.'
     no-npc: '&cThe NPC specified was not found.'
     already-exists: '&cThe recording &7"&a%s&7"&c already exists.'
-    saved: "&aRecording &8'&c%s&8'&a has been saved."
-    cancelled: "&aRecording cancelled &c(not saved)"
-    guide: "&7Recording started... type &a/characterdialogue record cancel&7 to cancel"
+    saved: '&aRecording &8''&c%s&8''&a has been saved.'
+    cancelled: '&aRecording cancelled &c(not saved)'
+    deleted: '&aSuccessfully deleted ''&c%s&a'' recording!'
+    guide: '&7Recording started... type &a/characterdialogue record cancel&7 to cancel'
     view:
-      record: "&eRecording&f: &c&l%s"
-      total: "&eTotal Points&8: &f%s"
-      first: "&eFirst Point&8: %s"
-      last: "&eLast Point&8: %s"
-      duration: "&eEstimated duration&8: &a%s seconds"
+      record: '&eRecording&f: &c&l%s'
+      total: '&eTotal Points&8: &f%s'
+      first: '&eFirst Point&8: %s'
+      last: '&eLast Point&8: %s'
+      duration: '&eEstimated duration&8: &a%s seconds'
