@@ -7,12 +7,10 @@ import me.iatog.characterdialogue.api.CharacterDialogueAPI;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.gui.GUIFactory;
-import me.iatog.characterdialogue.hook.Hooks;
 import me.iatog.characterdialogue.api.interfaces.FileFactory;
 import me.iatog.characterdialogue.libraries.ApiImplementation;
 import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.libraries.Services;
-import me.iatog.characterdialogue.loader.Loader;
 import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
 import me.iatog.characterdialogue.util.TextUtils;
@@ -39,7 +37,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private FileFactory fileFactory;
     private Cache cache;
     private CharacterDialogueAPI api;
-    private Hooks hooks;
     private String defaultChannel;
     private long startup;
     private Metrics metrics;
@@ -88,7 +85,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
         this.cache = new Cache();
         this.loader = new PluginLoader(this);
-        this.hooks = new Hooks();
         this.api = new ApiImplementation(this);
         this.pathStorage = new PathStorage(this);
         this.adapterManager = new AdapterManager(this);
@@ -118,10 +114,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
     public void setDefaultFileFactory(FileFactory factory) {
         this.fileFactory = factory;
-    }
-
-    public Hooks getHooks() {
-        return hooks;
     }
 
     public AdapterManager getAdapterManager() {
