@@ -24,6 +24,7 @@ public class FollowingNPC {
         this.main = main;
     }
 
+    @SuppressWarnings("deprecation")
     public void scheduleNPCMovement(AdaptedNPC npc, Entity entity, Player player) {
         if(followingEntities.containsKey(npc.getId())) {
             main.getLogger().warning(npc.getName() + " is already following a player.");
@@ -33,7 +34,7 @@ public class FollowingNPC {
         entity.setCustomName("CHARACTERDIALOGUE_HUSK_DELETE");
 
         FollowRunnable followRunnable = new FollowRunnable(entity, player, this, npc);
-        followRunnable.runTaskTimer(main, 0, 1);
+        followRunnable.runTaskTimer(main, 0, 10);
         followingEntities.put(npc.getId(), new FollowData(player.getUniqueId(), entity.getUniqueId(), followRunnable));
     }
 

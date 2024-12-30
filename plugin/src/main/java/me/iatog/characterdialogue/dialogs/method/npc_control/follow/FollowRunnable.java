@@ -2,10 +2,12 @@ package me.iatog.characterdialogue.dialogs.method.npc_control.follow;
 
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
@@ -44,11 +46,24 @@ public class FollowRunnable extends BukkitRunnable {
         if(distance >= 3 && distance <= 30) {
             mob.getPathfinder().moveTo(player.getLocation());
         } else if(distance > 30) {
-            mob.teleport(player.getLocation());
+            Location behind = behind(player.getLocation());
+            mob.teleportAsync(behind);
+            npc.teleport(behind);
+            return;
         } else {
             mob.getPathfinder().stopPathfinding();
         }
 
         npc.teleport(mob.getLocation());
+    }
+
+    public Location behind(Location playerLoc) {
+        Location nLoc = npc.getStoredLocation();
+
+        Vector swap = playerLoc.toVector().subtract(nLoc.toVector()).normalize();
+        Location behind = playerLoc.clone().add(swap);
+        behind.setY(playerLoc.getY());
+
+        return behind;
     }
 }
