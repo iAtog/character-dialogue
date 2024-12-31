@@ -33,7 +33,7 @@ public class ControlUtil {
         }
 
         Location spawnLocation;
-        Location configLocation = getConfigLocation(configuration, player.getLocation());
+        Location configLocation = getConfigLocation(configuration, npc.getStoredLocation());
 
         if(configLocation == null) {
             spawnLocation = npc.getStoredLocation();

@@ -19,7 +19,7 @@ public class NPCTeleportAction implements NPCControlAction {
 
         if(data != null) {
             AdaptedNPC clone = data.getCopy();
-            Location newLocation = ctx.util().getConfigLocation(configuration, ctx.player().getLocation());
+            Location newLocation = ctx.util().getConfigLocation(configuration, clone.getStoredLocation());
 
             if(newLocation == null) {
                 ctx.plugin().getLogger().warning("Invalid coordinates specified in teleport action.");
