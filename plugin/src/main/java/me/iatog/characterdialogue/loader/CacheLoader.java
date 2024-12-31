@@ -1,6 +1,7 @@
 package me.iatog.characterdialogue.loader;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.database.DialogPersistence;
 import me.iatog.characterdialogue.dialogs.choice.*;
 import me.iatog.characterdialogue.dialogs.method.*;
 import me.iatog.characterdialogue.dialogs.method.choice.ChoiceMethod;
@@ -9,6 +10,7 @@ import me.iatog.characterdialogue.dialogs.method.conditionalevents.ConditionalEv
 import me.iatog.characterdialogue.dialogs.method.npc_control.NPCControlMethod;
 import me.iatog.characterdialogue.dialogs.method.talk.TalkMethod;
 import me.iatog.characterdialogue.libraries.Cache;
+import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.TextUtils;
 
 public class CacheLoader implements Loader {
@@ -61,6 +63,10 @@ public class CacheLoader implements Loader {
 
     @Override
     public void unload() {
+        DialogPersistence persistence = main.getServices().getDialogPersistence();
+        main.getCache().getDialogSessions().values().stream()
+              .filter(DialogSession::isPersistent).forEach(persistence::saveSession);
+
         main.getCache().clearAll();
     }
 }
