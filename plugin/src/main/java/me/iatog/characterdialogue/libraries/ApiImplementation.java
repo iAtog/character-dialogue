@@ -13,6 +13,7 @@ import me.iatog.characterdialogue.dialogs.MethodConfiguration;
 import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.enums.CompletedType;
+import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.session.EmptyDialogSession;
@@ -26,8 +27,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -111,36 +110,28 @@ public class ApiImplementation implements CharacterDialogueAPI {
 
     @Override
     public boolean readDialogBy(Player player, String dialog) {
-        String path = "players." + player.getUniqueId();
-        YamlDocument playerCache = main.getFileFactory().getPlayerCache();
-        List<String> readedDialogues = playerCache.getStringList(path + ".readed-dialogues");
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
-        if (! playerCache.contains(path)) {
-            readedDialogues = new ArrayList<>();
-        }
-
-        if (readedDialogues.contains(dialog)) {
+        if(data == null) {
             return false;
         }
 
-        readedDialogues.add(dialog);
-        playerCache.set(path + ".readed-dialogues", readedDialogues);
-
-        try {
-            playerCache.save();
-        } catch (IOException e) {
-            main.getLogger().warning("Player cache failed saving");
+        if(!wasReadedBy(player, dialog)) {
+            data.getReadedDialogs().add(dialog);
         }
+
         return true;
     }
 
     @Override
     public boolean wasReadedBy(Player player, String dialog) {
-        YamlDocument playerCache = main.getFileFactory().getPlayerCache();
-        String path = "players." + player.getUniqueId();
-        List<String> readedDialogues = playerCache.getStringList(path + ".readed-dialogues");
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
-        return playerCache.contains(path) && readedDialogues.contains(dialog);
+        if(data == null) {
+            return false;
+        }
+
+        return data.getReadedDialogs().contains(dialog);
     }
 
     @Override
@@ -303,60 +294,49 @@ public class ApiImplementation implements CharacterDialogueAPI {
 
     @Override
     public boolean enableMovement(Player player) {
-        YamlDocument playerCache = main.getFileFactory().getPlayerCache();
-        String playerPath = "players." + player.getUniqueId();
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
-        if (! playerCache.getBoolean(playerPath + ".remove-effect", false)) {
+        if(data == null || !data.getRemoveEffect()) {
             return false;
         }
 
-        float speed = Float.parseFloat(playerCache.getString(playerPath + ".last-speed"));
+        float speed = (float) data.getLastSpeed();
         player.setWalkSpeed(speed);
         player.removePotionEffect(PotionEffectType.JUMP);
         main.getCache().getFrozenPlayers().remove(player.getUniqueId());
 
-        playerCache.set(playerPath + ".remove-effect", false);
+        data.setRemoveEffect(false);
 
-        try {
-            playerCache.save();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return playerCache.getBoolean(playerPath + ".remove-effect", false);
+        return true;
     }
 
     @Override
     public boolean disableMovement(Player player) {
-        YamlDocument playerCache = main.getFileFactory().getPlayerCache();
-        String path = "players." + player.getUniqueId();
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
-        if (playerCache.getBoolean(path + ".remove-effect", false)) {
+        if(data == null) {
             return false;
         }
 
-        playerCache.set(path + ".last-speed", player.getWalkSpeed());
-        playerCache.set(path + ".remove-effect", true);
-
-        try {
-            playerCache.save();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        data.setRemoveEffect(true);
+        data.setLastSpeed(player.getWalkSpeed());
 
         main.getCache().getFrozenPlayers().add(player.getUniqueId());
         player.setWalkSpeed(0);
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128));
 
-        return ! playerCache.getBoolean(path + ".remove-effect", true);
+        return true;
     }
 
     @Override
     public boolean canEnableMovement(Player player) {
-        YamlDocument playerCache = main.getFileFactory().getPlayerCache();
-        String path = "players." + player.getUniqueId();
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
-        return playerCache.getBoolean(path + ".remove-effect", false);
+        if(data == null) {
+            return false;
+        }
+
+        return data.getRemoveEffect();
     }
 
     @Override

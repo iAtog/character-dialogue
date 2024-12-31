@@ -3,7 +3,7 @@ package me.iatog.characterdialogue.libraries;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
-import me.iatog.characterdialogue.misc.PlayerData;
+import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import org.bukkit.plugin.java.JavaPlugin;

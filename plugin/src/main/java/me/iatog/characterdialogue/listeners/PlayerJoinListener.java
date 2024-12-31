@@ -3,6 +3,8 @@ package me.iatog.characterdialogue.listeners;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.database.DialogPersistence;
+import me.iatog.characterdialogue.database.PlayerDataDatabase;
+import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.session.InitializeSession;
 import org.bukkit.entity.Player;
@@ -13,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,7 +48,7 @@ public class PlayerJoinListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.LOW)
     public void onJoinPersistence(PlayerJoinEvent event) {
         DialogPersistence persistence = main.getServices().getDialogPersistence();
         Player player = event.getPlayer();
@@ -79,6 +82,19 @@ public class PlayerJoinListener implements Listener {
                 session.start();
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void addData(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        PlayerDataDatabase database = main.getServices().getPlayerDataDatabase();
+        PlayerData data = database.get(player);
+
+        if(data == null) {
+            data = new PlayerData(player.getUniqueId(), new ArrayList<>(), false, player.getWalkSpeed());
+        }
+
+        main.getCache().getPlayerData().put(player.getUniqueId(), data);
     }
 
 }

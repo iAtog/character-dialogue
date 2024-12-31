@@ -2,6 +2,8 @@ package me.iatog.characterdialogue.listeners;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.database.DialogPersistence;
+import me.iatog.characterdialogue.database.PlayerDataDatabase;
+import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import org.bukkit.event.EventHandler;
@@ -39,6 +41,17 @@ public class PlayerQuitListener implements Listener {
         }
 
         session.destroy();
+    }
+
+    @EventHandler
+    public void removeData(PlayerQuitEvent event) {
+        UUID playerId = event.getPlayer().getUniqueId();
+        Map<UUID, PlayerData> players = main.getCache().getPlayerData();
+        PlayerDataDatabase database = main.getServices().getPlayerDataDatabase();
+        PlayerData data = players.get(playerId);
+
+        database.save(data);
+        players.remove(playerId);
     }
 
     @EventHandler

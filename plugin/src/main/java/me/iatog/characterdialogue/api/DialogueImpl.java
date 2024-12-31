@@ -7,10 +7,9 @@ import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.dialog.DialogHologram;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.enums.ClickType;
+import me.iatog.characterdialogue.player.PlayerData;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DialogueImpl implements Dialogue {
@@ -133,24 +132,14 @@ public class DialogueImpl implements Dialogue {
     @Override
     public boolean startFirstInteraction(Player player, boolean log, AdaptedNPC npc) {
         if (log) {
-            YamlDocument playerCache = main.getFileFactory().getPlayerCache();
-            List<String> readedDialogues = playerCache.getStringList("players." + player.getUniqueId() + ".readed-dialogues");
-
-            if (! playerCache.contains("players." + player.getUniqueId())) {
-                readedDialogues = new ArrayList<>();
-            }
+            PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
+            List<String> readedDialogues = data.getReadedDialogs();
 
             if (readedDialogues.contains(getName())) {
                 return false;
             }
 
             readedDialogues.add(getName());
-            playerCache.set("players." + player.getUniqueId() + ".readed-dialogues", readedDialogues);
-            try {
-                playerCache.save();
-            } catch (IOException e) {
-                this.main.getLogger().severe("Error saving player cache for " + player.getName() + "'s");
-            }
         }
 
         main.getApi().runDialogueExpressions(player, firstInteraction, displayName, this.dialogName);

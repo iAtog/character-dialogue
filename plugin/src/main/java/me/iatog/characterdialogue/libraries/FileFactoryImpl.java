@@ -18,7 +18,6 @@ public class FileFactoryImpl implements FileFactory {
 
     private YamlDocument config;
     private YamlDocument lang;
-    private YamlDocument playerCache;
     private YamlDocument choices;
     private YamlDocument items;
 
@@ -34,7 +33,6 @@ public class FileFactoryImpl implements FileFactory {
                   configVersion.getLoaderSettings(), configVersion.getUpdaterSettings());
             this.lang = createYamlDocument("language.yml",
                   languageVersion.getLoaderSettings(), languageVersion.getUpdaterSettings());
-            this.playerCache = createYamlDocument("player-cache.yml");
             this.choices = createYamlDocument("choices.yml");
             this.items = YamlDocument.create(getFile("items.yml"),
                   getResource("items.yml", main), GeneralSettings.builder()
@@ -76,11 +74,6 @@ public class FileFactoryImpl implements FileFactory {
         return lang;
     }
 
-    @Override
-    public YamlDocument getPlayerCache() {
-        return playerCache;
-    }
-
     public YamlDocument getItems() {
         return items;
     }
@@ -90,7 +83,6 @@ public class FileFactoryImpl implements FileFactory {
     public void reload() throws IOException {
         config.reload();
         lang.reload();
-        playerCache.reload();
         choices.reload();
         items.reload();
         //main.getAllDialogues().forEach(YamlFile::reload);

@@ -7,10 +7,7 @@ import java.io.IOException;
 public interface FileFactory {
     YamlDocument getConfig();
 
-    //YamlFile getDialogs();
     YamlDocument getLanguage();
-
-    YamlDocument getPlayerCache();
 
     YamlDocument getChoicesFile();
 

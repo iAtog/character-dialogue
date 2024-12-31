@@ -1,9 +1,8 @@
-package me.iatog.characterdialogue.misc;
+package me.iatog.characterdialogue.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,9 +12,9 @@ public class PlayerData {
     private final List<String> readedDialogs;
 
     private boolean removeEffect;
-    private double lastSpeed;
+    private float lastSpeed;
 
-    public PlayerData(UUID uuid, List<String> readedDialogs, boolean removeEffect, double lastSpeed) {
+    public PlayerData(UUID uuid, List<String> readedDialogs, boolean removeEffect, float lastSpeed) {
         this.uuid = uuid;
         this.readedDialogs = readedDialogs;
         this.removeEffect = removeEffect;
@@ -42,7 +41,7 @@ public class PlayerData {
         return lastSpeed;
     }
 
-    public void setLastSpeed(double speed) {
+    public void setLastSpeed(float speed) {
         this.lastSpeed = speed;
     }
 
