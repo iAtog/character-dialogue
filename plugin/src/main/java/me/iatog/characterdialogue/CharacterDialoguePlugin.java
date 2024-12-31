@@ -13,6 +13,7 @@ import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.libraries.Services;
 import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
+import me.iatog.characterdialogue.placeholders.CharacterDialogueExpansion;
 import me.iatog.characterdialogue.util.TextUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -92,6 +93,11 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         loader.load();
 
         this.services = new Services(this);
+
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new CharacterDialogueExpansion(this).register();
+        }
+
         getLogger().info(TextUtils.colorize("&aLoaded in " + (System.currentTimeMillis() - startup) + "ms"));
     }
 
