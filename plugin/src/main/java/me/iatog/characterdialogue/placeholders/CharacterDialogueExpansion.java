@@ -54,14 +54,17 @@ public class CharacterDialogueExpansion extends PlaceholderExpansion {
 
             return main.getApi().wasReadedBy(player, name, params.startsWith("readedFirstInteraction")) ? "yes" : "no";
         } else if(params.startsWith("readed_size")) {
-            if(params.split("_").length != 2)
+            if(params.split(":").length != 2)
                 return "0";
             List<String> list = null;
+            String param = params.split(":")[1];
 
-            if(params.split(":")[1].equals("finished")) {
+            if(param.equals("finished")) {
                 list = data.getFinishedDialogs();
-            } else {
+            } else if(param.equals("firstInteractions")) {
                 list = data.getFirstInteractions();
+            } else {
+                return "0";
             }
 
             return String.valueOf(list.size());
