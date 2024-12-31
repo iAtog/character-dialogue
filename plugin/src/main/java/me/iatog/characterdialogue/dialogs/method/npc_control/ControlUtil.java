@@ -63,8 +63,10 @@ public class ControlUtil {
         if(data == null) {
             return;
         }
+
         data.setHideOriginal(false);
         data.getOriginal().show(player);
+        data.getCopy().unfollow(player);
         data.getCopy().destroy();
         hologramLibrary.showHologram(player, data.getOriginal().getId());
     }

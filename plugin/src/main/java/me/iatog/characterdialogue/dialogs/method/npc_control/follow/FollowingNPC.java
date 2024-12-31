@@ -34,7 +34,7 @@ public class FollowingNPC {
         entity.setCustomName("CHARACTERDIALOGUE_HUSK_DELETE");
 
         FollowRunnable followRunnable = new FollowRunnable(entity, player, this, npc);
-        followRunnable.runTaskTimer(main, 0, 10);
+        followRunnable.runTaskTimer(main, 0, 1);
         followingEntities.put(npc.getId(), new FollowData(player.getUniqueId(), entity.getUniqueId(), followRunnable));
     }
 
@@ -69,7 +69,6 @@ public class FollowingNPC {
         mob.setInvulnerable(true);
         mob.setInvisible(true);
         mob.setSilent(true);
-        mob.setPersistent(true);
         mob.setRemoveWhenFarAway(false);
         mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2, true, true));
         // Protecting the entity with events
