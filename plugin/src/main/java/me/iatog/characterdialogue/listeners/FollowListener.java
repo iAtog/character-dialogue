@@ -41,13 +41,6 @@ public class FollowListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onTeleport(EntityTeleportEvent event) {
-        if(event.getEntity().hasMetadata(metadataKey)) {
-            event.setCancelled(true);
-        }
-    }
-
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onSpawn(EntitySpawnEvent event) {
@@ -69,6 +62,4 @@ public class FollowListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-
 }

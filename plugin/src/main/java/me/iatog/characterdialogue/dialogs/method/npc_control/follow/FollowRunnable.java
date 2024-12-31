@@ -17,14 +17,12 @@ public class FollowRunnable extends BukkitRunnable {
     private final FollowingNPC followingNPC;
 
     private final UUID playerId;
-    private final UUID entityId;
+    private final Entity entity;
     private final AdaptedNPC npc;
-
-    private boolean wait;
 
     public FollowRunnable(Entity entity, Player player, FollowingNPC followingNPC, AdaptedNPC npc) {
         this.playerId = player.getUniqueId();
-        this.entityId = entity.getUniqueId();
+        this.entity = entity;
         this.followingNPC = followingNPC;
         this.npc = npc;
     }
@@ -32,7 +30,6 @@ public class FollowRunnable extends BukkitRunnable {
     @Override
     public void run() {
         Player player = Bukkit.getPlayer(playerId);
-        Entity entity = Bukkit.getEntity(entityId);
         Mob mob = ((Mob) entity);
 
         if(player == null || !player.isOnline() || mob == null || mob.isDead()) {
@@ -44,23 +41,16 @@ public class FollowRunnable extends BukkitRunnable {
             return;
         }
 
-        if(wait) {
-            return;
-        }
-
         double distance = mob.getLocation().distance(player.getLocation());
 
         if(distance >= 3 && distance <= 30) {
             mob.getPathfinder().moveTo(player.getLocation());
         } else if(distance > 30) {
             mob.getPathfinder().stopPathfinding();
-            wait = true;
             Location behind = behind(player.getLocation());
 
-            entity.teleportAsync(behind, PlayerTeleportEvent.TeleportCause.PLUGIN).thenRunAsync(() -> {
+            mob.teleportAsync(behind, PlayerTeleportEvent.TeleportCause.PLUGIN).thenRunAsync(() -> {
                 npc.teleport(behind);
-                wait = false;
-                player.sendMessage("TELEPORTED CORRECTLY");
             });
             return;
         } else {
