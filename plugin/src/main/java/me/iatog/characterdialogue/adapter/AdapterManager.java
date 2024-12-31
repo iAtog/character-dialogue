@@ -103,8 +103,6 @@ public class AdapterManager {
                 }
             }
 
-            player.sendMessage(TextUtils.colorize("&aFinal result: " + (result ? "cancelled" : "not cancelled")));
-
             return result;
         }
 
