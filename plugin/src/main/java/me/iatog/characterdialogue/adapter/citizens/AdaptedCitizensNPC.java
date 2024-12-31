@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -79,6 +80,11 @@ public class AdaptedCitizensNPC implements AdaptedNPC {
     }
 
     @Override
+    public void sneak(Player player, boolean sneaking) {
+        npc.setSneaking(sneaking);
+    }
+
+    @Override
     public void follow(Player player) {
         FollowPlayerTrait trait = npc.getOrAddTrait(FollowPlayerTrait.class);
         trait.setTarget(player);
@@ -95,7 +101,7 @@ public class AdaptedCitizensNPC implements AdaptedNPC {
     }
 
     @Override
-    public void followPath(List<RecordLocation> locations) {
+    public void followPath(List<RecordLocation> locations, @Nullable Player viewer) {
         PathTrait trait = npc.getOrAddTrait(PathTrait.class);
         trait.setPaths(locations);
     }

@@ -187,7 +187,7 @@ public class RecordCommand implements CommandClass {
 
         PathReplayer replay = new PathReplayer(record.locations(), npc);
         player.sendMessage(main.language(true, "command.record.replaying", npc.getName()));
-        replay.startReplay();
+        replay.startReplay(player);
     }
 
     private boolean isPresent(Player player) {

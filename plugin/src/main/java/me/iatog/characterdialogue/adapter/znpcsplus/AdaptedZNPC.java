@@ -19,6 +19,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -125,6 +126,16 @@ public class AdaptedZNPC implements AdaptedNPC {
         setProperty(npc, property, i);
     }
 
+    @Override
+    public void sneak(Player player, boolean sneaking) {
+        EntityProperty<?> property = NpcApiProvider.get().getPropertyRegistry().getByName("pose");
+        if(sneaking) {
+            setProperty(npc, property, "CROUCHING");
+        } else {
+            npc.getNpc().getAppliedProperties().remove(property);
+        }
+    }
+
     public String propertyToEquipmentType(EquipmentType type) {
         switch(type) {
             case HEAD -> {
@@ -167,12 +178,12 @@ public class AdaptedZNPC implements AdaptedNPC {
     }
 
     @Override
-    public void followPath(final List<RecordLocation> locations) {
+    public void followPath(final List<RecordLocation> locations, @Nullable Player viewer) {
         if(task != null) {
             task.cancel();
         }
 
-        this.task = new PathRunnable(locations, this)
+        this.task = new PathRunnable(locations, this, viewer)
               .runTaskTimer(CharacterDialoguePlugin.getInstance(), 0, 1);
     }
 

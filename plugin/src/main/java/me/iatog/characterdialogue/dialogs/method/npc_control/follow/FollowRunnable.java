@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -18,6 +19,8 @@ public class FollowRunnable extends BukkitRunnable {
     private final UUID playerId;
     private final UUID entityId;
     private final AdaptedNPC npc;
+
+    private boolean wait;
 
     public FollowRunnable(Entity entity, Player player, FollowingNPC followingNPC, AdaptedNPC npc) {
         this.playerId = player.getUniqueId();
@@ -41,16 +44,27 @@ public class FollowRunnable extends BukkitRunnable {
             return;
         }
 
+        if(wait) {
+            return;
+        }
+
         double distance = mob.getLocation().distance(player.getLocation());
 
         if(distance >= 3 && distance <= 30) {
             mob.getPathfinder().moveTo(player.getLocation());
         } else if(distance > 30) {
+            mob.getPathfinder().stopPathfinding();
+            wait = true;
             Location behind = behind(player.getLocation());
-            mob.teleportAsync(behind);
-            npc.teleport(behind);
+
+            entity.teleportAsync(behind, PlayerTeleportEvent.TeleportCause.PLUGIN).thenRunAsync(() -> {
+                npc.teleport(behind);
+                wait = false;
+                player.sendMessage("TELEPORTED CORRECTLY");
+            });
             return;
         } else {
+            mob.lookAt(player);
             mob.getPathfinder().stopPathfinding();
         }
 
@@ -61,7 +75,7 @@ public class FollowRunnable extends BukkitRunnable {
         Location nLoc = npc.getStoredLocation();
 
         Vector swap = playerLoc.toVector().subtract(nLoc.toVector()).normalize();
-        Location behind = playerLoc.clone().add(swap);
+        Location behind = playerLoc.add(swap);
         behind.setY(playerLoc.getY());
 
         return behind;

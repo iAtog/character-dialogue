@@ -5,6 +5,7 @@ import me.iatog.characterdialogue.path.RecordLocation;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -23,9 +24,10 @@ public interface AdaptedNPC {
     void faceLocation(Player player);
     void equip(Player player, EquipmentType type, ItemStack item);
 
+    void sneak(Player player, boolean sneaking);
     void follow(Player player);
     void unfollow(Player player);
-    void followPath(List<RecordLocation> locations);
+    void followPath(List<RecordLocation> locations, @Nullable Player viewer);
     void show(Player player);
     void hide(Player player);
     void hideForAll();

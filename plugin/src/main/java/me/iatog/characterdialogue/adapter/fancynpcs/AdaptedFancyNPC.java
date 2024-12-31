@@ -2,6 +2,7 @@ package me.iatog.characterdialogue.adapter.fancynpcs;
 
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
+import de.oliver.fancynpcs.api.NpcAttribute;
 import de.oliver.fancynpcs.api.NpcData;
 import de.oliver.fancynpcs.api.utils.NpcEquipmentSlot;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
@@ -17,6 +18,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -102,6 +104,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
     @Override
     public void faceLocation(Player player) {
         npc.lookAt(player, player.getLocation());
+        npc.update(player);
     }
 
     @Override
@@ -112,6 +115,19 @@ public class AdaptedFancyNPC implements AdaptedNPC {
             return;
         }
         npc.getData().addEquipment(slot, item);
+        npc.update(player);
+    }
+
+    @Override
+    public void sneak(Player player, boolean sneaking) {
+        NpcAttribute poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, "pose");
+
+        if(sneaking) {
+            npc.getData().addAttribute(poseAttr, "CROUCHING");
+        } else {
+            npc.getData().getAttributes().remove(poseAttr);
+        }
+
         npc.update(player);
     }
 
@@ -160,12 +176,12 @@ public class AdaptedFancyNPC implements AdaptedNPC {
     }
 
     @Override
-    public void followPath(List<RecordLocation> locations) {
+    public void followPath(List<RecordLocation> locations, @Nullable Player viewer) {
         if(task != null) {
             task.cancel();
         }
 
-        this.task = new PathRunnable(locations, this)
+        this.task = new PathRunnable(locations, this, viewer)
               .runTaskTimer(CharacterDialoguePlugin.getInstance(), 0, 1);
     }
 

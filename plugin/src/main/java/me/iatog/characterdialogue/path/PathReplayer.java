@@ -1,6 +1,8 @@
 package me.iatog.characterdialogue.path;
 
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -14,8 +16,8 @@ public class PathReplayer {
         this.npc = npc;
     }
 
-    public void startReplay() {
+    public void startReplay(@Nullable Player viewer) {
         npc.teleport(paths.getFirst().toLocation());
-        npc.followPath(paths);
+        npc.followPath(paths, viewer);
     }
 }

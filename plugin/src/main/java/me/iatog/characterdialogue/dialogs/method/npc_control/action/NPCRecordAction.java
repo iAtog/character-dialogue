@@ -35,7 +35,7 @@ public class NPCRecordAction implements NPCControlAction {
         if(data != null) {
             data.getCopy().unfollow(ctx.player());
             PathReplayer replayer = new PathReplayer(locations, data.getCopy());
-            replayer.startReplay();
+            replayer.startReplay(ctx.player());
         } else {
             ctx.plugin().getLogger().warning("An attempt was made to play a recording but the cloned npc was not found.");
         }
