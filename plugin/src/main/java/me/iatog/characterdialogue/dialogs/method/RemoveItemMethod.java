@@ -6,6 +6,7 @@ import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.MethodConfiguration;
 import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.libraries.ItemManager;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class RemoveItemMethod extends DialogMethod<CharacterDialoguePlugin> {
@@ -24,14 +25,33 @@ public class RemoveItemMethod extends DialogMethod<CharacterDialoguePlugin> {
         String itemId = configuration.getString("item");
         int amount = configuration.getInteger("amount", 1);
 
-        if(!configuration.contains("item") || itemId == null || !manager.existsItem(itemId)) {
+        if (!configuration.contains("item") || itemId == null || !manager.existsItem(itemId)) {
             getProvider().getLogger().severe("No item found/specified in remove_item method.");
         } else {
-            ItemStack itemStack = manager.getItem(itemId).clone();
-            itemStack.setAmount(amount <= 0 ? 1 : amount);
-            context.getPlayer().getInventory().remove(itemStack);
+            ItemStack itemStack = manager.getItem(itemId);
+            removeItems(context.getPlayer(), itemStack, amount);
         }
 
         context.next();
+    }
+
+    private void removeItems(Player player, ItemStack itemStack, int amount) {
+        int remaining = amount;
+        ItemStack[] contents = player.getInventory().getContents();
+
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+            if (item != null && item.isSimilar(itemStack)) {
+                int itemAmount = item.getAmount();
+                if (itemAmount > remaining) {
+                    item.setAmount(itemAmount - remaining);
+                    remaining = 0;
+                    break;
+                } else {
+                    remaining -= itemAmount;
+                    player.getInventory().setItem(i, null);
+                }
+            }
+        }
     }
 }
