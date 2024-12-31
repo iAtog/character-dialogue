@@ -8,6 +8,7 @@ import me.iatog.characterdialogue.libraries.HologramLibrary;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,13 +23,13 @@ public interface CharacterDialogueAPI {
 
     void loadHologram(String npcId);
 
-    boolean readDialogBy(Player player, String dialog) throws IOException;
+    boolean readDialogBy(Player player, String dialog, boolean firstInteraction);
 
-    boolean wasReadedBy(Player player, String dialog);
+    boolean wasReadedBy(Player player, String dialog, boolean firstInteraction);
 
-    boolean readDialogBy(Player player, Dialogue dialog);
+    boolean readDialogBy(Player player, Dialogue dialog, boolean firstInteraction);
 
-    boolean wasReadedBy(Player player, Dialogue dialog);
+    boolean wasReadedBy(Player player, Dialogue dialog, boolean firstInteraction);
 
     void runDialogue(Player player, Dialogue dialogue, boolean debugMode, AdaptedNPC npc);
 
@@ -52,11 +53,17 @@ public interface CharacterDialogueAPI {
 
     int getBukkitVersion();
 
-    boolean enableMovement(Player player);
+    void enableMovement(Player player);
 
-    boolean disableMovement(Player player);
+    void disableMovement(Player player);
 
     boolean canEnableMovement(Player player);
+
+    void saveDialogue(Player player, String name, boolean firstInteraction);
+
+    default void saveDialogue(@NotNull Player player, @NotNull Dialogue dialogue, boolean firstInteraction) {
+        saveDialogue(player, dialogue.getName(), firstInteraction);
+    }
 
     Pattern getLineRegex();
 

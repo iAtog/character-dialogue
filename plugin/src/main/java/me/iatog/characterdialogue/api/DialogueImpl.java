@@ -28,6 +28,7 @@ public class DialogueImpl implements Dialogue {
     private boolean movement;
     private boolean slowEffect;
     private boolean persistent;
+    private boolean log;
 
     private CharacterDialoguePlugin main;
 
@@ -69,6 +70,7 @@ public class DialogueImpl implements Dialogue {
 
         this.movement = section.getBoolean("allow-movement", true);
         this.slowEffect = section.getBoolean("slow-effect", true);
+        this.log = section.getBoolean("save-in-player", true);
 
         this.main = instance;
     }
@@ -132,14 +134,7 @@ public class DialogueImpl implements Dialogue {
     @Override
     public boolean startFirstInteraction(Player player, boolean log, AdaptedNPC npc) {
         if (log) {
-            PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
-            List<String> readedDialogues = data.getReadedDialogs();
-
-            if (readedDialogues.contains(getName())) {
-                return false;
-            }
-
-            readedDialogues.add(getName());
+            main.getApi().saveDialogue(player, this, true);
         }
 
         main.getApi().runDialogueExpressions(player, firstInteraction, displayName, this.dialogName);
@@ -168,5 +163,10 @@ public class DialogueImpl implements Dialogue {
 
     public boolean isSlowEffectEnabled() {
         return this.slowEffect;
+    }
+
+    @Override
+    public boolean saveInPlayer() {
+        return log;
     }
 }

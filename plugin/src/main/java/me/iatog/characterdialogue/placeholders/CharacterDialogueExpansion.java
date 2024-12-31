@@ -6,6 +6,8 @@ import me.iatog.characterdialogue.player.PlayerData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class CharacterDialogueExpansion extends PlaceholderExpansion {
 
     private final CharacterDialoguePlugin main;
@@ -34,19 +36,35 @@ public class CharacterDialogueExpansion extends PlaceholderExpansion {
         return true;
     }
 
+    /*
+     * %characterdialogue_readed:<dialogueName>%
+     * %characterdialogue_readedFirstInteraction:<dialogueName>%
+     *
+     * %characterdialogue_readed_size:<finished/firstInteractions>%
+     * %characterdialogue_readed_size:finished%
+     */
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
-        /*
-         * %characterdialogue_readed_<dialogueName>%
-         */
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
-        if(params.startsWith("readed")) {
-            PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
-
-            if(params.split("_").length != 2)
+        if(params.startsWith("readed") || params.startsWith("readedFirstInteraction")) {
+            if(params.split(":").length != 2)
                 return "undefined";
+            String name = params.split(":")[1];
 
-            return data.getReadedDialogs().contains(params.split("_")[1]) ? "yes" : "no";
+            return main.getApi().wasReadedBy(player, name, params.startsWith("readedFirstInteraction")) ? "yes" : "no";
+        } else if(params.startsWith("readed_size")) {
+            if(params.split("_").length != 2)
+                return "0";
+            List<String> list = null;
+
+            if(params.split(":")[1].equals("finished")) {
+                list = data.getFinishedDialogs();
+            } else {
+                list = data.getFirstInteractions();
+            }
+
+            return String.valueOf(list.size());
         }
 
         return null;

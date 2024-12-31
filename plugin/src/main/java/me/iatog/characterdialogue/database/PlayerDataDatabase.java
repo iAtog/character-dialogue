@@ -6,9 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class PlayerDataDatabase {
@@ -24,12 +22,13 @@ public class PlayerDataDatabase {
         createTable();
     }
 
-    private void createTable() {
+    private void createTable() { //finishedDialogs, firstInteractions
         try (Connection connection = DriverManager.getConnection(url);
              PreparedStatement statement = connection.prepareStatement(
                    "CREATE TABLE IF NOT EXISTS players ("+
                    "`uuid` TEXT NOT NULL PRIMARY KEY, " +
-                   "`readedDialogs` TEXT NOT NULL, " +
+                   "`finishedDialogs` TEXT NOT NULL, " +
+                   "`firstInteractions` TEXT NOT NULL, " +
                    "`removeEffect` BOOLEAN, " +
                    "`lastSpeed` FLOAT(8,2))")) {
             statement.executeUpdate();
@@ -46,8 +45,10 @@ public class PlayerDataDatabase {
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < list.size(); i++) {
-            builder.append(list.get(i));
-            if (i < list.size() - 1) {
+            String value = list.get(i);
+            if(value.trim().isEmpty()) continue;
+            builder.append(value);
+            if (i < (list.size() - 1)) {
                 builder.append(',');
             }
         }
@@ -55,17 +56,21 @@ public class PlayerDataDatabase {
         return builder.toString();
     }
 
-    public void save(Player player, List<String> readedDialogs, boolean removeEffect, double lastSpeed) {
+    public void save(Player player, List<String> finishedDialogs, List<String> firstInteractions, boolean removeEffect, double lastSpeed) {
         try (Connection connection = DriverManager.getConnection(url);
              PreparedStatement statement = connection.prepareStatement(
-                   "REPLACE INTO players (uuid, readedDialogs, removeEffect, lastSpeed) VALUES (?, ?, ?, ?)")
+                   "REPLACE INTO players " +
+                         "(uuid, finishedDialogs, firstInteractions, removeEffect, lastSpeed) " +
+                         "VALUES (?, ?, ?, ?, ?)")
         ) {
-            String parsedList = listToString(readedDialogs);
+            String finished = listToString(finishedDialogs);
+            String first = listToString(firstInteractions);
 
             statement.setString(1, player.getUniqueId().toString());
-            statement.setString(2, parsedList);
-            statement.setBoolean(3, removeEffect);
-            statement.setDouble(4, lastSpeed);
+            statement.setString(2, finished);
+            statement.setString(3, first);
+            statement.setBoolean(4, removeEffect);
+            statement.setDouble(5, lastSpeed);
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -76,7 +81,7 @@ public class PlayerDataDatabase {
     }
 
     public void save(PlayerData playerData) {
-        save(playerData.getPlayer(), playerData.getReadedDialogs(), playerData.getRemoveEffect(), playerData.getLastSpeed());
+        save(playerData.getPlayer(), playerData.getFinishedDialogs(), playerData.getFirstInteractions(), playerData.getRemoveEffect(), playerData.getLastSpeed());
     }
 
     public PlayerData get(Player player) {
@@ -88,12 +93,14 @@ public class PlayerDataDatabase {
 
             try (ResultSet result = statement.executeQuery()) {
                 if(result.next()) {
-                    String[] readedDialogsString = result.getString("readedDialogs").split(",");
-                    List<String> readed = Arrays.asList(readedDialogsString);
+                    String[] finished = result.getString("finishedDialogs").split(",");
+                    String[] firstInteractions = result.getString("firstInteractions").split(",");
+                    List<String> finishedList = new ArrayList<>(Arrays.asList(finished));
+                    List<String> firstInteractionsList = new ArrayList<>(Arrays.asList(firstInteractions));
                     boolean removeEffect = result.getBoolean("removeEffect");
                     float lastSpeed = result.getFloat("lastSpeed");
 
-                    return new PlayerData(uuid, readed, removeEffect, lastSpeed);
+                    return new PlayerData(uuid, finishedList, firstInteractionsList, removeEffect, lastSpeed);
                 }
             }
         } catch (SQLException e) {
@@ -103,6 +110,17 @@ public class PlayerDataDatabase {
 
         return null;
     }
+
+    public void saveAll() {
+        Map<UUID, PlayerData> players = main.getCache().getPlayerData();
+
+        for(PlayerData data : players.values()) {
+            PlayerDataDatabase database = main.getServices().getPlayerDataDatabase();
+
+            database.save(data);
+        }
+    }
+
 
 
 }

@@ -91,7 +91,13 @@ public class PlayerJoinListener implements Listener {
         PlayerData data = database.get(player);
 
         if(data == null) {
-            data = new PlayerData(player.getUniqueId(), new ArrayList<>(), false, player.getWalkSpeed());
+            data = new PlayerData(
+                  player.getUniqueId(),
+                  new ArrayList<>(),
+                  new ArrayList<>(),
+                  false,
+                  player.getWalkSpeed()
+            );
         }
 
         main.getCache().getPlayerData().put(player.getUniqueId(), data);

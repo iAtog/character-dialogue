@@ -44,6 +44,6 @@ public class CitizensListener implements Listener {
         NPCAdapter<NPC> adapter = main.getAdapter();
         AdapterManager manager = main.getAdapterManager();
 
-        manager.handleSpawnEvent(adapter.adapt(event.getNPC()), event.getLocation());
+        manager.handleSpawnEvent(adapter.adapt(event.getNPC()), event.getLocation(), null);
     }
 }

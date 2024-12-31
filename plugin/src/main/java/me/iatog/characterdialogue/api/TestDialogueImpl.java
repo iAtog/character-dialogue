@@ -91,4 +91,9 @@ public class TestDialogueImpl implements Dialogue {
     public boolean isSlowEffectEnabled() {
         return false;
     }
+
+    @Override
+    public boolean saveInPlayer() {
+        return false;
+    }
 }

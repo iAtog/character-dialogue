@@ -6,7 +6,6 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.annotated.annotation.Usage;
-import me.fixeddev.commandflow.bukkit.BukkitCommandManager;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
@@ -14,10 +13,10 @@ import me.iatog.characterdialogue.api.DialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.libraries.Cache;
-import me.iatog.characterdialogue.loader.CommandLoader;
+import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
-import net.kyori.adventure.text.TextComponent;
+import org.apache.logging.log4j.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 
@@ -117,6 +116,20 @@ public class CharacterDialogueCommand implements CommandClass {
 
         sender.sendMessage(main.language(true, "loaded-dialogues", cache.getDialogues().size()));
         sender.sendMessage(main.language(true, "command.reload.success"));
+    }
+
+    @Command(
+          names = "player-data"
+    )
+    public void viewData(@Sender CommandSender sender, Player player) {
+        if(player == null) {
+            return;
+        }
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
+
+        sender.sendMessage(colorize("&cDialogues&8: &7" + Strings.join(data.getFinishedDialogs(), ',')));
+        sender.sendMessage(colorize("&cFirst interactions&8: &7" + Strings.join(data.getFirstInteractions(), ',')));
+
     }
 
     @Usage("<player>")

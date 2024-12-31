@@ -9,14 +9,16 @@ import java.util.UUID;
 public class PlayerData {
 
     private final UUID uuid;
-    private final List<String> readedDialogs;
+    private final List<String> finishedDialogs;
+    private final List<String> firstInteractions;
 
     private boolean removeEffect;
     private float lastSpeed;
 
-    public PlayerData(UUID uuid, List<String> readedDialogs, boolean removeEffect, float lastSpeed) {
+    public PlayerData(UUID uuid, List<String> finishedDialogs, List<String> firstInteractions, boolean removeEffect, float lastSpeed) {
         this.uuid = uuid;
-        this.readedDialogs = readedDialogs;
+        this.finishedDialogs = finishedDialogs;
+        this.firstInteractions = firstInteractions;
         this.removeEffect = removeEffect;
         this.lastSpeed = lastSpeed;
     }
@@ -45,8 +47,12 @@ public class PlayerData {
         this.lastSpeed = speed;
     }
 
-    public List<String> getReadedDialogs() {
-        return readedDialogs;
+    public List<String> getFinishedDialogs() {
+        return finishedDialogs;
+    }
+
+    public List<String> getFirstInteractions() {
+        return firstInteractions;
     }
 
 }

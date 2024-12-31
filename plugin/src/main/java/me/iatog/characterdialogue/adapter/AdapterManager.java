@@ -1,15 +1,20 @@
 package me.iatog.characterdialogue.adapter;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import me.iatog.characterdialogue.adapter.citizens.CitizensAdapter;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.fancynpcs.FancyNPCsAdapter;
 import me.iatog.characterdialogue.adapter.znpcsplus.ZNPCsAdapter;
 import me.iatog.characterdialogue.api.events.AdapterNPCInteractEvent;
 import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
+import me.iatog.characterdialogue.dialogs.method.conditional.ConditionalMethod;
 import me.iatog.characterdialogue.enums.ClickType;
+import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class AdapterManager {
 
@@ -52,15 +57,67 @@ public class AdapterManager {
         });
     }
 
-    public void handleSpawnEvent(AdaptedNPC npc, Location location) {
+    public void handleSpawnEvent(AdaptedNPC npc, Location location, Player player) {
         Bukkit.getScheduler().runTask(main, () -> {
             AdapterNPCSpawnEvent spawnEvent = new AdapterNPCSpawnEvent(
                   npc,
-                  location
+                  location,
+                  player
             );
 
             Bukkit.getPluginManager().callEvent(spawnEvent);
         });
+    }
+
+    public boolean handleHideNPCs(AdaptedNPC npc, Player player) {
+        YamlDocument config = main.getFileFactory().getConfig();
+        String route = "hidden-npcs." + npc.getId();
+              String path = route + ".conditions";
+
+        if(player == null || !config.contains(path)) {
+            return false;
+        }
+        String typeName = config.getString(route + ".type", "all");
+
+        if(!typeName.equalsIgnoreCase("all") && !typeName.equalsIgnoreCase("one")) {
+            return false;
+        }
+
+        ConditionType type = ConditionType.valueOf(typeName.toUpperCase());
+
+        List<String> conditions = config.getStringList(path);
+
+        if(!conditions.isEmpty()) {
+            ConditionalMethod conditionalMethod = getMethod("conditional");
+
+            boolean result = false;
+
+            for(String condition : conditions) {
+                if(conditionalMethod.evaluateCondition(player, condition)) {
+                    result = true;
+                } else {
+                    if(type == ConditionType.ALL) {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+
+            player.sendMessage(TextUtils.colorize("&aFinal result: " + (result ? "cancelled" : "not cancelled")));
+
+            return result;
+        }
+
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getMethod(String method) {
+        return (T) main.getCache().getMethods().get(method);
+    }
+
+    static enum ConditionType {
+        ALL, ONE
     }
 
 }

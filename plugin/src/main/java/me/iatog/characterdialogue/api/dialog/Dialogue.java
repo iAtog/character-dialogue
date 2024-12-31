@@ -34,6 +34,7 @@ public interface Dialogue {
         return getDocument().getSection("dialogue." + getName());
     }
     boolean isSlowEffectEnabled();
+    boolean saveInPlayer();
 
     class DialoguePermission {
 

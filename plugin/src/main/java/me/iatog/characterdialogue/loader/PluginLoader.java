@@ -47,6 +47,8 @@ public class PluginLoader implements Loader {
             npcs.clearAll();
         });
 
+        main.getServices().getPlayerDataDatabase().saveAll();
+
         main.getServices().getFollowingNPC().removeAll();
     }
 

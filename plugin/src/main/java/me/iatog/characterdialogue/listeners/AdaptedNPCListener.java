@@ -1,11 +1,14 @@
 package me.iatog.characterdialogue.listeners;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.CharacterDialogueAPI;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.api.events.AdapterNPCInteractEvent;
 import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
+import me.iatog.characterdialogue.dialogs.DialogMethod;
+import me.iatog.characterdialogue.dialogs.method.conditional.ConditionalMethod;
 import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.util.TextUtils;
@@ -13,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.metadata.FixedMetadataValue;
+
+import java.util.List;
 
 public class AdaptedNPCListener implements Listener {
 
@@ -69,7 +74,7 @@ public class AdaptedNPCListener implements Listener {
             }
         }
 
-        if (dialogue.isFirstInteractionEnabled() && ! api.wasReadedBy(player, dialogue)) {
+        if (dialogue.isFirstInteractionEnabled() && !api.wasReadedBy(player, dialogue, true)) {
             dialogue.startFirstInteraction(player, true, npc);
             return;
         }
@@ -87,6 +92,45 @@ public class AdaptedNPCListener implements Listener {
         if (api.getNPCDialogue(id) != null) {
             api.loadHologram(id);
         }
+    }
+
+    //@EventHandler
+    public void hideNPCs(AdapterNPCSpawnEvent event) {
+        AdaptedNPC npc = event.getNPC();
+        Player player = event.getPlayer();
+        YamlDocument config = main.getFileFactory().getConfig();
+        String path = "hidden-npcs." + npc.getId() + ".conditions";
+
+        if(player == null || !config.contains(path)) {
+            return;
+        }
+
+        List<String> conditions = config.getStringList(path);
+
+        if(!conditions.isEmpty()) {
+            ConditionalMethod conditionalMethod = getMethod("conditional");
+
+            boolean result = false;
+
+            for(String condition : conditions) {
+                if(conditionalMethod.evaluateCondition(player, condition)) {
+                    result = true;
+                } else {
+                    result = false;
+                    break;
+                }
+            }
+
+
+
+            event.setCancelled(result);
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getMethod(String method) {
+        return (T) main.getCache().getMethods().get(method);
     }
 
 }

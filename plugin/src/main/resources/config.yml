@@ -1,9 +1,20 @@
-file-version: 2
+file-version: 3
 placeholders:
   npc: '&e[NPC] &c%npc_name%&f:'
   user: '&e[YOU] &b%player_name%&f:'
 npc:
   '9999': choice-sample
+# If all conditions returns "TRUE" the npc will be hided to the player
+hidden-npcs:
+  myNpc:
+    type: "one"
+    conditions:
+      - "%characterdialogue_readed_dialogueName% == yes"
+  otherNpc:
+    type: "all"
+    conditions:
+      - "%characterdialogue_readed_dialogueName% == no"
+      - "%characterdialogue_readed_otherDialogue% == yes"
 use-actionbar: false
 choice:
   text-model: '&c{I}&7)&e {S}'

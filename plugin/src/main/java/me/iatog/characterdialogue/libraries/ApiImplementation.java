@@ -109,29 +109,45 @@ public class ApiImplementation implements CharacterDialogueAPI {
     }
 
     @Override
-    public boolean readDialogBy(Player player, String dialog) {
+    public boolean readDialogBy(Player player, String dialog, boolean firstInteraction) {
         PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
         if(data == null) {
             return false;
         }
 
-        if(!wasReadedBy(player, dialog)) {
-            data.getReadedDialogs().add(dialog);
+        if(!wasReadedBy(player, dialog, firstInteraction)) {
+            List<String> list = null;
+
+            if(firstInteraction) {
+                list = data.getFirstInteractions();
+            } else {
+                list = data.getFinishedDialogs();
+            }
+
+            list.add(dialog);
         }
 
         return true;
     }
 
     @Override
-    public boolean wasReadedBy(Player player, String dialog) {
+    public boolean wasReadedBy(Player player, String dialog, boolean firstInteraction) {
         PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
         if(data == null) {
             return false;
         }
 
-        return data.getReadedDialogs().contains(dialog);
+        List<String> list = null;
+
+        if(firstInteraction) {
+            list = data.getFirstInteractions();
+        } else {
+            list = data.getFinishedDialogs();
+        }
+
+        return list.contains(dialog);
     }
 
     @Override
@@ -146,13 +162,13 @@ public class ApiImplementation implements CharacterDialogueAPI {
     }
 
     @Override
-    public boolean readDialogBy(Player player, Dialogue dialog) {
-        return readDialogBy(player, dialog.getName());
+    public boolean readDialogBy(Player player, Dialogue dialog, boolean firstInteraction) {
+        return readDialogBy(player, dialog.getName(), firstInteraction);
     }
 
     @Override
-    public boolean wasReadedBy(Player player, Dialogue dialog) {
-        return wasReadedBy(player, dialog.getName());
+    public boolean wasReadedBy(Player player, Dialogue dialog, boolean firstInteraction) {
+        return wasReadedBy(player, dialog.getName(), firstInteraction);
     }
 
     @Override
@@ -163,7 +179,8 @@ public class ApiImplementation implements CharacterDialogueAPI {
 
         DialogSession session = new DialogSession(main, player, dialogue, npc);
         session.setDebugMode(debugMode);
-        if (! dialogue.isMovementAllowed()) {
+
+        if (!dialogue.isMovementAllowed()) {
             disableMovement(player);
         }
 
@@ -293,11 +310,11 @@ public class ApiImplementation implements CharacterDialogueAPI {
     }
 
     @Override
-    public boolean enableMovement(Player player) {
+    public void enableMovement(Player player) {
         PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
         if(data == null || !data.getRemoveEffect()) {
-            return false;
+            return;
         }
 
         float speed = (float) data.getLastSpeed();
@@ -307,15 +324,14 @@ public class ApiImplementation implements CharacterDialogueAPI {
 
         data.setRemoveEffect(false);
 
-        return true;
     }
 
     @Override
-    public boolean disableMovement(Player player) {
+    public void disableMovement(Player player) {
         PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
         if(data == null) {
-            return false;
+            return;
         }
 
         data.setRemoveEffect(true);
@@ -325,7 +341,6 @@ public class ApiImplementation implements CharacterDialogueAPI {
         player.setWalkSpeed(0);
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128));
 
-        return true;
     }
 
     @Override
@@ -337,6 +352,24 @@ public class ApiImplementation implements CharacterDialogueAPI {
         }
 
         return data.getRemoveEffect();
+    }
+
+    @Override
+    public void saveDialogue(Player player, String name, boolean firstInteraction) {
+        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
+        List<String> list = null;
+
+        if(firstInteraction) {
+            list = data.getFirstInteractions();
+        } else {
+            list = data.getFinishedDialogs();
+        }
+
+        if (list.contains(name)) {
+            return;
+        }
+
+        list.add(name);
     }
 
     @Override

@@ -7,6 +7,7 @@ import me.iatog.characterdialogue.api.events.DialogueFinishEvent;
 import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.enums.CompletedType;
 import me.iatog.characterdialogue.api.interfaces.Session;
+import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
 import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Bukkit;
@@ -61,9 +62,21 @@ public class DialogSession implements Session {
         this.dialogue = dialogue;
     }
 
+    public void saveFinished() {
+        PlayerData data = main.getCache().getPlayerData().get(uuid);
+
+        if(this.dialogue != null) {
+            data.getFinishedDialogs().add(this.dialogue.getName());
+        }
+    }
+
     public void start(int index) {
         if (lines.isEmpty() || index >= lines.size() || getPlayer() == null) {
             this.destroy();
+
+            if(getPlayer() != null && dialogue != null && dialogue.saveInPlayer()) {
+                saveFinished();
+            }
             return;
         }
 
@@ -82,6 +95,10 @@ public class DialogSession implements Session {
                 destroy();
                 if (main.getApi().canEnableMovement(getPlayer())) {
                     main.getApi().enableMovement(getPlayer());
+                }
+
+                if(dialogue != null && dialogue.saveInPlayer()) {
+                    saveFinished();
                 }
                 return;
             }

@@ -8,11 +8,14 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.adapter.AdapterManager;
 import me.iatog.characterdialogue.adapter.NPCAdapter;
+import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
 import me.iatog.characterdialogue.dialogs.method.npc_control.ControlRegistry;
 import me.iatog.characterdialogue.dialogs.method.npc_control.NPCControlMethod;
 import me.iatog.characterdialogue.enums.ClickType;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.Map;
@@ -62,6 +65,16 @@ public class FancyNPCSListener implements Listener {
                   registry.get(name).isHideOriginal() && registry.get(name).getOriginal().getId().equalsIgnoreCase(name)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void handleSpawn(NpcSpawnEvent event) {
+        AdaptedNPC npc = main.getAdapter().adapt(event.getNpc());
+        boolean result = main.getAdapterManager().handleHideNPCs(npc, event.getPlayer());
+
+        if(result) {
+            event.setCancelled(true);
         }
     }
 
