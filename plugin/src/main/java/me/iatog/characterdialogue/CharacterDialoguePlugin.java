@@ -11,6 +11,7 @@ import me.iatog.characterdialogue.api.interfaces.FileFactory;
 import me.iatog.characterdialogue.libraries.ApiImplementation;
 import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.libraries.Services;
+import me.iatog.characterdialogue.libraries.UpdateChecker;
 import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
 import me.iatog.characterdialogue.placeholders.CharacterDialogueExpansion;
@@ -24,10 +25,7 @@ import org.bukkit.plugin.messaging.Messenger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
@@ -45,7 +43,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private List<YamlDocument> dialogues;
     private PathStorage pathStorage;
     private AdapterManager adapterManager;
-
     private Services services;
 
     /**
@@ -80,7 +77,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         }
 
         Messenger messenger = getServer().getMessenger();
-        if (! messenger.isOutgoingChannelRegistered(this, defaultChannel)) {
+        if (!messenger.isOutgoingChannelRegistered(this, defaultChannel)) {
             messenger.registerOutgoingPluginChannel(this, defaultChannel);
         }
 

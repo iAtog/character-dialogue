@@ -12,7 +12,6 @@ import java.util.*;
 public class PluginLoader implements Loader {
 
     private final CharacterDialoguePlugin main;
-    //private final List<Loader> loaders;
     private final Map<Class<? extends Loader>, Loader> loaders;
 
     public PluginLoader(CharacterDialoguePlugin main) {
@@ -31,7 +30,8 @@ public class PluginLoader implements Loader {
               new CommandLoader(main),
               new DialogLoader(main),
               new GUILoader(main),
-              new AdapterLoader(main)
+              new AdapterLoader(main),
+              new UpdateLoader(main)
         );
 
         main.getLogger().info(TextUtils.colorize("&a" + main.getDescription().getName() + " enabled. &7" + main.getDescription().getVersion()));
