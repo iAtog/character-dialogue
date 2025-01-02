@@ -50,10 +50,13 @@ public class MethodCommands extends CSubCommand implements CommandClass {
     @Command(names = "list")
     public void list(@Sender CommandSender sender) {
         sender.sendMessage(main.language("command.method.list-title"));
+
         main.getCache().getMethods().forEach((id, method) -> {
             String description = method.getDescription();
-            String line = main.language("command.method.list-line", id.toLowerCase(), description);
+            String line = main.language("command.method.list-line", id.toLowerCase());
+            sender.sendMessage(colorize("&7"));
             sender.sendMessage(line);
+            sender.sendMessage(colorize(description));
         });
     }
 
