@@ -127,8 +127,6 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         } else {
             npc.getData().getAttributes().remove(poseAttr);
         }
-
-        npc.update(player);
     }
 
     private NpcEquipmentSlot parseSlot(EquipmentType type) {

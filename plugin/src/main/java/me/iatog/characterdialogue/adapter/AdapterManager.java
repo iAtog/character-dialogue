@@ -7,9 +7,9 @@ import me.iatog.characterdialogue.adapter.fancynpcs.FancyNPCsAdapter;
 import me.iatog.characterdialogue.adapter.znpcsplus.ZNPCsAdapter;
 import me.iatog.characterdialogue.api.events.AdapterNPCInteractEvent;
 import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
+import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.method.conditional.ConditionalMethod;
 import me.iatog.characterdialogue.enums.ClickType;
-import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -83,20 +83,21 @@ public class AdapterManager {
             return false;
         }
 
-        ConditionType type = ConditionType.valueOf(typeName.toUpperCase());
-
         List<String> conditions = config.getStringList(path);
+        ConditionalMethod conditionalMethod = getMethod("conditional");
 
-        if(!conditions.isEmpty()) {
-            ConditionalMethod conditionalMethod = getMethod("conditional");
-
+        if(!conditions.isEmpty() && conditionalMethod != null) {
             boolean result = false;
 
             for(String condition : conditions) {
-                if(conditionalMethod.evaluateCondition(player, condition)) {
+                if(conditionalMethod.evaluateCondition(player, condition.trim())) {
                     result = true;
+
+                    if(typeName.equalsIgnoreCase("one")) {
+                        break;
+                    }
                 } else {
-                    if(type == ConditionType.ALL) {
+                    if(typeName.equalsIgnoreCase("all")) {
                         result = false;
                         break;
                     }
@@ -111,11 +112,8 @@ public class AdapterManager {
 
     @SuppressWarnings("unchecked")
     private <T> T getMethod(String method) {
-        return (T) main.getCache().getMethods().get(method);
+        DialogMethod<?> meth = main.getCache().getMethods().get(method);
+        if(meth == null) return null;
+        return (T) meth;
     }
-
-    static enum ConditionType {
-        ALL, ONE
-    }
-
 }
