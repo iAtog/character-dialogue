@@ -20,7 +20,7 @@ public class ListenerLoader implements Loader {
               new PlayerQuitListener(main),
               new PlayerMoveListener(main),
               new PlayerJoinListener(main),
-              new RecordListener(),
+              new RecordListener(main),
               new AdaptedNPCListener(main),
               new FollowListener()
         );

@@ -25,6 +25,7 @@ public abstract class CSubCommand {
 
     protected void mainCommandLogic(CharacterDialoguePlugin main, CommandSender sender) {
         String input = main.language("command-info");
+        sender.sendMessage(colorize("&7"));
         sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
 
         for(CommandInfo cmd : info) {

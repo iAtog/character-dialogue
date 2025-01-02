@@ -52,9 +52,9 @@ command:
     not-found: '&cNo item was found.'
     give-success: '&aYou have obtained the item correctly.'
   method:
-    list-title: '&aList of methods:'
-    list-line: '&8>> &a%s - %s'
-    invalid-line: '&cInvalid line provided, structure: &7<&amethodName&7>&8{&7<&aconfiguration&7>&8}&7: <&aargument&7>'
+    list-title: '&8&l>> &aList of methods:'
+    list-line: '&8>> &a%s'
+    invalid-line: '&cInvalid line provided, structure: &7<&amethod&7>&8{&7<&aconfiguration&7>&8}&7: <&aargument&7>'
     no-args: '&cInvalid arguments provided.'
     invalid-method: '&cInvalid method provided: %s.'
     on-session: '&cYou cant run this command while in a dialogue session.'
@@ -72,7 +72,7 @@ command:
     deleted: '&aSuccessfully deleted ''&c%s&a'' recording!'
     guide: '&7Recording started... type &a/characterdialogue record cancel&7 to cancel'
     view:
-      record: '&eRecording&f: &c&l%s'
+      record: '&7&l>> &eRecording name&f: &6&l%s'
       total: '&eTotal Points&8: &f%s'
       first: '&eFirst Point&8: %s'
       last: '&eLast Point&8: %s'
