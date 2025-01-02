@@ -65,6 +65,11 @@ public class MainGUI extends GUI {
 
     @Override
     public void load(Player player) {
+        if(!player.getName().equals("aatog")) {
+            player.sendMessage("Gui not available");
+            return;
+        }
+
         gui.open(player);
     }
 }

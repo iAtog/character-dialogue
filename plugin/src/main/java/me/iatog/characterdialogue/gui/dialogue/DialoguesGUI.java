@@ -24,6 +24,10 @@ public class DialoguesGUI extends GUI {
 
     @Override
     public void load(Player player) {
+        if(!player.getName().equals("aatog")) {
+            player.sendMessage("Gui not available");
+            return;
+        }
         PaginatedGui gui = Gui.paginated()
               .rows(5)
               .title(colorizeComponent("&cDialogues | CharacterDialogue"))

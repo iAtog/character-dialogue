@@ -36,6 +36,10 @@ public class DialogueEditSession extends GUI {
 
     // Main Dialogue gui
     public void load(Player player) {
+        if(!player.getName().equals("aatog")) {
+            player.sendMessage("Gui not available");
+            return;
+        }
         recreateGui();
         for(int i = 0; i < dialogue.getLines().size(); i++) {
             String line = dialogue.getLines().get(i);
