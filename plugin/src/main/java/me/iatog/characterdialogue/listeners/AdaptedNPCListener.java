@@ -94,43 +94,4 @@ public class AdaptedNPCListener implements Listener {
         }
     }
 
-    //@EventHandler
-    public void hideNPCs(AdapterNPCSpawnEvent event) {
-        AdaptedNPC npc = event.getNPC();
-        Player player = event.getPlayer();
-        YamlDocument config = main.getFileFactory().getConfig();
-        String path = "hidden-npcs." + npc.getId() + ".conditions";
-
-        if(player == null || !config.contains(path)) {
-            return;
-        }
-
-        List<String> conditions = config.getStringList(path);
-
-        if(!conditions.isEmpty()) {
-            ConditionalMethod conditionalMethod = getMethod("conditional");
-
-            boolean result = false;
-
-            for(String condition : conditions) {
-                if(conditionalMethod.evaluateCondition(player, condition)) {
-                    result = true;
-                } else {
-                    result = false;
-                    break;
-                }
-            }
-
-
-
-            event.setCancelled(result);
-        }
-
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T getMethod(String method) {
-        return (T) main.getCache().getMethods().get(method);
-    }
-
 }
