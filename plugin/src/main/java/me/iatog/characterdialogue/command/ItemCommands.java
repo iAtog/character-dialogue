@@ -6,8 +6,9 @@ import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.command.object.CSubCommand;
+import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.libraries.ItemManager;
-import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,39 +22,24 @@ import static me.iatog.characterdialogue.util.TextUtils.colorize;
 @Command(
       names = "item"
 )
-public class ItemCommands implements CommandClass {
+public class ItemCommands extends CSubCommand implements CommandClass {
 
     private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
-    private final List<CommandInfo> info;
 
     public ItemCommands() {
-        this.info = new ArrayList<>();
-        addCommands();
+        super();
     }
 
-    private void addCommands() {
+    public void addCommands() {
         addCommand("characterd item gui", "", "Open the items gui");
         addCommand("characterd item save", "<newName>", "Save the item in your main hand");
         addCommand("characterd item give", "<name>", "Get an item");
 
     }
 
-    private void addCommand(String name, String usage, String description) {
-        info.add(new CommandInfo(name, usage, description));
-    }
-
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        String input = main.language("command-info");
-        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
-
-        for(CommandInfo cmd : info) {
-            sender.sendMessage(
-                  input.replace("%command%", cmd.name())
-                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
-                        .replace("%description%", cmd.desc())
-            );
-        }
+        mainCommandLogic(main, sender);
     }
 
     @Command(

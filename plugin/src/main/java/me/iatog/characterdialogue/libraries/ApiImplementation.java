@@ -125,7 +125,9 @@ public class ApiImplementation implements CharacterDialogueAPI {
                 list = data.getFinishedDialogs();
             }
 
-            list.add(dialog);
+            if(!list.contains(dialog)) {
+                list.add(dialog);
+            }
         }
 
         return true;

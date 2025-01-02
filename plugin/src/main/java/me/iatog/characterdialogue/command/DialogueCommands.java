@@ -8,7 +8,8 @@ import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
-import me.iatog.characterdialogue.util.TextUtils;
+import me.iatog.characterdialogue.command.object.CSubCommand;
+import me.iatog.characterdialogue.command.object.CommandInfo;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,37 +21,22 @@ import static me.iatog.characterdialogue.util.TextUtils.colorize;
 @Command(names = "dialogue",
       desc = "Blah",
       permission = "characterdialogue.command.dialogue")
-public class DialogueCommands implements CommandClass {
+public class DialogueCommands extends CSubCommand implements CommandClass {
 
     private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
-    private final List<CommandInfo> info;
 
     public DialogueCommands() {
-        this.info = new ArrayList<>();
-        addCommands();
+        super();
     }
 
-    private void addCommands() {
+    public void addCommands() {
         addCommand("characterd dialogue start", "<dialogue> [player] [-debug]", "Start a dialogue");
         addCommand("characterd dialogue info", "<dialogue>", "See dialogue info");
     }
 
-    private void addCommand(String name, String usage, String description) {
-        info.add(new CommandInfo(name, usage, description));
-    }
-
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        String input = main.language("command-info");
-        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
-
-        for(CommandInfo cmd : info) {
-            sender.sendMessage(
-                  input.replace("%command%", cmd.name())
-                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
-                        .replace("%description%", cmd.desc())
-            );
-        }
+        mainCommandLogic(main, sender);
     }
 
     @Usage("<dialogue> [player] [-debug]")

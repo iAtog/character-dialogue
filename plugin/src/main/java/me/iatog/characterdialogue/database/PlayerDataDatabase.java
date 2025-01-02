@@ -2,6 +2,7 @@ package me.iatog.characterdialogue.database;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.player.PlayerData;
+import org.apache.logging.log4j.util.Strings;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -41,19 +42,10 @@ public class PlayerDataDatabase {
     // GET AND SET METHODS
     // DATA: uuid(text), readedDialogs(text), removeEffect(boolean), lastSpeed(double)
 
-    private String listToString(List<String> list) {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < list.size(); i++) {
-            String value = list.get(i);
-            if(value.trim().isEmpty()) continue;
-            builder.append(value);
-            if (i < (list.size() - 1)) {
-                builder.append(',');
-            }
-        }
-
-        return builder.toString();
+    private String listToString(List<String> list1) {
+        Set<String> set = new HashSet<>(list1);
+        List<String> list = new ArrayList<>(set);
+        return Strings.join(list, ',');
     }
 
     public void save(Player player, List<String> finishedDialogs, List<String> firstInteractions, boolean removeEffect, double lastSpeed) {

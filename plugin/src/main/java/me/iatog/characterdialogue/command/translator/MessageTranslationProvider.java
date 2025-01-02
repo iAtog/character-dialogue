@@ -15,9 +15,15 @@ public class MessageTranslationProvider implements TranslationProvider {
     @Override
     public String getTranslation(Namespace namespace, String key) {
         switch(key) {
-            case "sender.only-player" -> main.language("general.only-player");
-            case "player.offline" -> main.language("general.offline-player");
-            case "command.no-permission" -> main.language("general.no-permission");
+            case "sender.only-player" -> {
+                return main.language("general.only-player");
+            }
+            case "player.offline" -> {
+                return main.language("general.offline-player");
+            }
+            case "command.no-permission" -> {
+                return main.language("general.no-permission");
+            }
         }
 
         return "<null> : " + key;

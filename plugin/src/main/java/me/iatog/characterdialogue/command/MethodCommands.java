@@ -8,6 +8,8 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.TestDialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
+import me.iatog.characterdialogue.command.object.CSubCommand;
+import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.enums.CompletedType;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
@@ -27,37 +29,22 @@ import static me.iatog.characterdialogue.util.TextUtils.colorize;
       desc = "Method related commands",
       permission = "characterdialogue.command.method"
 )
-public class MethodCommands implements CommandClass {
+public class MethodCommands extends CSubCommand implements CommandClass {
 
     private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
-    private final List<CommandInfo> info;
 
     public MethodCommands() {
-        this.info = new ArrayList<>();
-        addCommands();
+        super();
     }
 
-    private void addCommands() {
+    public void addCommands() {
         addCommand("characterd method list", "", "List all registered methods");
         addCommand("characterd method execute", "<methodLine>", "Execute dialogue line");
     }
 
-    private void addCommand(String name, String usage, String description) {
-        info.add(new CommandInfo(name, usage, description));
-    }
-
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        String input = main.language("command-info");
-        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
-
-        for(CommandInfo cmd : info) {
-            sender.sendMessage(
-                  input.replace("%command%", cmd.name())
-                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
-                        .replace("%description%", cmd.desc())
-            );
-        }
+        mainCommandLogic(main, sender);
     }
 
     @Command(names = "list")

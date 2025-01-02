@@ -66,7 +66,12 @@ public class DialogSession implements Session {
         PlayerData data = main.getCache().getPlayerData().get(uuid);
 
         if(this.dialogue != null) {
-            data.getFinishedDialogs().add(this.dialogue.getName());
+            String name = this.dialogue.getName();
+            List<String> finished = data.getFinishedDialogs();
+
+            if(!finished.contains(name)) {
+                finished.add(name);
+            }
         }
     }
 

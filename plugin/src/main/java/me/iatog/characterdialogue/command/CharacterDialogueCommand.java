@@ -11,11 +11,16 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.DialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
+import me.iatog.characterdialogue.command.object.CSubCommand;
+import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.apache.logging.log4j.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
@@ -39,7 +44,7 @@ import static me.iatog.characterdialogue.util.TextUtils.colorize;
       RecordCommand.class,
       ItemCommands.class
 })
-public class CharacterDialogueCommand implements CommandClass {
+public class CharacterDialogueCommand extends CSubCommand implements CommandClass {
 
     /*
      * /characterdialogue
@@ -52,20 +57,17 @@ public class CharacterDialogueCommand implements CommandClass {
      * /characterdialogue item gui
      * /characterdialogue item save <id>
      * /characterdialogue item give <id>
-     * /characterdialogue gui
+     * /characterdialogue gui <id>
      */
 
     private final CharacterDialoguePlugin main;
-    private final List<CommandInfo> info;
 
     public CharacterDialogueCommand(CharacterDialoguePlugin main) {
+        super();
         this.main = main;
-        this.info = new ArrayList<>();
-
-        addCommands();
     }
 
-    private void addCommands() {
+    public void addCommands() {
         addCommand("characterd reload", "", "Reload the plugin and files");
         addCommand("characterd clear-cache", "<player>", "Clear player info");
         addCommand("characterd dialogue", "", "Use some dialogues.");
@@ -76,22 +78,9 @@ public class CharacterDialogueCommand implements CommandClass {
         addCommand("characterd record", "", "Manage recordings");
     }
 
-    private void addCommand(String name, String usage, String description) {
-        info.add(new CommandInfo(name, usage, description));
-    }
-
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        String input = main.language("command-info");
-        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
-
-        for(CommandInfo cmd : info) {
-            sender.sendMessage(
-                  input.replace("%command%", cmd.name())
-                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
-                        .replace("%description%", cmd.desc())
-            );
-        }
+        mainCommandLogic(main, sender);
     }
 
     @Command(names = "reload",
@@ -129,7 +118,9 @@ public class CharacterDialogueCommand implements CommandClass {
 
         sender.sendMessage(colorize("&cDialogues&8: &7" + Strings.join(data.getFinishedDialogs(), ',')));
         sender.sendMessage(colorize("&cFirst interactions&8: &7" + Strings.join(data.getFirstInteractions(), ',')));
-
+        //sender.sendMessage(Component.text("Hi"));
+        Audience audience = player;
+        audience.sendMessage(Component.text("Balbaroooo").color(TextColor.color(120, 255, 29)));
     }
 
     @Usage("<player>")

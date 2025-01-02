@@ -25,6 +25,6 @@ public class PluginUsageBuilder implements UsageBuilder {
             fullCommand.append(label).append(" ");
         }
 
-        return Component.text(main.language("command.usage", fullCommand, usage.content()));
+        return Component.text(main.language("command.usage", fullCommand.toString().trim(), usage.content().trim()));
     }
 }

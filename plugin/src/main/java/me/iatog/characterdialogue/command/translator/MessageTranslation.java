@@ -14,23 +14,20 @@ import java.util.function.Function;
 public class MessageTranslation implements Translator {
 
     private final MessageTranslationProvider provider;
+    private final CharacterDialoguePlugin main;
 
     public MessageTranslation(CharacterDialoguePlugin main) {
         this.provider = new MessageTranslationProvider(main);
+        this.main = main;
     }
 
     @Override
     public Component translate(Component component, Namespace namespace) {
         if(component instanceof TranslatableComponent comp) {
             String key = comp.key();
+            main.getLogger().info("TRANSLATABLE KEY: " + key);
             String translatedMessage = provider.getTranslation(namespace, key);
-            if (!comp.args().isEmpty()) {
-                String argument = PlainTextComponentSerializer.plainText().serialize(comp.args().get(0));
-                translatedMessage = translatedMessage.replace("<argument>", argument
-                      .replace("'", ""));
-
-                return Component.text(translatedMessage);
-            }
+            return Component.text(translatedMessage);
         }
         return component;
     }

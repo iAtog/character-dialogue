@@ -7,6 +7,8 @@ import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
+import me.iatog.characterdialogue.command.object.CSubCommand;
+import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.path.Record;
 import me.iatog.characterdialogue.path.*;
 import org.bukkit.command.CommandSender;
@@ -20,21 +22,19 @@ import static me.iatog.characterdialogue.util.TextUtils.colorize;
 @Command(
       names = "record"
 )
-public class RecordCommand implements CommandClass {
+public class RecordCommand extends CSubCommand implements CommandClass {
 
     public static final Map<UUID, PathRecorder> recorders = new HashMap<>();
     private final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
     private final Gson gson;
     private final PathStorage storage = main.getPathStorage();
-    private final List<CommandInfo> info;
 
     public RecordCommand() {
+        super();
         this.gson = new Gson();
-        this.info = new ArrayList<>();
-        addCommands();
     }
 
-    private void addCommands() {
+    public void addCommands() {
         addCommand("characterd record start", "<name>", "Create a new recording");
         addCommand("characterd record stop", "", "Stop current recording");
         addCommand("characterd record cancel", "", "Cancel current recording");
@@ -43,22 +43,9 @@ public class RecordCommand implements CommandClass {
         addCommand("characterd record replay", "<name> <npc>", "Replay recording on a npc");
     }
 
-    private void addCommand(String name, String usage, String description) {
-        info.add(new CommandInfo(name, usage, description));
-    }
-
     @Command(names = "", desc = "Main command")
     public void mainCommand(CommandSender sender) {
-        String input = main.language("command-info");
-        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
-
-        for(CommandInfo cmd : info) {
-            sender.sendMessage(
-                  input.replace("%command%", cmd.name())
-                        .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
-                        .replace("%description%", cmd.desc())
-            );
-        }
+        mainCommandLogic(main, sender);
     }
 
     @Usage("<newName>")

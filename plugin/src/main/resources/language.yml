@@ -7,7 +7,7 @@ general:
   only-player: '&cOnly players can execute this command.'
   no-permission: '&cYou do not have permissions to execute this command.'
 command:
-  usage: '&c&l>> &cUsage&7:&a %s%s'
+  usage: '&c&l>> &cUsage&7: &a%s &e%s'
   reload:
     error: Error while reloading CharacterDialogue files.
     success: '&aCharacterDialogue reloaded correctly'
