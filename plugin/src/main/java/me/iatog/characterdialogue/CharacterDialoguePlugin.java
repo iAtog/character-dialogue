@@ -11,17 +11,14 @@ import me.iatog.characterdialogue.api.interfaces.FileFactory;
 import me.iatog.characterdialogue.libraries.ApiImplementation;
 import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.libraries.Services;
-import me.iatog.characterdialogue.libraries.UpdateChecker;
 import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
 import me.iatog.characterdialogue.placeholders.CharacterDialogueExpansion;
 import me.iatog.characterdialogue.util.TextUtils;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.Messenger;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,9 +33,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private FileFactory fileFactory;
     private Cache cache;
     private CharacterDialogueAPI api;
-    private String defaultChannel;
     private long startup;
-    private Metrics metrics;
     private GUIFactory guiFactory;
     private List<YamlDocument> dialogues;
     private PathStorage pathStorage;
@@ -58,7 +53,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     }
 
     public void onLoad() {
-        this.defaultChannel = "BungeeCord";
         this.startup = System.currentTimeMillis();
         this.dialogues = new ArrayList<>();
         this.guiFactory = new GUIFactory();
@@ -67,18 +61,12 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        this.metrics = new Metrics(this, 24112);
 
         try {
             loadAllDialogues();
         } catch (IOException e) {
             getLogger().severe("Error loading dialogues directory");
             return;
-        }
-
-        Messenger messenger = getServer().getMessenger();
-        if (!messenger.isOutgoingChannelRegistered(this, defaultChannel)) {
-            messenger.registerOutgoingPluginChannel(this, defaultChannel);
         }
 
         this.cache = new Cache();
@@ -206,10 +194,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
     public void clearAllDialogues() {
         dialogues.clear();
-    }
-
-    public Metrics getMetrics() {
-        return metrics;
     }
 
     public GUIFactory getGUIFactory() {
