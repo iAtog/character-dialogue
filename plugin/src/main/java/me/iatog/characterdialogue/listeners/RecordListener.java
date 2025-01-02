@@ -1,5 +1,6 @@
 package me.iatog.characterdialogue.listeners;
 
+import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.command.RecordCommand;
 import me.iatog.characterdialogue.path.PathRecorder;
 import net.md_5.bungee.api.ChatMessageType;
@@ -13,6 +14,13 @@ import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 public class RecordListener implements Listener {
 
+    private final CharacterDialoguePlugin main;
+
+    public RecordListener(CharacterDialoguePlugin main) {
+        this.main = main;
+    }
+
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onSwap(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
@@ -26,7 +34,7 @@ public class RecordListener implements Listener {
                       ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(colorize("&cRecording saved."))
                 );
 
-                player.sendMessage(colorize("&aRecording &8'&c" + recorder.getName() + "&8'&a has been saved."));
+                player.sendMessage(main.language(true, "command.record.saved"));
             }
         }
     }
