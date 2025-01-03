@@ -1,5 +1,5 @@
 file-version: '1'
-command-info: '<red><bold>>> <red>/%command% <yellow>%usage% | <gray>%description%'
+command-info: '<red><bold>>> <reset><red>/%command% <yellow>%usage% | <gray>%description%'
 select-choice: '<green>Click here to select <red>#%str%'
 loaded-dialogues: '<green>Loaded %s dialogues.'
 general:
@@ -7,7 +7,7 @@ general:
   only-player: '<red>Only players can execute this command.'
   no-permission: '<red>You do not have permissions to execute this command.'
 command:
-  usage: '<red><bold>>> <red>Usage<gray>: <green><command> <yellow><args>'
+  usage: '<red><bold>>> <reset><red>Usage<gray>: <green><command> <yellow><args>'
   reload:
     error: "<red>Error while reloading CharacterDialogue files."
     success: '<green>CharacterDialogue reloaded correctly'
@@ -53,7 +53,7 @@ command:
     give-success: '<green>You have obtained the item correctly.'
   method:
     list-title: '<gray><bold>>>><reset> <green>List of methods:'
-    list-line: '<gray>>>> <green>%s'
+    list-line: '<red><bold>> <reset><red>''<green>%s<red>'' <green>method'
     invalid-line: '<red>Invalid line provided, structure: <green><method>{<configuration>}: <argument>'
     no-args: '<red>Invalid arguments provided.'
     invalid-method: '<red>Invalid method provided: %s.'

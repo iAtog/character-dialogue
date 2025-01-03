@@ -1,6 +1,8 @@
 package me.iatog.characterdialogue.command.object;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.util.AdventureUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -25,11 +27,11 @@ public abstract class CSubCommand {
 
     protected void mainCommandLogic(CharacterDialoguePlugin main, CommandSender sender) {
         String input = main.language("command-info");
-        sender.sendMessage(colorize("&7"));
-        sender.sendMessage(colorize("&c&l>> &7[  &6CharacterDialogue  &7]&m&7&l          "));
+        AdventureUtil.sendMessage(sender, Component.empty());
+        AdventureUtil.sendMessage(sender, "<red><bold>>> <reset><gray>[  <gold>CharacterDialogue  <gray>] <strikethrough>                  ");
 
         for(CommandInfo cmd : info) {
-            sender.sendMessage(
+            AdventureUtil.sendMessage(sender,
                   input.replace("%command%", cmd.name())
                         .replace("%usage%", (cmd.usage().isEmpty() ? "" : cmd.usage()+" "))
                         .replace("%description%", cmd.desc())
