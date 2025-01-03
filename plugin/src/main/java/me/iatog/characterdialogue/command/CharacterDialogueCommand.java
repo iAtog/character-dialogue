@@ -173,7 +173,16 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
         }
 
         YamlDocument config = main.getFileFactory().getConfig();
-        config.set("npc." + npc.getId(), dialogue.getName());
+        String route = "npc." + npc.getId();
+
+        if(config.contains(route)) {
+            String dialogues = config.getString(route);
+            config.set("npc." + npc.getId(), dialogues + "," + dialogue.getName());
+        } else {
+            config.set("npc." + npc.getId(), dialogue.getName());
+        }
+
+
         try {
             config.save();
         } catch (IOException e) {
