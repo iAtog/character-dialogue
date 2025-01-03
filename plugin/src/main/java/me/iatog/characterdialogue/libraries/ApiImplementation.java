@@ -18,7 +18,6 @@ import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.session.EmptyDialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
-import me.iatog.characterdialogue.util.TextUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -208,10 +207,9 @@ public class ApiImplementation implements CharacterDialogueAPI {
     }
 
     @Override
-    public void runDialogueExpression(Player player, String dialog, String rawNpcName,
+    public void runDialogueExpression(Player player, String dialog, String npcName,
                                       SingleUseConsumer<CompletedType> onComplete, DialogSession session, AdaptedNPC npc) {
         Matcher matcher = lineRegex.matcher(dialog.trim());
-        String npcName = TextUtils.colorize(rawNpcName);
 
         if(dialog.startsWith("#")) { // To leave notes, if necessary
             onComplete.accept(CompletedType.CONTINUE);

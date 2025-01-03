@@ -7,7 +7,10 @@ import me.iatog.characterdialogue.dialogs.method.choice.ChoiceUtil;
 import me.iatog.characterdialogue.dialogs.method.choice.form.ChoiceForm;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.ChoiceSession;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.TextUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -18,8 +21,36 @@ import java.util.function.Consumer;
 
 import static me.iatog.characterdialogue.dialogs.method.choice.ChoiceMethod.COMMAND_NAME;
 
+@SuppressWarnings("deprecation")
 public enum ChoiceType {
     CHAT(data -> {
+        String model = data.getConfigFile().getString("choice.text-model", "<gray>[<red><number><gray>] <message>");
+        ChoiceSession session = data.getChoiceSession();
+        TextComponent.Builder builder = Component.text().append(Component.newline());
+        session.getChoices().forEach((index, choice) -> {
+            Component modelComponent = AdventureUtil.minimessage(
+                  model,
+                  AdventureUtil.placeholder("player", data.getPlayer().getName()),
+                  AdventureUtil.placeholder("message", choice.getMessage()),
+                  AdventureUtil.placeholder("number", index+"")
+            );
+
+            Component messageComponent = modelComponent
+                  .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand(COMMAND_NAME + " " + session.getUniqueId() + " " + index))
+                  .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(
+                        AdventureUtil.minimessage(
+                              CharacterDialoguePlugin.getInstance().getFileFactory().getLanguage()
+                              .getString("select-choice").replace("%str%", index + "")
+                        )
+                  ));
+
+            builder.append(messageComponent).append(Component.newline());
+        });
+
+        data.getPlayer().getInventory().setHeldItemSlot(8);
+        AdventureUtil.sendMessage(data.getPlayer(), builder.build());
+    }, data -> data.getPlayer().closeInventory()),
+    CHATE(data -> {
         ComponentBuilder questions = new ComponentBuilder("\n");
         String model = data.getConfigFile().getString("choice.text-model", "&a{I})&e {S}");
         ChoiceSession choiceSession = data.getChoiceSession();
@@ -36,8 +67,7 @@ public enum ChoiceType {
 
         data.getPlayer().getInventory().setHeldItemSlot(8);
         data.getPlayer().spigot().sendMessage(questions.create());
-    }, (data -> {
-    })),
+    }, (data -> data.getPlayer().closeInventory())),
     GUI(data -> {
         ChoiceGUI choiceGUI = new ChoiceGUI(CharacterDialoguePlugin.getInstance());
         choiceGUI.buildGUI(data);

@@ -4,8 +4,7 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.placeholders.Placeholders;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.entity.Player;
 
 public class ActionBarMethod extends DialogMethod<CharacterDialoguePlugin> {
@@ -14,7 +13,6 @@ public class ActionBarMethod extends DialogMethod<CharacterDialoguePlugin> {
         setDescription("Displays an actionbar to the player");
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void execute(MethodContext context) {
         Player player = context.getPlayer();
@@ -22,7 +20,7 @@ public class ActionBarMethod extends DialogMethod<CharacterDialoguePlugin> {
 
         if(!argument.isEmpty()) {
             String translated = Placeholders.translate(player, argument);
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(translated));
+            AdventureUtil.sendActionBar(player, translated);
         }
 
         context.next();

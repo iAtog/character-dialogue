@@ -12,22 +12,21 @@ import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.DialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.command.object.CSubCommand;
-import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.logging.log4j.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -61,10 +60,14 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
      */
 
     private final CharacterDialoguePlugin main;
+    private MiniMessage minimessage;
+    private BukkitAudiences audiences;
 
     public CharacterDialogueCommand(CharacterDialoguePlugin main) {
         super();
         this.main = main;
+        this.minimessage = MiniMessage.miniMessage();
+        this.audiences = BukkitAudiences.create(main);
     }
 
     public void addCommands() {
@@ -103,8 +106,8 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
 
         reloadDialogues(sender, cache);
 
-        sender.sendMessage(main.language(true, "loaded-dialogues", cache.getDialogues().size()));
-        sender.sendMessage(main.language(true, "command.reload.success"));
+        AdventureUtil.sendMessage(sender, main.language(true, "loaded-dialogues", cache.getDialogues().size()));
+        AdventureUtil.sendMessage(sender, main.language(true, "command.reload.success"));
     }
 
     @Command(
@@ -114,13 +117,11 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
         if(player == null) {
             return;
         }
+
         PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
 
-        sender.sendMessage(colorize("&cDialogues&8: &7" + Strings.join(data.getFinishedDialogs(), ',')));
-        sender.sendMessage(colorize("&cFirst interactions&8: &7" + Strings.join(data.getFirstInteractions(), ',')));
-        //sender.sendMessage(Component.text("Hi"));
-        Audience audience = player;
-        audience.sendMessage(Component.text("Balbaroooo").color(TextColor.color(120, 255, 29)));
+        AdventureUtil.sendMessage(sender, "<red>Dialogues<gray>: " + Strings.join(data.getFinishedDialogs(), ','));
+        AdventureUtil.sendMessage(sender, "<red>First interactions<gray>: " + Strings.join(data.getFirstInteractions(), ','));
     }
 
     @Usage("<player>")
@@ -129,7 +130,7 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
           desc = "Clear a player memory cache")
     public void clearCache(CommandSender sender, Player target) {
         if (target == null || !target.isOnline()) {
-            sender.sendMessage(main.language("general.offline-player"));
+            AdventureUtil.sendMessage(sender, main.language("general.offline-player"));
             return;
         }
 
@@ -148,9 +149,9 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
         }
 
         if (!done) {
-            sender.sendMessage(main.language(true, "command.clear-cache.no-data"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.clear-cache.no-data"));
         } else {
-            sender.sendMessage(main.language(true, "command.clear-cache.success"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.clear-cache.success"));
         }
     }
 
@@ -162,12 +163,12 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
     )
     public void assignNpc(@Sender CommandSender sender, Dialogue dialogue, AdaptedNPC npc) {
         if (dialogue == null) {
-            sender.sendMessage(main.language(true, "command.assign.no-dialogue"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.assign.no-dialogue"));
             return;
         }
 
         if (npc == null) {
-            sender.sendMessage(main.language(true, "command.assign.no-npc"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.assign.no-npc"));
             return;
         }
 
@@ -176,10 +177,11 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
         try {
             config.save();
         } catch (IOException e) {
-            sender.sendMessage(main.language("command.assign.error"));
+            AdventureUtil.sendMessage(sender, main.language("command.assign.error"));
             return;
         }
-        sender.sendMessage(main.language("command.assign.success", npc.getName(), dialogue.getName()));
+
+        AdventureUtil.sendMessage(sender, main.language("command.assign.success", npc.getName(), dialogue.getName()));
     }
 
     @Usage("<name>")
@@ -189,12 +191,12 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
     )
     public void openGUI(@Sender Player player, GUI gui) {
         if (gui == null) {
-            player.sendMessage(main.language("command.gui.not-found"));
+            AdventureUtil.sendMessage(player, main.language("command.gui.not-found"));
             return;
         }
 
         gui.load(player);
-        player.sendMessage(main.language(true, "command.gui.success", gui.getPath()));
+        AdventureUtil.sendMessage(player, main.language(true, "command.gui.success", gui.getPath()));
     }
 
     private void reloadDialogues(CommandSender sender, Cache cache) {

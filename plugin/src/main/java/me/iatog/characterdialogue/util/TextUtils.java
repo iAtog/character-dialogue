@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ public class TextUtils {
     private final static int CENTER_PX = 154;
     private final static Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");
 
+    @SuppressWarnings("deprecation")
+    @NotNull
     public static String colorize(String message) {
         String version = Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1];
 
@@ -92,6 +95,7 @@ public class TextUtils {
             compensated += spaceLength;
         }
 
-        player.sendMessage(sb + message);
+        //player.sendMessage(sb + message);
+        AdventureUtil.sendMessage(player, sb + message);
     }
 }

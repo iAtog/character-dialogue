@@ -15,6 +15,7 @@ import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
 import me.iatog.characterdialogue.placeholders.CharacterDialogueExpansion;
 import me.iatog.characterdialogue.util.TextUtils;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -39,6 +40,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private PathStorage pathStorage;
     private AdapterManager adapterManager;
     private Services services;
+    private BukkitAudiences audiences;
 
     /**
      * I only set this method for third party plugins, I do not use this method and
@@ -61,7 +63,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
+        this.audiences = BukkitAudiences.create(this);
         try {
             loadAllDialogues();
         } catch (IOException e) {
@@ -118,6 +120,10 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
     public Services getServices() {
         return services;
+    }
+
+    public BukkitAudiences getAudiences() {
+        return audiences;
     }
 
     /**
@@ -202,7 +208,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
     public String language(boolean prefix, String route, Object ...format) {
         YamlDocument lang = getFileFactory().getLanguage();
-        String prefixed = prefix ? "&8[&cCD&8] " : "";
+        String prefixed = prefix ? "<gray>[<red>CD<gray>] " : "";
         String result;
 
         if(format.length == 0) {
@@ -211,7 +217,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
             result = lang.getString(route, route).formatted(format);
         }
 
-        return TextUtils.colorize(prefixed + result);
+        return prefixed + result;
     }
 
     public String language(String route, Object ...format) {

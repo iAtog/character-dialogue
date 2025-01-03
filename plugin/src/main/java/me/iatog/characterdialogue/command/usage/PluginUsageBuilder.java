@@ -3,6 +3,7 @@ package me.iatog.characterdialogue.command.usage;
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.usage.UsageBuilder;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 
@@ -25,6 +26,8 @@ public class PluginUsageBuilder implements UsageBuilder {
             fullCommand.append(label).append(" ");
         }
 
-        return Component.text(main.language("command.usage", fullCommand.toString().trim(), usage.content().trim()));
+        return AdventureUtil.minimessage(main.language("command.usage"),
+              AdventureUtil.placeholder("command", fullCommand.toString().trim()),
+              AdventureUtil.placeholder("args", usage.content().trim()));
     }
 }

@@ -7,6 +7,7 @@ import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
@@ -29,14 +30,14 @@ public class GroupsCommands implements CommandClass {
     public void create(@Sender CommandSender sender, @OptArg String groupName) {
         CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
         if (groupName == null || groupName.isEmpty()) {
-            sender.sendMessage(main.language(true, "command.group.no-group-specified"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.group.no-group-specified"));
             return;
         }
 
         File file = new File(main.getDataFolder() + "/dialogues/" + groupName + ".yml");
 
         if (file.exists()) {
-            sender.sendMessage(main.language(true, "command.group.already-exists", groupName));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.group.already-exists", groupName));
             return;
         }
 
@@ -44,9 +45,9 @@ public class GroupsCommands implements CommandClass {
             YamlDocument newGroup = YamlDocument.create(file, Objects.requireNonNull(main.getResource("dialogue-template.yml")));
 
             main.getAllDialogues().add(newGroup);
-            sender.sendMessage(main.language(true, "command.group.created-success", groupName));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.group.created-success", groupName));
         } catch (IOException e) {
-            sender.sendMessage(main.language(true, "command.group.error", groupName));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.group.error", groupName));
             e.printStackTrace();
         }
     }

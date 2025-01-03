@@ -11,6 +11,7 @@ import me.iatog.characterdialogue.command.object.CSubCommand;
 import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.path.Record;
 import me.iatog.characterdialogue.path.*;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -56,12 +57,12 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     )
     public void startRecording(@Sender Player sender, String name) {
         if(isPresent(sender)) {
-            sender.sendMessage(main.language(true, "command.record.in-recording"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.in-recording"));
             return;
         }
 
         if(storage.getAllPaths().containsKey(name)) {
-            sender.sendMessage(main.language(true, "command.record.already-exists"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.already-exists"));
             return;
         }
 
@@ -75,10 +76,10 @@ public class RecordCommand extends CSubCommand implements CommandClass {
             public void run() {
                 if(second >= 5) {
                     recorder.startRecording();
-                    sender.sendMessage(main.language(true, "command.record.guide"));
+                    AdventureUtil.sendMessage(sender, main.language(true, "command.record.guide"));
                     this.cancel();
                 } else {
-                    sender.sendMessage(main.language(true, "command.record.starting", String.valueOf(5 - second)));
+                    AdventureUtil.sendMessage(sender, main.language(true, "command.record.starting", String.valueOf(5 - second)));
                     second++;
                 }
             }
@@ -91,13 +92,13 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     )
     public void stopRecording(@Sender Player sender) {
         if(!isPresent(sender)) {
-            sender.sendMessage(main.language(true, "command.record.not-recording"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.not-recording"));
             return;
         }
 
         PathRecorder recorder = recorders.get(sender.getUniqueId());
         recorder.stopRecording(true);
-        sender.sendMessage(main.language(true, "command.record.saved"));
+        AdventureUtil.sendMessage(sender, main.language(true, "command.record.saved"));
     }
 
     @Usage("<name>")
@@ -107,7 +108,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     )
     public void recordData(CommandSender sender, Record record) {
         if(record == null) {
-            sender.sendMessage(main.language(true, "command.record.not-found"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.not-found"));
             return;
         }
 
@@ -117,11 +118,11 @@ public class RecordCommand extends CSubCommand implements CommandClass {
         RecordLocation firstPoint = path.getFirst();
         RecordLocation lastPoint = path.getLast();
 
-        sender.sendMessage(main.language("command.record.view.record", record.name()));
-        sender.sendMessage(main.language("command.record.view.total", totalPoints));
-        sender.sendMessage(main.language("command.record.view.first", formatLocation(firstPoint)));
-        sender.sendMessage(main.language("command.record.view.last", formatLocation(lastPoint)));
-        sender.sendMessage(main.language("command.record.view.duration", String.format("%.2f", durationSeconds)));
+        AdventureUtil.sendMessage(sender, main.language("command.record.view.record", record.name()));
+        AdventureUtil.sendMessage(sender, main.language("command.record.view.total", totalPoints));
+        AdventureUtil.sendMessage(sender, main.language("command.record.view.first", formatLocation(firstPoint)));
+        AdventureUtil.sendMessage(sender, main.language("command.record.view.last", formatLocation(lastPoint)));
+        AdventureUtil.sendMessage(sender, main.language("command.record.view.duration", String.format("%.2f", durationSeconds)));
     }
 
     @Usage("<name>")
@@ -132,12 +133,12 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     )
     public void deleteRecording(CommandSender sender, Record record) {
         if(record == null) {
-            sender.sendMessage(main.language(true, "command.record.not-found"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.not-found"));
             return;
         }
 
         storage.removePath(record.name());
-        sender.sendMessage(main.language(true, "command.record.deleted", record.name()));
+        AdventureUtil.sendMessage(sender, main.language(true, "command.record.deleted", record.name()));
     }
 
     @Command(
@@ -146,14 +147,14 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     )
     public void cancelRecording(@Sender Player sender) {
         if(!isPresent(sender)) {
-            sender.sendMessage(main.language(true, "command.record.not-recording"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.not-recording"));
             return;
         }
 
         PathRecorder recorder = recorders.get(sender.getUniqueId());
         recorder.stopRecording(false);
         recorders.remove(sender.getUniqueId());
-        sender.sendMessage(main.language(true, "command.record.cancelled"));
+        AdventureUtil.sendMessage(sender, main.language(true, "command.record.cancelled"));
     }
 
     @Usage("<name> <npc>")
@@ -161,20 +162,20 @@ public class RecordCommand extends CSubCommand implements CommandClass {
           names = "replay",
           permission = "characterdialogue.command.viewreplay"
     )
-    public void replay(@Sender Player player, Record record, AdaptedNPC npc) {
+    public void replay(@Sender Player sender, Record record, AdaptedNPC npc) {
         if(record == null) {
-            player.sendMessage(main.language(true, "command.record.not-found"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.not-found"));
             return;
         }
 
         if(npc == null) {
-            player.sendMessage(main.language(true, "command.record.no-npc"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.record.no-npc"));
             return;
         }
 
         PathReplayer replay = new PathReplayer(record.locations(), npc);
-        player.sendMessage(main.language(true, "command.record.replaying", npc.getName()));
-        replay.startReplay(player);
+        AdventureUtil.sendMessage(sender, main.language(true, "command.record.replaying", npc.getName()));
+        replay.startReplay(sender);
     }
 
     private boolean isPresent(Player player) {

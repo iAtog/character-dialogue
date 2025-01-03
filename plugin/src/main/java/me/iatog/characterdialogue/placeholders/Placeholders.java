@@ -3,7 +3,6 @@ package me.iatog.characterdialogue.placeholders;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
-import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -23,6 +22,6 @@ public class Placeholders {
             arg = arg.replace("%player_name%", player.getName());
         }
 
-        return TextUtils.colorize(arg);
+        return arg;
     }
 }

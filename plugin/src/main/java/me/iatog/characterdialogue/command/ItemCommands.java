@@ -9,6 +9,7 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.command.object.CSubCommand;
 import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.libraries.ItemManager;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -47,7 +48,7 @@ public class ItemCommands extends CSubCommand implements CommandClass {
           permission = "characterdialogue.command.item.gui"
     )
     public void seeGui(@Sender Player player) {
-        player.sendMessage(main.language("command.gui.success", "items"));
+        AdventureUtil.sendMessage(player, main.language("command.gui.success", "items"));
         main.getGUIFactory().getGui("items").load(player);
     }
 
@@ -60,24 +61,24 @@ public class ItemCommands extends CSubCommand implements CommandClass {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if(itemInHand.getAmount() <= 0 || itemInHand.getType() == Material.AIR) {
-            player.sendMessage(main.language(true, "command.item.no-hand"));
+            AdventureUtil.sendMessage(player, main.language(true, "command.item.no-hand"));
             return;
         }
 
         if(id == null || id.isEmpty()) {
-            player.sendMessage(main.language(true, "command.item.no-id"));
+            AdventureUtil.sendMessage(player, main.language(true, "command.item.no-id"));
             return;
         }
 
         ItemManager manager = main.getServices().getItemManager();
 
         if(manager.existsItem(id)) {
-            player.sendMessage(main.language(true, "command.item.already-exists"));
+            AdventureUtil.sendMessage(player, main.language(true, "command.item.already-exists"));
             return;
         }
 
         manager.saveItem(id, itemInHand);
-        player.sendMessage(main.language(true, "command.item.success"));
+        AdventureUtil.sendMessage(player, main.language(true, "command.item.success"));
     }
 
     @Usage("<id> [player]")
@@ -87,7 +88,7 @@ public class ItemCommands extends CSubCommand implements CommandClass {
     )
     public void giveItem(CommandSender sender, ItemStack item, @OptArg Player playerOpt) {
         if(item == null) {
-            sender.sendMessage(main.language(true, "command.item.not-found"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.item.not-found"));
             return;
         }
 
@@ -95,7 +96,7 @@ public class ItemCommands extends CSubCommand implements CommandClass {
 
         if (playerOpt == null) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage(main.language(true, "command.dialogue.console"));
+                AdventureUtil.sendMessage(sender, main.language(true, "command.dialogue.console"));
                 return;
             }
 
@@ -105,6 +106,6 @@ public class ItemCommands extends CSubCommand implements CommandClass {
         }
 
         target.getInventory().addItem(item);
-        sender.sendMessage(main.language(true, "command.item.give-success"));
+        AdventureUtil.sendMessage(sender, main.language(true, "command.item.give-success"));
     }
 }

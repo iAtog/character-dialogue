@@ -1,5 +1,7 @@
 package me.iatog.characterdialogue.dialogs.method.talk;
 
+import me.iatog.characterdialogue.placeholders.Placeholders;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.TextUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -9,11 +11,12 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public enum TalkType {
-
     ACTION_BAR((player, text, npcName) -> {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(TextUtils.colorize("&7[&c" + npcName + "&7] &7" + text)));
+        AdventureUtil.sendActionBar(player,
+              "<gray>[<aqua>" + npcName + "<gray>] <gray>" +
+              Placeholders.translate(player, text)
+        );
     }),
     MESSAGE((player, text, npcName) -> {
         String npc = TextUtils.colorize("&8[&b" + npcName + "&8] &7");
@@ -31,7 +34,7 @@ public enum TalkType {
         player.sendMessage(TextUtils.colorize("&7"));
 
         for (String wrap : wrapped) {
-            TextUtils.sendCenteredMessage(player, "&7" + wrap);
+            TextUtils.sendCenteredMessage(player, "<gray>" + wrap);
         }
 
         player.sendMessage(TextUtils.colorize("&7"));

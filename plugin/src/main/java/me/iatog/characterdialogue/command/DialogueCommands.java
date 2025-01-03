@@ -10,6 +10,7 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.command.object.CSubCommand;
 import me.iatog.characterdialogue.command.object.CommandInfo;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -53,13 +54,13 @@ public class DialogueCommands extends CSubCommand implements CommandClass {
     ) {
         Player target;
         if (dialogue == null) {
-            sender.sendMessage(main.language(true, "command.dialogue.not-found"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.dialogue.not-found"));
             return;
         }
 
         if (playerOpt == null) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(main.language(true, "command.dialogue.console"));
+                AdventureUtil.sendMessage(sender, main.language(true, "command.dialogue.console"));
                 return;
             }
 
@@ -68,7 +69,7 @@ public class DialogueCommands extends CSubCommand implements CommandClass {
             target = playerOpt;
         }
 
-        sender.sendMessage(main.language(true, "command.dialogue.success",
+        AdventureUtil.sendMessage(sender, main.language(true, "command.dialogue.success",
               dialogue.getName(), target.getName()));
         dialogue.start(target, debug, null);
     }
@@ -80,33 +81,28 @@ public class DialogueCommands extends CSubCommand implements CommandClass {
     )
     public void info(@Sender CommandSender sender, Dialogue dialogue) {
         if (dialogue == null) {
-            sender.sendMessage(main.language(true, "command.dialogue.not-found"));
+            AdventureUtil.sendMessage(sender, main.language(true, "command.dialogue.not-found"));
             return;
         }
 
-        sender.sendMessage(main.language("command.dialogue.info.title"));
-        sender.sendMessage(main.language("command.dialogue.info.id", dialogue.getName()));
-        sender.sendMessage(main.language("command.dialogue.info.display-name", dialogue.getDisplayName()));
-        sender.sendMessage(main.language("command.dialogue.info.lines", ""+dialogue.getLines().size()));
-        sender.sendMessage(main.language("command.dialogue.info.file", dialogue.getDocument().getName()));
-        sender.sendMessage(main.language("command.dialogue.info.click-type", dialogue.getClickType().toString().toLowerCase()));
+        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.title"));
+        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.id", dialogue.getName()));
+        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.display-name", dialogue.getDisplayName()));
+        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.lines", ""+dialogue.getLines().size()));
+        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.file", dialogue.getDocument().getName()));
+        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.click-type", dialogue.getClickType().toString().toLowerCase()));
 
         if(dialogue.isPersistent()) {
             String persistenceText = dialogue.isPersistent() ? "yes" : "no";
-            sender.sendMessage(main.language("command.dialogue.info.persistence.persistent", persistenceText));
+            AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.persistence.persistent", persistenceText));
             if(dialogue.getPersistentLines() != null && !dialogue.getPersistentLines().isEmpty()) {
-                sender.sendMessage(main.language("command.dialogue.info.persistence.total", ""+dialogue.getPersistentLines().size()));
+                AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.persistence.total", ""+dialogue.getPersistentLines().size()));
             }
         }
 
         if(dialogue.isFirstInteractionEnabled() && !dialogue.getFirstInteractionLines().isEmpty()) {
-            sender.sendMessage(main.language("command.dialogue.info.first-interaction.lines",
+            AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.first-interaction.lines",
                   dialogue.getFirstInteractionLines().size()+""));
         }
-
-        String name = dialogue.getName();
-        int lines = dialogue.getLines().size();
-
     }
-
 }

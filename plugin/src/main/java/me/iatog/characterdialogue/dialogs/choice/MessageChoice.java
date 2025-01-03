@@ -4,6 +4,8 @@ import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
+import me.iatog.characterdialogue.util.AdventureUtil;
+import org.bukkit.entity.Player;
 
 public class MessageChoice extends DialogChoice {
 
@@ -12,11 +14,15 @@ public class MessageChoice extends DialogChoice {
     }
 
     @Override
-    public void onSelect(String argument, DialogSession dialogSession, ChoiceSession choiceSession) {
-        dialogSession.getPlayer().sendMessage(Placeholders.translate(dialogSession.getPlayer(),
-              argument.replace("%npc_name%", dialogSession.getDisplayName())));
+    public void onSelect(String argument, DialogSession session, ChoiceSession choiceSession) {
+        Player player = session.getPlayer();
 
-        dialogSession.startNext();
+        AdventureUtil.sendMessage(player,
+              Placeholders.translate(player, argument.replace("%npc_name%", session.getDisplayName())),
+              AdventureUtil.placeholder("player", player.getName())
+        );
+
+        session.startNext();
     }
 
 }
