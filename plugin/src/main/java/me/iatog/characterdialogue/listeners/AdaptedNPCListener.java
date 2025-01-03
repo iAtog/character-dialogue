@@ -43,7 +43,44 @@ public class AdaptedNPCListener implements Listener {
             return;
         }
 
-        String dialogues = config.getString(route);
+        Dialogue dialogue = getDialogue(npc);
+
+        if (
+              dialogue == null ||
+              main.getCache().getDialogSessions().containsKey(player.getUniqueId()) ||
+              !handleCooldown(player)
+        ) {
+            return;
+        }
+
+        ClickType clickType = dialogue.getClickType();
+
+        if ((clickType != ClickType.ALL && clickType != event.getClickType()) || handlePermissions(player, dialogue)) {
+            return;
+        }
+
+        event.setCancelled(true);
+        if (dialogue.isFirstInteractionEnabled() && !api.wasReadedBy(player, dialogue, true)) {
+            dialogue.startFirstInteraction(player, true, npc);
+            return;
+        }
+
+        dialogue.start(player, npc);
+    }
+
+    @EventHandler
+    public void onSpawn(AdapterNPCSpawnEvent event) {
+        AdaptedNPC npc = event.getNPC();
+        String id = npc.getId();
+        CharacterDialogueAPI api = main.getApi();
+
+        if (api.getNPCDialogue(id) != null) {
+            api.loadHologram(id);
+        }
+    }
+
+    public Dialogue getDialogue(AdaptedNPC npc) {
+        String dialogues = main.getFileFactory().getConfig().getString("npc." + npc.getId());
         Dialogue dialogue = null;
 
         if(dialogues.contains(",")) {
@@ -54,29 +91,26 @@ public class AdaptedNPCListener implements Listener {
             dialogue = main.getCache().getDialogues().get(dialogues);
         }
 
-        if (dialogue == null || main.getCache().getDialogSessions().containsKey(player.getUniqueId())) {
-            return;
-        }
+        return dialogue;
+    }
 
+    public boolean handleCooldown(Player player) {
         long currentTime = System.currentTimeMillis();
 
         if (player.hasMetadata("dialogueCooldown")) {
             long cooldown = player.getMetadata("dialogueCooldown").getFirst().asLong();
             if (currentTime < cooldown) {
                 AdventureUtil.sendMessage(player, main.language("cooldown-message"));
-                return;
+                return false;
             }
         }
 
-        long cooldownTime = (config.getInt("cooldown-time", 2) * 1000);
+        long cooldownTime = (main.getFileFactory().getConfig().getInt("cooldown-time", 2) * 1000);
         player.setMetadata("dialogueCooldown", new FixedMetadataValue(main, currentTime + cooldownTime));
+        return true;
+    }
 
-        ClickType clickType = dialogue.getClickType();
-
-        if (clickType != ClickType.ALL && clickType != event.getClickType()) {
-            return;
-        }
-
+    public boolean handlePermissions(Player player, Dialogue dialogue) {
         Dialogue.DialoguePermission permissions = dialogue.getPermissions();
 
         if (permissions != null && permissions.getPermission() != null) {
@@ -90,28 +124,11 @@ public class AdaptedNPCListener implements Listener {
                     );
                 }
 
-                return;
+                return true;
             }
         }
 
-        if (dialogue.isFirstInteractionEnabled() && !api.wasReadedBy(player, dialogue, true)) {
-            dialogue.startFirstInteraction(player, true, npc);
-            return;
-        }
-
-        event.setCancelled(true);
-        dialogue.start(player, npc);
-    }
-
-    @EventHandler
-    public void onSpawn(AdapterNPCSpawnEvent event) {
-        AdaptedNPC npc = event.getNPC();
-        String id = npc.getId();
-        CharacterDialogueAPI api = main.getApi();
-
-        if (api.getNPCDialogue(id) != null) {
-            api.loadHologram(id);
-        }
+        return false;
     }
 
 }
