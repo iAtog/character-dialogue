@@ -2,6 +2,7 @@ file-version: '1'
 command-info: '<red><bold>>> <reset><red>/%command% <yellow>%usage% | <gray>%description%'
 select-choice: '<green>Click here to select <red>#%str%'
 loaded-dialogues: '<green>Loaded %s dialogues.'
+cooldown-message: '<red>Calm down.'
 general:
   offline-player: '<red>The specified player isn''t online.'
   only-player: '<red>Only players can execute this command.'

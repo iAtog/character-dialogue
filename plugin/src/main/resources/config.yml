@@ -1,4 +1,5 @@
 file-version: 3
+cooldown-time: 2
 placeholders:
   npc: '<yellow>[NPC] <red>%npc_name%<white>:'
   user: '<yellow>[YOU] <aqua>%player_name%<white>:'
