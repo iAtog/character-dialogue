@@ -47,7 +47,7 @@ public class ConditionalEventsMethod extends DialogMethod<CharacterDialoguePlugi
         int timeoutInMillis = (configuration.getInteger("timeout", 60) * 1000);
         String argument = configuration.getArgument();
         String action = configuration.getString("action", "default");
-        String onTimeout = configuration.getString("onTimeout", "send: &cYou took a long time");
+        String onTimeout = configuration.getString("onTimeout", "send: <red>You took a long time");
 
         if (argument.isEmpty()) {
             getProvider().getLogger().warning("No ConditionalEvents event provided.");
@@ -74,7 +74,7 @@ public class ConditionalEventsMethod extends DialogMethod<CharacterDialoguePlugi
                 String line = data.onTimeout();
 
                 if (System.currentTimeMillis() >= expiration) {
-                    if (! line.isEmpty()) {
+                    if (!line.isEmpty()) {
                         Dialogue dialogue = data.getSession().getDialogue();
                         getProvider().getApi().runDialogueExpression(data.getSession().getPlayer(), line,
                               dialogue.getDisplayName(), SingleUseConsumer.create(t -> {
@@ -82,7 +82,7 @@ public class ConditionalEventsMethod extends DialogMethod<CharacterDialoguePlugi
                               data.getSession(), data.getSession().getNPC());
                     }
 
-                    if (! data.consumer().executed()) {
+                    if (!data.consumer().executed()) {
                         data.consumer().accept(CompletedType.DESTROY);
                     } else {
                         data.getSession().destroy();
