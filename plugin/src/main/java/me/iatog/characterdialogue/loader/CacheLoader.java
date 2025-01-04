@@ -11,7 +11,6 @@ import me.iatog.characterdialogue.dialogs.method.npc_control.NPCControlMethod;
 import me.iatog.characterdialogue.dialogs.method.talk.TalkMethod;
 import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.session.DialogSession;
-import me.iatog.characterdialogue.util.TextUtils;
 
 public class CacheLoader implements Loader {
 
@@ -51,9 +50,7 @@ public class CacheLoader implements Loader {
         main.registerChoices(
               new ContinueChoice(),
               new DestroyChoice(),
-              new SendChoice(),
-              new DialogueChoice(main),
-              new MessageChoice(),
+              new RunMethodChoice(main),
               new StartDialogChoice(main)
         );
 
