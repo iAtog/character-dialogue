@@ -44,9 +44,6 @@ public class RegionalDialoguesListener implements Listener {
 
         if(conditionResult) {
             dialogue.start(player, null);
-        } else {
-            player.sendMessage("conditions = false");
         }
-
     }
 }
