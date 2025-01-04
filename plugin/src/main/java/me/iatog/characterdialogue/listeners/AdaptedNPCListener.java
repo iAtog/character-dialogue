@@ -7,18 +7,14 @@ import me.iatog.characterdialogue.api.CharacterDialogueAPI;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.api.events.AdapterNPCInteractEvent;
 import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
-import me.iatog.characterdialogue.dialogs.DialogMethod;
-import me.iatog.characterdialogue.dialogs.method.conditional.ConditionalMethod;
 import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.util.AdventureUtil;
-import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.List;
 import java.util.Random;
 
 public class AdaptedNPCListener implements Listener {

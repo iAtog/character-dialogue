@@ -85,7 +85,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
             new CharacterDialogueExpansion(this).register();
         }
 
-        getLogger().info(TextUtils.colorize("&aLoaded in " + (System.currentTimeMillis() - startup) + "ms"));
+        getLogger().info("Loaded in " + (System.currentTimeMillis() - startup) + "ms");
     }
 
     @Override

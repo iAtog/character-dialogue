@@ -3,9 +3,10 @@ package me.iatog.characterdialogue.loader;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.method.npc_control.NPCControlMethod;
 import me.iatog.characterdialogue.filter.ConsoleFilter;
-import me.iatog.characterdialogue.util.TextUtils;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 
@@ -31,10 +32,11 @@ public class PluginLoader implements Loader {
               new DialogLoader(main),
               new GUILoader(main),
               new AdapterLoader(main),
-              new UpdateLoader(main)
+              new UpdateLoader(main),
+              new WorldGuardLoader(main)
         );
 
-        main.getLogger().info(TextUtils.colorize("&a" + main.getDescription().getName() + " enabled. &7" + main.getDescription().getVersion()));
+        AdventureUtil.sendMessage(Bukkit.getConsoleSender(), "<red>[CharacterDialogue] <green>Plugin enabled. <gold>v" + main.getDescription().getVersion());
     }
 
     @Override

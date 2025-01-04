@@ -30,6 +30,7 @@ subprojects {
         maven { url "https://repo.papermc.io/repository/maven-public/" }
         maven { url "https://repo.pyr.lol/snapshots" }
         maven { url "https://repo.fancyplugins.de/releases" }
+        maven { url "https://maven.enginehub.org/repo/" }
     }
 
     dependencies {
