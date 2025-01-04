@@ -26,20 +26,19 @@ public class YamlVersions {
 
         @Override
         public UpdaterSettings getUpdaterSettings() {
-            int ignoredTimes = 10;
-            //Pattern pattern = new Pattern(Segment.range(1, Integer.MAX_VALUE), Segment.literal("."), Segment.range(0, 10));
+            int ignoredTimes = 15;
+
             UpdaterSettings.Builder builder = UpdaterSettings.builder()
                   .setAutoSave(true)
                   .setVersioning(new BasicVersioning("file-version"))
-                  /*
-                  .addIgnoredRoute("1", "placeholders", '.')
-                  .addIgnoredRoute("1", "npc", '.')*/
                   .setKeepAll(true);
 
             ignoreRoute("placeholders", builder, ignoredTimes);
             ignoreRoute("npc", builder, ignoredTimes);
             ignoreRoute("choice.number-heads", builder, ignoredTimes);
             ignoreRoute("hidden-npcs", builder, ignoredTimes);
+            ignoreRoute("regional-dialogues", builder, ignoredTimes);
+
             return builder.build();
         }
 
