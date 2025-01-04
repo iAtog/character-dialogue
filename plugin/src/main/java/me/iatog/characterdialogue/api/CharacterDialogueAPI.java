@@ -4,6 +4,7 @@ import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.enums.CompletedType;
+import me.iatog.characterdialogue.enums.ConditionType;
 import me.iatog.characterdialogue.libraries.HologramLibrary;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
@@ -60,6 +61,8 @@ public interface CharacterDialogueAPI {
     boolean canEnableMovement(Player player);
 
     void saveDialogue(Player player, String name, boolean firstInteraction);
+
+    boolean evaluateConditions(Player player, List<String> conditions, ConditionType type);
 
     default void saveDialogue(@NotNull Player player, @NotNull Dialogue dialogue, boolean firstInteraction) {
         saveDialogue(player, dialogue.getName(), firstInteraction);

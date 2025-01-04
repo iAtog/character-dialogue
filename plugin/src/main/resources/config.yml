@@ -5,17 +5,27 @@ placeholders:
   user: '<yellow>[YOU] <aqua>%player_name%<white>:'
 npc:
   '9999': choice-sample
-# If all conditions returns "TRUE" the npc will be hided to the player
 hidden-npcs:
   myNpc:
+    # Only needs ONE condition with TRUE to hide the NPC from the player.
     type: "one"
     conditions:
       - "%characterdialogue_readed_dialogueName% == yes"
   otherNpc:
+    # All conditions must be TRUE
+    # If 'x' condition returns FALSE, the NPC will
+    # show to the player.
     type: "all"
     conditions:
       - "%characterdialogue_readed_dialogueName% == no"
       - "%characterdialogue_readed_otherDialogue% == yes"
+# This triggers when a player enters to worldguard region.
+regional-dialogues:
+  regionName:
+    conditions:
+      - "%characterdialogue_readed_otherDialogue% == yes"
+    conditions-type: "all"
+    dialogue: "myDialogue"
 use-actionbar: false
 choice:
   text-model: '<gray>[<red><number><gray>] <message>'

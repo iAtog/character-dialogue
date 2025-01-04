@@ -10,6 +10,7 @@ import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.method.conditional.ConditionalMethod;
 import me.iatog.characterdialogue.enums.ClickType;
+import me.iatog.characterdialogue.enums.ConditionType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -77,6 +78,7 @@ public class AdapterManager {
         if(player == null || !config.contains(path)) {
             return false;
         }
+
         String typeName = config.getString(route + ".type", "all");
 
         if(!typeName.equalsIgnoreCase("all") && !typeName.equalsIgnoreCase("one")) {
@@ -84,36 +86,9 @@ public class AdapterManager {
         }
 
         List<String> conditions = config.getStringList(path);
-        ConditionalMethod conditionalMethod = getMethod("conditional");
+        ConditionType type = ConditionType.to(typeName);
 
-        if(!conditions.isEmpty() && conditionalMethod != null) {
-            boolean result = false;
-
-            for(String condition : conditions) {
-                if(conditionalMethod.evaluateCondition(player, condition.trim())) {
-                    result = true;
-
-                    if(typeName.equalsIgnoreCase("one")) {
-                        break;
-                    }
-                } else {
-                    if(typeName.equalsIgnoreCase("all")) {
-                        result = false;
-                        break;
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        return false;
+        return main.getApi().evaluateConditions(player, conditions, type);
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T getMethod(String method) {
-        DialogMethod<?> meth = main.getCache().getMethods().get(method);
-        if(meth == null) return null;
-        return (T) meth;
-    }
 }

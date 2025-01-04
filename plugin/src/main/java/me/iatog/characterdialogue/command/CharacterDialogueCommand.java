@@ -103,8 +103,10 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
         main.getApi().reloadHolograms();
 
         cache.getDialogues().clear();
+        cache.getRegionalDialogues().clear();
 
         reloadDialogues(sender, cache);
+        main.loadRegionalDialogues();
 
         AdventureUtil.sendMessage(sender, main.language(true, "loaded-dialogues", cache.getDialogues().size()));
         AdventureUtil.sendMessage(sender, main.language(true, "command.reload.success"));

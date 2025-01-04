@@ -57,8 +57,8 @@ public class CacheLoader implements Loader {
               new StartDialogChoice(main)
         );
 
-        main.getLogger().info(TextUtils.colorize("Correctly loaded " + cache.getChoices().size() + " choices."));
-        main.getLogger().info(TextUtils.colorize("Correctly loaded " + cache.getMethods().size() + " methods."));
+        main.getLogger().info("Correctly loaded " + cache.getChoices().size() + " choices.");
+        main.getLogger().info("Correctly loaded " + cache.getMethods().size() + " methods.");
     }
 
     @Override

@@ -1,11 +1,14 @@
 package me.iatog.characterdialogue;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import me.iatog.characterdialogue.adapter.AdapterManager;
 import me.iatog.characterdialogue.adapter.NPCAdapter;
 import me.iatog.characterdialogue.api.CharacterDialogueAPI;
+import me.iatog.characterdialogue.api.dialog.RegionalDialogue;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
+import me.iatog.characterdialogue.enums.ConditionType;
 import me.iatog.characterdialogue.gui.GUIFactory;
 import me.iatog.characterdialogue.api.interfaces.FileFactory;
 import me.iatog.characterdialogue.libraries.ApiImplementation;
@@ -195,6 +198,26 @@ public class CharacterDialoguePlugin extends JavaPlugin {
                     dialogues.add(yamlDocument);
                 }
             }
+        }
+    }
+
+    public void loadRegionalDialogues() {
+        YamlDocument config = getFileFactory().getConfig();
+
+        for (String regionName : config.getSection("regional-dialogues").getRoutesAsStrings(false)) {
+            Section section = config.getSection("regional-dialogues." + regionName);
+            List<String> conditions = section.getStringList("conditions");
+            String conditionType = section.getString("conditions-type", "all");
+
+            if(!conditionType.equalsIgnoreCase("all") && !conditionType.equalsIgnoreCase("one")) {
+                return;
+            }
+
+            ConditionType type = ConditionType.to(conditionType);
+            String dialogueName = section.getString("dialogue");
+            RegionalDialogue dialogue = new RegionalDialogue(type, conditions, dialogueName, regionName);
+
+            getCache().getRegionalDialogues().put(regionName, dialogue);
         }
     }
 

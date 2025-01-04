@@ -11,8 +11,10 @@ import me.iatog.characterdialogue.api.events.ExecuteMethodEvent;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.MethodConfiguration;
 import me.iatog.characterdialogue.dialogs.MethodContext;
+import me.iatog.characterdialogue.dialogs.method.conditional.ConditionalMethod;
 import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.enums.CompletedType;
+import me.iatog.characterdialogue.enums.ConditionType;
 import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.DialogSession;
@@ -370,6 +372,41 @@ public class ApiImplementation implements CharacterDialogueAPI {
         }
 
         list.add(name);
+    }
+
+    @Override
+    public boolean evaluateConditions(Player player, List<String> conditions, ConditionType type) {
+        ConditionalMethod conditionalMethod = getMethod("conditional");
+
+        if(!conditions.isEmpty() && conditionalMethod != null) {
+            boolean result = false;
+
+            for(String condition : conditions) {
+                if(conditionalMethod.evaluateCondition(player, condition.trim())) {
+                    result = true;
+
+                    if(type == ConditionType.ONE) {
+                        break;
+                    }
+                } else {
+                    if(type == ConditionType.ALL) {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getMethod(String method) {
+        DialogMethod<?> meth = main.getCache().getMethods().get(method);
+        if(meth == null) return null;
+        return (T) meth;
     }
 
     @Override

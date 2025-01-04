@@ -22,7 +22,8 @@ public class ListenerLoader implements Loader {
               new PlayerJoinListener(main),
               new RecordListener(main),
               new AdaptedNPCListener(main),
-              new FollowListener()
+              new FollowListener(),
+              new RegionalDialoguesListener(main)
         );
     }
 
