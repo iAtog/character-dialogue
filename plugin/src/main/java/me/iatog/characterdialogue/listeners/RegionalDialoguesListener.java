@@ -24,7 +24,9 @@ public class RegionalDialoguesListener implements Listener {
         String region = event.getRegionName();
         Map<String, RegionalDialogue> regionalDialogues = main.getCache().getRegionalDialogues();
 
-        if(!regionalDialogues.containsKey(region) || player == null) {
+        if(!regionalDialogues.containsKey(region) ||
+              player == null ||
+              main.getCache().getDialogSessions().containsKey(player.getUniqueId())) {
             return;
         }
 
