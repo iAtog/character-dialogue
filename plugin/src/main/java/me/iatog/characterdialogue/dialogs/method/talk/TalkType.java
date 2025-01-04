@@ -1,30 +1,38 @@
 package me.iatog.characterdialogue.dialogs.method.talk;
 
-import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.TextUtils;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.logging.log4j.util.TriConsumer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public enum TalkType {
-    ACTION_BAR((player, text, npcName) -> {
+    ACTION_BAR(context -> {
+        Player player = context.player();
+        String text = context.text();
+        String npcName = context.npcName();
+
         AdventureUtil.sendActionBar(player,
-              "<gray>[<aqua>" + npcName + "<gray>] <gray>" +
-              Placeholders.translate(player, text)
+              "<gray>[<aqua>" + npcName + "<gray>] " +
+                    context.color() +
+                    text
         );
     }),
-    MESSAGE((player, text, npcName) -> {
+    MESSAGE(context -> {
+        Player player = context.player();
+        String text = context.text();
+        String npcName = context.npcName();
         String npc = TextUtils.colorize("&8[&b" + npcName + "&8] &7");
 
         player.sendMessage(getEmptyList());
         player.sendMessage(npc + text);
     }),
-    FULL_CHAT((player, text, npcName) -> {
+    FULL_CHAT(context -> {
+        Player player = context.player();
+        String text = context.text();
+        String npcName = context.npcName();
         String line = "&7&m                                                                                ";
         String colorizedText = TextUtils.colorize("&8[&b" + npcName + "&8] &7" + text);
         List<String> wrapped = TextUtils.wrapText(colorizedText, 55);
@@ -41,9 +49,9 @@ public enum TalkType {
         player.sendMessage(TextUtils.colorize(line));
     });
 
-    private final TriConsumer<Player, String, String> consumer;
+    private final Consumer<TalkContext> consumer;
 
-    TalkType(TriConsumer<Player, String, String> consumer) {
+    TalkType(Consumer<TalkContext> consumer) {
         this.consumer = consumer;
     }
 
@@ -57,7 +65,7 @@ public enum TalkType {
         return list.toArray(String[]::new);
     }
 
-    public void execute(Player target, String message, String npcName) {
-        consumer.accept(target, message, npcName);
+    public void execute(Player target, String message, String npcName, String color) {
+        consumer.accept(new TalkContext(target.getUniqueId(), message, npcName, color));
     }
 }

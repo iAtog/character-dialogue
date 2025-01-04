@@ -4,6 +4,7 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.enums.CompletedType;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,8 +31,9 @@ public class TalkRunnable extends BukkitRunnable {
 
     private int index = 0;
     private boolean finished = false;
+    private String color;
 
-    public TalkRunnable(List<UUID> players, UUID uuid, String message, boolean skip, TalkType type, Player player, Sound sound, String translatedMessage, float volume, float pitch, DialogSession session, SingleUseConsumer<CompletedType> completed, String npcName, CharacterDialoguePlugin provider) {
+    public TalkRunnable(List<UUID> players, UUID uuid, String message, boolean skip, TalkType type, Player player, Sound sound, String translatedMessage, float volume, float pitch, DialogSession session, SingleUseConsumer<CompletedType> completed, String npcName, CharacterDialoguePlugin provider, String color) {
         this.players = players;
         this.uuid = uuid;
         this.message = message;
@@ -46,21 +48,30 @@ public class TalkRunnable extends BukkitRunnable {
         this.completed = completed;
         this.npcName = npcName;
         this.provider = provider;
+        this.color = color;
     }
 
     @Override
     public void run() {
+        if(Bukkit.getPlayer(uuid) == null) {
+            this.cancel();
+            players.remove(uuid);
+            if(!completed.executed()) {
+                completed.accept(CompletedType.DESTROY);
+            }
+            return;
+        }
+
         try {
-            if ((! players.contains(uuid) && skip && ! isCancelled()) && ! finished) {
+            if ((!players.contains(uuid) && skip && ! isCancelled()) && ! finished) {
                 stopAnimation();
                 return;
             }
-
             if (index < message.length()) {
                 animateText();
             } else {
                 cancel();
-                if (! finished) {
+                if (!finished) {
                     finishAnimation();
                 }
             }
@@ -72,7 +83,7 @@ public class TalkRunnable extends BukkitRunnable {
     private void stopAnimation() {
         this.cancel();
         this.finished = true;
-        type.execute(player, translatedMessage, npcName);
+        type.execute(player, translatedMessage, npcName, color);
         player.playSound(player.getLocation(), sound, volume, pitch);
         session.sendDebugMessage("Finished talk because: " + ! players.contains(uuid) + " | " + skip + " | " + ! isCancelled(), "TalkMethod:134");
         players.remove(uuid);
@@ -88,14 +99,15 @@ public class TalkRunnable extends BukkitRunnable {
             player.playSound(player.getLocation(), sound, volume, pitch);
         }
 
-        type.execute(player, writingMessage, npcName);
+        type.execute(player, writingMessage, npcName, color);
     }
 
     private void finishAnimation() {
-        if (! this.finished) {
+        if (!this.finished) {
             completed.accept(CompletedType.CONTINUE);
             session.sendDebugMessage("Starting next... (else) (finishAnimation)", "TalkMethod:149");
         }
+
         this.finished = true;
         session.sendDebugMessage("Finished because message " + index + " < " + message.length() +
               " (cancelled: " + isCancelled() + ")", "TalkMethod:152");

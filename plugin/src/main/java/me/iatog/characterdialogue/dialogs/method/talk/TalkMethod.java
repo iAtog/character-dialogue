@@ -24,7 +24,6 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
 
     // List of players to wait sneak
     private final List<UUID> players;
-
     /**
      * DESIGN:
      * talk: <type>|<message>
@@ -90,12 +89,13 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
             completed.accept(CompletedType.DESTROY);
             return;
         }
-
+        String color = configuration.getString("color", "<gray>");
         new TalkRunnable(
               players, uuid, message, skip,
               type, player, sound, translatedMessage,
               volume, pitch, session,
-              completed, npcName, getProvider()
+              completed, npcName, getProvider(),
+              color
         ).runTaskTimer(getProvider(), 20L, ticks);
     }
 
@@ -108,7 +108,7 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
 
-        if (! players.contains(player.getUniqueId())) {
+        if (!players.contains(player.getUniqueId())) {
             return;
         }
 
