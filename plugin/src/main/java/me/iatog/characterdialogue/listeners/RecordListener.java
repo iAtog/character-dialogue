@@ -3,14 +3,11 @@ package me.iatog.characterdialogue.listeners;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.command.RecordCommand;
 import me.iatog.characterdialogue.path.PathRecorder;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 public class RecordListener implements Listener {
 
@@ -30,13 +27,10 @@ public class RecordListener implements Listener {
             if(recorder.isRecording()) {
                 event.setCancelled(true);
                 recorder.stopRecording(true);
-                player.spigot().sendMessage(
-                      ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(colorize("&cRecording saved."))
-                );
 
-                player.sendMessage(main.language(true, "command.record.saved"));
+                AdventureUtil.sendActionBar(player, "<red>Recording saved.");
+                AdventureUtil.sendMessage(player, main.language(true, "command.record.saved", recorder.getName()));
             }
         }
     }
-
 }

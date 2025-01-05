@@ -98,7 +98,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
 
         PathRecorder recorder = recorders.get(sender.getUniqueId());
         recorder.stopRecording(true);
-        AdventureUtil.sendMessage(sender, main.language(true, "command.record.saved"));
+        AdventureUtil.sendMessage(sender, main.language(true, "command.record.saved", recorder.getName()));
     }
 
     @Usage("<name>")
