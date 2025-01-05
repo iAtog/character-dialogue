@@ -26,9 +26,10 @@ public class ChoiceForm {
     public Form load(ChoiceData data) {
         Player player = data.getPlayer();
         SimpleForm.Builder form = SimpleForm.builder();
-        String model = data.getConfigFile().getString("choice.text-model", "&a{I})&e {S}");
+        String model = data.getConfigFile().getString("choice.text-model");
+        String title = CharacterDialoguePlugin.getInstance().getFileFactory().getLanguage().getString("choice-title", "Select an option");
 
-        form.title(CharacterDialoguePlugin.getInstance().getFileFactory().getLanguage().getString("choice-title", "Select an option"));
+        form.title(serializer.serialize(AdventureUtil.minimessage(title)));
 
         data.getChoiceSession().getChoices().forEach((index, choice) -> {
             Component component = AdventureUtil.minimessage(

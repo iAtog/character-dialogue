@@ -29,7 +29,9 @@ public class ChoiceGUI {
 
     public void buildGUI(ChoiceData data) {
         String hover = main.getFileFactory().getLanguage().getString("select-choice");
-        Gui gui = Gui.gui().title(Component.text("Select one"))
+        String title = main.getFileFactory().getLanguage().getString("choice-title");
+
+        Gui gui = Gui.gui().title(AdventureUtil.minimessage(title))
               .rows(5)
               .disableAllInteractions()
               .type(GuiType.CHEST)
