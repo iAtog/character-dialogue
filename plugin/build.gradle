@@ -73,7 +73,8 @@ bukkit {
             'ConditionalEvents',
             'Citizens',
             'ZNPCsPlus',
-            'FancyNpcs'
+            'FancyNpcs',
+            'WorldGuard'
     ]
     load = 'POSTWORLD'
     commands {

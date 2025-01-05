@@ -20,6 +20,7 @@ Wiki: https://absolute-algorithmic.gitbook.io/character-dialogue-documentation/
 * MiniMessage support
 * PlaceholderAPI support
 * Conditions inside dialogues
+* Start dialogues on enter WorldGuard regions
 * Holograms (only HolographicDisplays and DecentHolograms)
 * NPCs plugins support:
   * Citizens
