@@ -36,7 +36,7 @@ public class PluginLoader implements Loader {
               new WorldGuardLoader(main)
         );
 
-        AdventureUtil.sendMessage(Bukkit.getConsoleSender(), "<red>[CharacterDialogue] <green>Plugin enabled. <gold>v" + main.getDescription().getVersion());
+        AdventureUtil.sendMessage(Bukkit.getConsoleSender(), "<gray>[<rainbow>CharacterDialogue<gray>] <green>Plugin enabled. <gold>v" + main.getDescription().getVersion());
     }
 
     @Override

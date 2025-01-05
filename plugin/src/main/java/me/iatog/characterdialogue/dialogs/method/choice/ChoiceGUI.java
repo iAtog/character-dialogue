@@ -7,6 +7,7 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.Choice;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.TextUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -27,7 +28,7 @@ public class ChoiceGUI {
     }
 
     public void buildGUI(ChoiceData data) {
-        String model = data.getConfigFile().getString("choice.text-model", "&c{I}. &7{S}");
+        String hover = main.getFileFactory().getLanguage().getString("select-choice");
         Gui gui = Gui.gui().title(Component.text("Select one"))
               .rows(5)
               .disableAllInteractions()
@@ -39,10 +40,9 @@ public class ChoiceGUI {
                     .name(Component.text(empty)).asGuiItem());
 
         data.getChoiceSession().getChoices().forEach((index, choice) -> {
-            GuiItem choiceItem = createChoiceItem(index, choice, model);
+            GuiItem choiceItem = createChoiceItem(index, choice, hover);
             gui.addItem(choiceItem);
         });
-
 
         gui.setCloseGuiAction(ac -> {
             if (destroy) {
@@ -55,19 +55,21 @@ public class ChoiceGUI {
         gui.open(data.getPlayer());
     }
 
-    public GuiItem createChoiceItem(int index, Choice choice, String model) {
+    public GuiItem createChoiceItem(int index, Choice choice, String hover) {
         return ItemBuilder
               .skull(new ItemStack(Material.PLAYER_HEAD, index))
               .texture(getTexture(index))
               .amount(index)
-              .name(Component.text(TextUtils.colorize(choice.getMessage())))
-              .lore(Arrays.asList(Component.text(TextUtils.colorize("&7")), Component.text(TextUtils.colorize("&a&lClick here to select #" + index))))
+              .name(AdventureUtil.minimessage("<reset>" + choice.getMessage()))
+              .lore(Arrays.asList(
+                    Component.empty(),
+                    AdventureUtil.minimessage("<reset>" + hover.replace("%str%", index+""))
+              ))
               .asGuiItem(action -> {
                   destroy = false;
                   Player player = (Player) action.getWhoClicked();
                   player.closeInventory();
                   ChoiceUtil.runChoice(player, index);
-
               });
     }
 

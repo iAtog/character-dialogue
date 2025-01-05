@@ -21,7 +21,6 @@ import java.util.function.Consumer;
 
 import static me.iatog.characterdialogue.dialogs.method.choice.ChoiceMethod.COMMAND_NAME;
 
-@SuppressWarnings("deprecation")
 public enum ChoiceType {
     CHAT(data -> {
         String model = data.getConfigFile().getString("choice.text-model", "<gray>[<red><number><gray>] <message>");
@@ -29,9 +28,8 @@ public enum ChoiceType {
         TextComponent.Builder builder = Component.text().append(Component.newline());
         session.getChoices().forEach((index, choice) -> {
             Component modelComponent = AdventureUtil.minimessage(
-                  model,
+                  model.replace("<message>", choice.getMessage()),
                   AdventureUtil.placeholder("player", data.getPlayer().getName()),
-                  AdventureUtil.placeholder("message", choice.getMessage()),
                   AdventureUtil.placeholder("number", index+"")
             );
 
@@ -50,41 +48,23 @@ public enum ChoiceType {
         data.getPlayer().getInventory().setHeldItemSlot(8);
         AdventureUtil.sendMessage(data.getPlayer(), builder.build());
     }, data -> data.getPlayer().closeInventory()),
-    CHATE(data -> {
-        ComponentBuilder questions = new ComponentBuilder("\n");
-        String model = data.getConfigFile().getString("choice.text-model", "&a{I})&e {S}");
-        ChoiceSession choiceSession = data.getChoiceSession();
-
-        choiceSession.getChoices().forEach((index, choice) -> {
-            String parsedModel = TextUtils.colorize(model).replace("{I}",
-                  String.valueOf(index)).replace("{S}", choice.getMessage());
-            String command = COMMAND_NAME + " " + choiceSession.getUniqueId() + " " + index;
-
-            questions.append(Placeholders.translate(data.getPlayer(), parsedModel) + " \n")
-                  .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
-                  .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, ChoiceUtil.getSelectText(index)));
-        });
-
-        data.getPlayer().getInventory().setHeldItemSlot(8);
-        data.getPlayer().spigot().sendMessage(questions.create());
-    }, (data -> data.getPlayer().closeInventory())),
     GUI(data -> {
         ChoiceGUI choiceGUI = new ChoiceGUI(CharacterDialoguePlugin.getInstance());
         choiceGUI.buildGUI(data);
-    }, data -> {
-        data.getPlayer().closeInventory();
-    }),
+    }, data ->
+        data.getPlayer().closeInventory()
+    ),
     BEDROCK_GUI(data -> {
         Player player = data.getPlayer();
-        if (! FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
+        if (!FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
             ChoiceType.GUI.generateQuestions(data);
         } else {
             ChoiceForm choiceForm = new ChoiceForm();
             FloodgateApi.getInstance().sendForm(player.getUniqueId(), choiceForm.load(data));
         }
-    }, data -> {
-        data.getPlayer().closeInventory();
-    });
+    }, data ->
+        data.getPlayer().closeInventory()
+    );
 
     private final Consumer<ChoiceData> consumer;
     private final Consumer<ChoiceData> close;
