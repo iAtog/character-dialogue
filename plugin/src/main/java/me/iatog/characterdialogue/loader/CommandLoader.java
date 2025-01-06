@@ -18,13 +18,13 @@ import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.command.part.dialogue.DialoguePartFactory;
 import me.iatog.characterdialogue.command.part.group.GroupPartFactory;
 import me.iatog.characterdialogue.command.part.gui.GUIPartFactory;
-import me.iatog.characterdialogue.command.part.item.ItemStackPartFactory;
+import me.iatog.characterdialogue.command.part.item.CustomItemPartFactory;
 import me.iatog.characterdialogue.command.part.method.DialogMethodArgument;
 import me.iatog.characterdialogue.command.part.method.MethodPartFactory;
 import me.iatog.characterdialogue.command.part.npc.NPCPartFactory;
 import me.iatog.characterdialogue.command.part.record.RecordPartFactory;
 import me.iatog.characterdialogue.path.Record;
-import org.bukkit.inventory.ItemStack;
+import me.iatog.characterdialogue.util.CustomItem;
 
 public class CommandLoader implements Loader {
 
@@ -49,7 +49,7 @@ public class CommandLoader implements Loader {
         injector.bindFactory(AdaptedNPC.class, new NPCPartFactory(main));
         injector.bindFactory(GUI.class, new GUIPartFactory(main));
         injector.bindFactory(Record.class, new RecordPartFactory(main));
-        injector.bindFactory(ItemStack.class, new ItemStackPartFactory(main));
+        injector.bindFactory(CustomItem.class, new CustomItemPartFactory(main));
 
         this.builder = new AnnotatedCommandTreeBuilderImpl(injector);
     }

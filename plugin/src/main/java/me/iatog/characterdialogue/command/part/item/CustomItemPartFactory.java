@@ -7,16 +7,16 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-public class ItemStackPartFactory implements PartFactory {
+public class CustomItemPartFactory implements PartFactory {
     private final CharacterDialoguePlugin main;
 
-    public ItemStackPartFactory(CharacterDialoguePlugin main) {
+    public CustomItemPartFactory(CharacterDialoguePlugin main) {
         this.main = main;
     }
 
     @Override
     public CommandPart createPart(String s, List<? extends Annotation> list) {
-        return new ItemStackPart(main, s);
+        return new CustomItemPart(main, s);
     }
 
 }

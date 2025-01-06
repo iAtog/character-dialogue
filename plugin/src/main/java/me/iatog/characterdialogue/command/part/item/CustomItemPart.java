@@ -7,24 +7,24 @@ import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.libraries.ItemManager;
-import org.bukkit.inventory.ItemStack;
+import me.iatog.characterdialogue.util.CustomItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ItemStackPart implements ArgumentPart {
+public class CustomItemPart implements ArgumentPart {
 
     private final CharacterDialoguePlugin main;
     private final String name;
 
-    public ItemStackPart(CharacterDialoguePlugin main, String name) {
+    public CustomItemPart(CharacterDialoguePlugin main, String name) {
         this.name = name;
         this.main = main;
     }
 
     @Override
-    public List<ItemStack> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
+    public List<CustomItem> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
         String itemName = stack.next().toLowerCase();
         ItemManager manager = main.getServices().getItemManager();
 
@@ -32,7 +32,7 @@ public class ItemStackPart implements ArgumentPart {
             return Collections.emptyList();
         }
 
-        return Collections.singletonList(manager.getItem(itemName));
+        return Collections.singletonList(new CustomItem(itemName, manager.getItem(itemName)));
     }
 
     @Override

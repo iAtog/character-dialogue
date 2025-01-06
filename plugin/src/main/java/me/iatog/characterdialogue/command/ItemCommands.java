@@ -10,6 +10,8 @@ import me.iatog.characterdialogue.command.object.CSubCommand;
 import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.libraries.ItemManager;
 import me.iatog.characterdialogue.util.AdventureUtil;
+import me.iatog.characterdialogue.util.CustomItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -81,12 +83,32 @@ public class ItemCommands extends CSubCommand implements CommandClass {
         AdventureUtil.sendMessage(player, main.language(true, "command.item.success"));
     }
 
+    @Usage("<id>")
+    @Command(
+          names = "delete"
+    )
+    public void deleteItem(CommandSender sender, CustomItem item) {
+        ItemManager manager = main.getServices().getItemManager();
+
+        if(item == null) {
+            AdventureUtil.sendMessage(sender, main.language(true, "command.item.not-found"));
+            return;
+        }
+
+        manager.delete(item.id());
+
+        AdventureUtil.sendMessage(sender,
+              main.language(true, "command.item.deleted"),
+              AdventureUtil.placeholder("item", item.id())
+        );
+    }
+
     @Usage("<id> [player]")
     @Command(
           names = "give",
           permission = "characterdialogue.command.item.give"
     )
-    public void giveItem(CommandSender sender, ItemStack item, @OptArg Player playerOpt) {
+    public void giveItem(CommandSender sender, CustomItem item, @OptArg Player playerOpt) {
         if(item == null) {
             AdventureUtil.sendMessage(sender, main.language(true, "command.item.not-found"));
             return;
@@ -105,7 +127,7 @@ public class ItemCommands extends CSubCommand implements CommandClass {
             target = playerOpt;
         }
 
-        target.getInventory().addItem(item);
+        target.getInventory().addItem(item.item());
         AdventureUtil.sendMessage(sender, main.language(true, "command.item.give-success"));
     }
 }

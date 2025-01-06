@@ -53,6 +53,7 @@ command:
     success: '<green>The item <red>''%s'' <green>has been successfully saved.'
     not-found: '<red>No item was found.'
     give-success: '<green>You have obtained the item correctly.'
+    deleted: '<green>Item <gray>"<red><item><gray>" <green>deleted correctly.'
   method:
     list-title: '<gray><bold>>>><reset> <green>List of methods:'
     list-line: '<red><bold>> <reset><red>''<green>%s<red>'' <green>method'

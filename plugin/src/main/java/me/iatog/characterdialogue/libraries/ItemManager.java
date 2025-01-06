@@ -44,6 +44,22 @@ public class ItemManager {
         }
     }
 
+    public void delete(String id) {
+        if(!items.containsKey(id)) {
+            return;
+        }
+
+        YamlDocument itemsFile = main.getFileFactory().getItems();
+        itemsFile.remove(id);
+
+        try {
+            itemsFile.save();
+            items.remove(id);
+        } catch (IOException e) {
+            main.getLogger().severe("Error deleting item: " + e.getMessage());
+        }
+    }
+
     private void loadItemStacks() {
         YamlDocument itemsFile = main.getFileFactory().getItems();
 
