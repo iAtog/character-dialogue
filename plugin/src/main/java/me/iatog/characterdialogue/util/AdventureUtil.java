@@ -40,6 +40,12 @@ public class AdventureUtil {
         );
     }
 
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull String message, TagResolver ...resolvers) {
+        CharacterDialoguePlugin.getInstance().getAudiences().sender(sender).sendMessage(
+              minimessage.deserialize(message, resolvers)
+        );
+    }
+
     /**
      * Send a message to the sender using minimessage.
      * @param sender the sender who receives the message
