@@ -4,6 +4,8 @@ select-choice: '<green>Click here to select <red>#%str%'
 loaded-dialogues: '<green>Loaded %s dialogues.'
 choice-title: 'Select an option'
 cooldown-message: '<red>Calm down.'
+choice-timeout: '<red>You took a long time to answer'
+sneak-continue: '[ Sneak to continue ]'
 general:
   offline-player: '<red>The specified player isn''t online.'
   only-player: '<red>Only players can execute this command.'

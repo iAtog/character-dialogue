@@ -10,9 +10,7 @@ import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -22,18 +20,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
-
 public class ChoiceUtil {
 
     private static final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
-
-    @SuppressWarnings("deprecation")
-    public static BaseComponent[] getSelectText(int index) {
-        YamlDocument file = CharacterDialoguePlugin.getInstance().getFileFactory().getLanguage();
-        String text = file.getString("select-choice", "&aClick here to select #%str%").replace("%str%", index + "");
-        return new BaseComponent[]{ new TextComponent(colorize(text)) };
-    }
 
     public static DialogChoice getByClassName(Class<? extends DialogChoice> clazz) {
         for (DialogChoice target : CharacterDialoguePlugin.getInstance().getCache().getChoices().values()) {
@@ -47,7 +36,6 @@ public class ChoiceUtil {
 
     public static boolean isContextValid(MethodContext context) {
         CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
-        //YamlDocument choicesFile = main.getFileFactory().getChoicesFile();
         String choice = context.getConfiguration().getArgument();
 
 
@@ -114,9 +102,7 @@ public class ChoiceUtil {
 
             if (player != null && player.isOnline()) {
                 onClose.accept(data);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                      TextComponent.fromLegacyText(colorize("&cYou took a long time to answer")));
-
+                AdventureUtil.sendActionBar(player, main.language("choice-timeout"));
             }
         }, 20L * secondsCooldown);
 
