@@ -33,7 +33,8 @@ public class PluginLoader implements Loader {
               new GUILoader(main),
               new AdapterLoader(main),
               new UpdateLoader(main),
-              new WorldGuardLoader(main)
+              new WorldGuardLoader(main),
+              new ChoiceLoader(main)
         );
 
         AdventureUtil.sendMessage(Bukkit.getConsoleSender(), "<gray>[<rainbow>CharacterDialogue<gray>] <green>Plugin enabled. <gold>v" + main.getDescription().getVersion());
@@ -41,10 +42,9 @@ public class PluginLoader implements Loader {
 
     @Override
     public void unload() {
-        loaders.forEach((clazz, loader) -> {
-            loader.unload();
-        });
+        loaders.forEach((clazz, loader) -> loader.unload());
         loaders.clear();
+
         NPCControlMethod.registries.forEach((_uuid, npcs) -> {
             npcs.clearAll();
         });

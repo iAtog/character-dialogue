@@ -6,6 +6,7 @@ import me.iatog.characterdialogue.adapter.AdapterManager;
 import me.iatog.characterdialogue.adapter.NPCAdapter;
 import me.iatog.characterdialogue.api.CharacterDialogueAPI;
 import me.iatog.characterdialogue.api.dialog.RegionalDialogue;
+import me.iatog.characterdialogue.dialogs.ChoiceInfo;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.enums.ConditionType;
@@ -180,7 +181,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         String folderName = "dialogues";
         File folder = new File(this.getDataFolder() + "/" + folderName);
 
-        if (! folder.exists()) {
+        if (!folder.exists()) {
             folder.mkdir();
             YamlDocument defaultDialogues = YamlDocument.create(new File(getDataFolder() + "/" + folderName + "/examples.yml"), Objects.requireNonNull(getResource("dialogues/dialogs.yml")));
             dialogues.add(defaultDialogues);
@@ -198,6 +199,62 @@ public class CharacterDialoguePlugin extends JavaPlugin {
                     dialogues.add(yamlDocument);
                 }
             }
+        }
+    }
+
+    public void loadAllChoices() {
+        String folderName = getDataFolder() + "/" + "choices";
+        File folder = new File(folderName);
+
+        if(!folder.exists()) {
+            folder.mkdir();
+            try {
+                YamlDocument defaultChoices = YamlDocument.create(new File(folderName + "/choice-example.yml"), Objects.requireNonNull(getResource("choices.yml")));
+                loadChoices(defaultChoices);
+            } catch (IOException e) {
+                getLogger().warning("Error loading default choices file: " + e.getMessage());
+            }
+
+            return;
+        }
+
+        if(folder.isDirectory()) {
+            File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
+            if (files != null) {
+                for (File file : files) {
+                    if (!file.isFile()) continue;
+
+                    try {
+                        YamlDocument yamlDocument = YamlDocument.create(file);
+                        loadChoices(yamlDocument);
+                    } catch(IOException e) {
+                        getLogger().severe("Error loading choices: " + e.getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+    public void clearAllChoices() {
+        getCache().getLoadedChoices().clear();
+    }
+
+    private void loadChoices(YamlDocument document) {
+        Map<String, List<ChoiceInfo>> loadedChoices = getCache().getLoadedChoices();
+
+        for(String choiceName : document.getSection("choices").getRoutesAsStrings(false)) {
+            List<ChoiceInfo> choices = new ArrayList<>();
+
+            for(String option : document.getSection("choices." + choiceName).getRoutesAsStrings(false)) {
+                Section section = document.getSection("choices." + choiceName + "." + option);
+                String type = section.getString("type");
+                String message = section.getString("message", "no message specified");
+                String argument = section.getString("argument", "");
+                ChoiceInfo info = new ChoiceInfo(option, type, message, argument);
+                choices.add(info);
+            }
+
+            loadedChoices.put(choiceName, choices);
         }
     }
 

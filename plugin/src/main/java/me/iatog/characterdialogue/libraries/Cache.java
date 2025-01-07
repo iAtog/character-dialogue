@@ -2,6 +2,7 @@ package me.iatog.characterdialogue.libraries;
 
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.api.dialog.RegionalDialogue;
+import me.iatog.characterdialogue.dialogs.ChoiceInfo;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.player.PlayerData;
@@ -21,6 +22,7 @@ public class Cache {
     private final List<UUID> frozenPlayers;
     private final Map<UUID, PlayerData> playerDataMap;
     private final Map<String, RegionalDialogue> regionalDialogues;
+    private final Map<String, List<ChoiceInfo>> loadedChoices;
 
     public Cache() {
         this.methods = new HashMap<>();
@@ -31,6 +33,7 @@ public class Cache {
         this.frozenPlayers = new ArrayList<>();
         this.playerDataMap = new HashMap<>();
         this.regionalDialogues = new HashMap<>();
+        this.loadedChoices = new HashMap<>();
     }
 
     public Map<String, DialogMethod<? extends JavaPlugin>> getMethods() {
@@ -55,6 +58,10 @@ public class Cache {
 
     public List<UUID> getFrozenPlayers() {
         return frozenPlayers;
+    }
+
+    public Map<String, List<ChoiceInfo>> getLoadedChoices() {
+        return loadedChoices;
     }
 
     public Map<UUID, PlayerData> getPlayerData() {

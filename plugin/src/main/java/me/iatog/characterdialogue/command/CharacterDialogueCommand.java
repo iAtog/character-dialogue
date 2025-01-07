@@ -18,9 +18,7 @@ import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.logging.log4j.util.Strings;
 import org.bukkit.command.CommandSender;
@@ -29,8 +27,6 @@ import org.bukkit.entity.*;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 @Command(names = {
       "characterdialogue", "characterd"
@@ -107,6 +103,9 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
 
         reloadDialogues(sender, cache);
         main.loadRegionalDialogues();
+
+        main.clearAllChoices();
+        main.loadAllChoices();
 
         AdventureUtil.sendMessage(sender, main.language(true, "loaded-dialogues", cache.getDialogues().size()));
         AdventureUtil.sendMessage(sender, main.language(true, "command.reload.success"));

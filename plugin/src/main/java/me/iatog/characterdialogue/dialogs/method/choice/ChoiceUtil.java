@@ -5,6 +5,7 @@ import dev.dejvokep.boostedyaml.block.implementation.Section;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.events.ChoiceSelectEvent;
 import me.iatog.characterdialogue.dialogs.Choice;
+import me.iatog.characterdialogue.dialogs.ChoiceInfo;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.session.ChoiceSession;
@@ -16,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -23,6 +25,8 @@ import java.util.function.Consumer;
 import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 public class ChoiceUtil {
+
+    private static final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
 
     @SuppressWarnings("deprecation")
     public static BaseComponent[] getSelectText(int index) {
@@ -43,7 +47,7 @@ public class ChoiceUtil {
 
     public static boolean isContextValid(MethodContext context) {
         CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
-        YamlDocument choicesFile = main.getFileFactory().getChoicesFile();
+        //YamlDocument choicesFile = main.getFileFactory().getChoicesFile();
         String choice = context.getConfiguration().getArgument();
 
 
@@ -57,7 +61,7 @@ public class ChoiceUtil {
             return false;
         }
 
-        if (! choicesFile.contains("choices." + choice)) {
+        if (!main.getCache().getLoadedChoices().containsKey(choice)) {
             String msg = "The choice \"" + choice + "\" doesn't exists.";
             main.getLogger().warning(msg);
             context.getSession().sendDebugMessage(msg, "ChoiceMethod");
@@ -69,13 +73,16 @@ public class ChoiceUtil {
 
     public static void addChoices(ChoiceSession choiceSession, String choiceName) {
         CharacterDialoguePlugin provider = CharacterDialoguePlugin.getInstance();
-        YamlDocument choicesFile = provider.getFileFactory().getChoicesFile();
+        Map<String, List<ChoiceInfo>> loadedChoices = main.getCache().getLoadedChoices();
 
-        for (String choice : choicesFile.getSection("choices." + choiceName).getRoutesAsStrings(false)) {
-            Section section = choicesFile.getSection("choices." + choiceName + "." + choice);
-            String type = section.getString("type");
-            String message = section.getString("message", "no message specified");
-            String argument = section.getString("argument", "");
+        if(!loadedChoices.containsKey(choiceName)) {
+            return;
+        }
+
+        for (ChoiceInfo choice : loadedChoices.get(choiceName)) {
+            String type = choice.getType();
+            String message = choice.getMessage();
+            String argument = choice.getArgument();
 
             if (type == null || !provider.getCache().getChoices().containsKey(type)) {
                 provider.getLogger().warning("The type of choice '" + choice + "' in " + choiceName + " isn't valid");
@@ -84,7 +91,7 @@ public class ChoiceUtil {
 
             DialogChoice choiceObject = provider.getCache().getChoices().get(type);
 
-            if (message.isEmpty() && choiceObject.isArgumentRequired()) {
+            if (argument.isEmpty() && choiceObject.isArgumentRequired()) {
                 provider.getLogger().severe("The argument in the choice \"" + choice + "\" is missing");
                 continue;
             }

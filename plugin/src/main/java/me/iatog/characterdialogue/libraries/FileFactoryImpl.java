@@ -18,7 +18,6 @@ public class FileFactoryImpl implements FileFactory {
 
     private YamlDocument config;
     private YamlDocument lang;
-    private YamlDocument choices;
     private YamlDocument items;
 
     private final CharacterDialoguePlugin main;
@@ -33,7 +32,6 @@ public class FileFactoryImpl implements FileFactory {
                   configVersion.getLoaderSettings(), configVersion.getUpdaterSettings());
             this.lang = createYamlDocument("language.yml",
                   languageVersion.getLoaderSettings(), languageVersion.getUpdaterSettings());
-            this.choices = createYamlDocument("choices.yml");
             this.items = YamlDocument.create(getFile("items.yml"),
                   getResource("items.yml", main), GeneralSettings.builder()
                   .setSerializer(SpigotSerializer.getInstance()).build());
@@ -65,10 +63,6 @@ public class FileFactoryImpl implements FileFactory {
         return config;
     }
 
-    public YamlDocument getChoicesFile() {
-        return choices;
-    }
-
     @Override
     public YamlDocument getLanguage() {
         return lang;
@@ -83,8 +77,6 @@ public class FileFactoryImpl implements FileFactory {
     public void reload() throws IOException {
         config.reload();
         lang.reload();
-        choices.reload();
         items.reload();
-        //main.getAllDialogues().forEach(YamlFile::reload);
     }
 }

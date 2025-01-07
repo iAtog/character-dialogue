@@ -9,8 +9,6 @@ public interface FileFactory {
 
     YamlDocument getLanguage();
 
-    YamlDocument getChoicesFile();
-
     YamlDocument getItems();
 
     void reload() throws IOException;
