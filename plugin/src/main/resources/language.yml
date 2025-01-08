@@ -1,5 +1,5 @@
 file-version: '1'
-command-info: '<red><bold>>> <reset><red>/%command% <yellow>%usage% | <gray>%description%'
+command-info: '<red><bold>> <reset><red>/%command% <yellow>%usage% | <gray>%description%'
 select-choice: '<green>Click here to select <red>#%str%'
 loaded-dialogues: '<green>Loaded %s dialogues.'
 choice-title: 'Select an option'
@@ -26,7 +26,7 @@ command:
     success: '<green>The npc <gray>''%s'' <green>was assigned to <red>''%s'' <green>dialogue.'
   gui:
     not-found: '<red>No gui has been found with that name.'
-    success: '<green>GUI opened: %s'
+    success: '<green>GUI opened: <red>%s'
   dialogue:
     not-found: '<red>A dialogue with that name was not found.'
     console: '<red>You need to specify the target player.'
@@ -82,3 +82,17 @@ command:
       first: '<yellow>First Point<gray>: %s'
       last: '<yellow>Last Point<gray>: %s'
       duration: '<yellow>Estimated duration<gray>: <green>%s seconds'
+  player-data:
+    invalid: "<red>Invalid data has been entered in the command"
+    added:
+      dialogue: '<green>Successfully added %s to player data'
+      firstInteraction: '<green>Successfully added %s first-interaction to player data'
+      already: '<red>The dialog %s is already added.'
+    removed:
+      dialogue: "<green>Successfully removed %s in player data"
+      firstInteraction: '<green>Successfully removed %s first-interaction in player data'
+      not-present: '<red>The "%s" dialog is not in the list.'
+    view:
+      title: "<gray><bold>>> <reset><gray>[ <gold>Data of <player><gray> ]"
+      dialogues: '<gray><bold>> <reset><red>Dialogues<gray>: <dialogues>'
+      first-interactions: '<gray><bold>> <reset><red>First interactions<gray>: <dialogues>'

@@ -37,7 +37,8 @@ import java.util.UUID;
       MethodCommands.class,
       GroupsCommands.class,
       RecordCommand.class,
-      ItemCommands.class
+      ItemCommands.class,
+      PlayerDataCommands.class
 })
 public class CharacterDialogueCommand extends CSubCommand implements CommandClass {
 
@@ -111,9 +112,7 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
         AdventureUtil.sendMessage(sender, main.language(true, "command.reload.success"));
     }
 
-    @Command(
-          names = "player-data"
-    )
+    //@Command(names = "player-data")
     public void viewData(@Sender CommandSender sender, Player player) {
         if(player == null) {
             return;

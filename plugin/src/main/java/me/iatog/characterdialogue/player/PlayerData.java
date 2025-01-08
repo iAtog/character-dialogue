@@ -55,4 +55,12 @@ public class PlayerData {
         return firstInteractions;
     }
 
+    public List<String> getDialogues(boolean firstInteraction) {
+        if(firstInteraction) {
+            return getFirstInteractions();
+        } else {
+            return getFinishedDialogs();
+        }
+    }
+
 }
