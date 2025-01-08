@@ -28,6 +28,9 @@ public class AdapterManager {
 
     public void setAdapter(NPCAdapter<?> adapter) {
         this.adapter = adapter;
+        this.adapter.registerEvents(main);
+        this.adapter.loadNPCs();
+        main.getLogger().info("Using custom adapter: " + this.adapter.getName());
     }
 
     public NPCAdapter<?> getAdapter() {
