@@ -51,14 +51,24 @@ public class ZNPCsPlusListener implements Listener {
         NpcEntry npc = event.getEntry();
         Player player = event.getPlayer();
         Map<UUID, ControlRegistry> registries = NPCControlMethod.registries;
+        String name = npc.getId();
 
-        if(npc.getId().endsWith("_cloned")) {
+        if(name.endsWith("_cloned")) {
             ControlRegistry registry = registries.get(player.getUniqueId());
-            if(registry != null && registry.findCopy(npc.getId()) != null) {
+            if(registry != null && registry.findCopy(name) != null) {
                 return;
             }
 
             event.setCancelled(true);
+        } else {
+            // Prevent visibility
+            UUID playerId = player.getUniqueId();
+            ControlRegistry registry = registries.get(playerId);
+
+            if(registry != null && registry.isOnRegistry(name) &&
+                  registry.get(name).isHideOriginal() && registry.get(name).getOriginal().getId().equalsIgnoreCase(name)) {
+                event.setCancelled(true);
+            }
         }
     }
 
