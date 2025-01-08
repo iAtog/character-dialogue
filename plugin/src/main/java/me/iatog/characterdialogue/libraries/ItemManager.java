@@ -29,16 +29,15 @@ public class ItemManager {
     }
 
     public Map<String, ItemStack> getItems() {
-        return Collections.unmodifiableMap(items);
+        return items;
     }
 
     public void saveItem(String id, ItemStack itemStack) {
         YamlDocument itemsFile = main.getFileFactory().getItems();
-        //itemsFile.set(id, itemStack);
         itemsFile.set(id, itemStack);
         try {
             itemsFile.save();
-            items.put(id, itemStack);
+            items.put(id, itemStack.clone());
         } catch (IOException e) {
             main.getLogger().severe("Error saving item: " + e.getMessage());
         }

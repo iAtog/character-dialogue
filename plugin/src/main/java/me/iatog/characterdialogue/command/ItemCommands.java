@@ -59,7 +59,7 @@ public class ItemCommands extends CSubCommand implements CommandClass {
           names = "save",
           permission = "characterdialogue.command.item.save"
     )
-    public void saveItem(@Sender Player player, @OptArg("") String id) {
+    public void saveItem(@Sender Player player, String id) {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if(itemInHand.getAmount() <= 0 || itemInHand.getType() == Material.AIR) {
@@ -80,7 +80,7 @@ public class ItemCommands extends CSubCommand implements CommandClass {
         }
 
         manager.saveItem(id, itemInHand);
-        AdventureUtil.sendMessage(player, main.language(true, "command.item.success"));
+        AdventureUtil.sendMessage(player, main.language(true, "command.item.success", id));
     }
 
     @Usage("<id>")
