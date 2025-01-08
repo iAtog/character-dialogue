@@ -32,7 +32,6 @@ public class CacheLoader implements Loader {
               new CommandMethod(main),
               new TeleportMethod(),
               new EffectMethod(main),
-              new SendServerMethod(main),
               new SneakMethod(main),
               new ConditionalMethod(main),
               new GiveMethod(main),
