@@ -95,6 +95,10 @@ public class AdaptedZNPC implements AdaptedNPC {
         if(this.npc == null) {
             return;
         }
+        if(this.task != null) {
+            task.cancel();
+            task = null;
+        }
 
         NpcApiProvider.get().getNpcRegistry().delete(npc.getId());
     }
@@ -161,6 +165,11 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     @Override
     public void follow(Player player) {
+        if(!main.isPaper()) {
+            main.getLogger().severe("In order to use the follow the player feature, you need to use PaperMC.");
+            return;
+        }
+
         if(task != null) {
             task.cancel();
         }
@@ -173,6 +182,11 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     @Override
     public void unfollow(Player player) {
+        if(!main.isPaper()) {
+            main.getLogger().severe("In order to use the follow the player feature, you need to use PaperMC.");
+            return;
+        }
+
         FollowingNPC following = CharacterDialoguePlugin.getInstance().getServices().getFollowingNPC();
         following.stopAndRemoveEntity(getId());
     }

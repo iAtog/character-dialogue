@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FollowingNPC {
-    // String = NPC Id
-    // UUID 2 = Player UUID
     private final CharacterDialoguePlugin main;
     private final Map<String, FollowData> followingEntities;
 
@@ -24,8 +22,11 @@ public class FollowingNPC {
         this.main = main;
     }
 
-    @SuppressWarnings("deprecation")
     public void scheduleNPCMovement(AdaptedNPC npc, Entity entity, Player player) {
+        if(!main.isPaper()) {
+            main.getLogger().severe("In order to use the follow the player feature, you need to use PaperMC.");
+            return;
+        }
         if(followingEntities.containsKey(npc.getId())) {
             main.getLogger().warning(npc.getName() + " is already following a player.");
             return;
@@ -61,7 +62,6 @@ public class FollowingNPC {
         Entity entity = player.getWorld().spawnEntity(location, EntityType.HUSK);
         Husk mob = ((Husk) entity);
 
-        mob.setArmsRaised(false);
         mob.setCanBreakDoors(false);
         mob.setCollidable(false);
         mob.setAdult();

@@ -156,6 +156,11 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public void follow(Player player) {
+        if(!main.isPaper()) {
+            main.getLogger().severe("In order to use the follow the player feature, you need to use PaperMC.");
+            return;
+        }
+
         if(task != null) {
             task.cancel();
             task = null;
@@ -169,6 +174,11 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public void unfollow(Player player) {
+        if(!main.isPaper()) {
+            main.getLogger().severe("In order to use the follow the player feature, you need to use PaperMC.");
+            return;
+        }
+
         FollowingNPC following = CharacterDialoguePlugin.getInstance().getServices().getFollowingNPC();
         following.stopAndRemoveEntity(getId());
     }

@@ -3,6 +3,7 @@ package me.iatog.characterdialogue.loader;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.method.npc_control.NPCControlMethod;
 import me.iatog.characterdialogue.filter.ConsoleFilter;
+import me.iatog.characterdialogue.placeholders.CharacterDialogueExpansion;
 import me.iatog.characterdialogue.util.AdventureUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -36,6 +37,10 @@ public class PluginLoader implements Loader {
               new WorldGuardLoader(main),
               new ChoiceLoader(main)
         );
+
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new CharacterDialogueExpansion(main).register();
+        }
 
         AdventureUtil.sendMessage(Bukkit.getConsoleSender(), "<gray>[<rainbow>CharacterDialogue<gray>] <green>Plugin enabled. <gold>v" + main.getDescription().getVersion());
     }

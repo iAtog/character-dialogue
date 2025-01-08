@@ -1,5 +1,6 @@
 package me.iatog.characterdialogue.path;
 
+import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -10,9 +11,11 @@ public class PathTrait extends Trait {
 
     private int index = 0;
     private List<RecordLocation> paths;
+    private final boolean useSneak;
 
     public PathTrait() {
         super("path_trait");
+        useSneak = CharacterDialoguePlugin.getInstance().isVersionAtLeast("1.20.6");
     }
 
     @Override
@@ -28,7 +31,10 @@ public class PathTrait extends Trait {
             Location location = path.toLocation();
 
             npc.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-            npc.getEntity().setSneaking(path.isSneaking());
+            if(CharacterDialoguePlugin.getInstance().isPaper() && useSneak) {
+                npc.getEntity().setSneaking(path.isSneaking());
+            }
+
             index++;
         }
     }

@@ -46,6 +46,10 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private Services services;
     private BukkitAudiences audiences;
 
+    private boolean isPaper;
+    private String serverVersion;
+    private String[] serverVersionArray;
+
     /**
      * I only set this method for third party plugins, I do not use this method and
      * even less abuse it. <br>
@@ -67,6 +71,11 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        getLogger().info("Server version: " + Bukkit.getVersion());
+
+        serverVersion = Bukkit.getVersion().split("\\(MC: ")[1].split("\\)")[0];
+        serverVersionArray = serverVersion.split("\\.");
+
         this.audiences = BukkitAudiences.create(this);
         try {
             loadAllDialogues();
@@ -85,9 +94,10 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
         this.services = new Services(this);
 
-        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new CharacterDialogueExpansion(this).register();
-        }
+        try {
+            Class.forName("com.destroystokyo.paper.ParticleBuilder");
+            isPaper = true;
+        } catch (ClassNotFoundException ignored) {}
 
         getLogger().info("Loaded in " + (System.currentTimeMillis() - startup) + "ms");
     }
@@ -320,6 +330,26 @@ public class CharacterDialoguePlugin extends JavaPlugin {
             newList.add(colorize(line.formatted(format)));
         });
         return newList;
+    }
+
+    public boolean isPaper() {
+        return isPaper;
+    }
+
+    public boolean isVersionAtLeast(String requiredVersion) {
+        String[] requiredVersionArray = requiredVersion.split("\\.");
+        for (int i = 0; i < requiredVersionArray.length; i++) {
+            int versionNumber = Integer.parseInt(serverVersionArray[i]);
+            int requiredVersionNumber = Integer.parseInt(requiredVersionArray[i]);
+
+            if (versionNumber > requiredVersionNumber) {
+                return true;
+            }
+            else if (versionNumber < requiredVersionNumber) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
