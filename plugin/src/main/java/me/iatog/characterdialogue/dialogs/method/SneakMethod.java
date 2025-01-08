@@ -74,7 +74,8 @@ public class SneakMethod extends DialogMethod<CharacterDialoguePlugin> implement
                 String text = getProvider().language("sneak-continue");
                 for (UUID uuid : waitingPlayers.keySet()) {
                     Player player = Bukkit.getPlayer(uuid);
-                    if (player == null || !player.isOnline()) {
+                    if (player == null || !player.isOnline() ||
+                          !getProvider().getCache().getDialogSessions().containsKey(player.getUniqueId())) {
                         waitingPlayers.remove(uuid);
                         continue;
                     }
