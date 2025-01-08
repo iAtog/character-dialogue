@@ -57,14 +57,10 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
      */
 
     private final CharacterDialoguePlugin main;
-    private MiniMessage minimessage;
-    private BukkitAudiences audiences;
 
     public CharacterDialogueCommand(CharacterDialoguePlugin main) {
         super();
         this.main = main;
-        this.minimessage = MiniMessage.miniMessage();
-        this.audiences = BukkitAudiences.create(main);
     }
 
     public void addCommands() {
@@ -110,18 +106,6 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
 
         AdventureUtil.sendMessage(sender, main.language(true, "loaded-dialogues", cache.getDialogues().size()));
         AdventureUtil.sendMessage(sender, main.language(true, "command.reload.success"));
-    }
-
-    //@Command(names = "player-data")
-    public void viewData(@Sender CommandSender sender, Player player) {
-        if(player == null) {
-            return;
-        }
-
-        PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
-
-        AdventureUtil.sendMessage(sender, "<red>Dialogues<gray>: " + Strings.join(data.getFinishedDialogs(), ','));
-        AdventureUtil.sendMessage(sender, "<red>First interactions<gray>: " + Strings.join(data.getFirstInteractions(), ','));
     }
 
     @Usage("<player>")
