@@ -82,7 +82,8 @@ public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
             }
 
             ConditionalExpression conditionalExpression = ConditionalExpression.valueOf(method);
-            conditionalExpression.execute(new ConditionData(session, getProvider(), TextUtils.colorize(argument)), context.getConsumer());
+            conditionalExpression.execute(new ConditionData(session, getProvider(),
+                  Placeholders.translate(context.getPlayer(), argument)), context.getConsumer());
         } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
             context.getPlayer().sendMessage(TextUtils.colorize("&c&lFatal error occurred."));
             getProvider().getLogger().warning("The dialogue '" + session.getDialogue().getName() + "' has an invalid format in L" + session.getCurrentIndex());

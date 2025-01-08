@@ -73,9 +73,8 @@ public class AdapterManager {
     public boolean handleHideNPCs(AdaptedNPC npc, Player player) {
         YamlDocument config = main.getFileFactory().getConfig();
         String route = "hidden-npcs." + npc.getId();
-              String path = route + ".conditions";
 
-        if(player == null || !config.contains(path)) {
+        if(player == null || !config.contains(route + ".conditions")) {
             return false;
         }
 
@@ -85,7 +84,7 @@ public class AdapterManager {
             return false;
         }
 
-        List<String> conditions = config.getStringList(path);
+        List<String> conditions = config.getStringList(route + ".conditions");
         ConditionType type = ConditionType.to(typeName);
 
         return main.getApi().evaluateConditions(player, conditions, type);
