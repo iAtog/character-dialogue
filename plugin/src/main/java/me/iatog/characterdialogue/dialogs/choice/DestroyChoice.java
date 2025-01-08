@@ -1,5 +1,6 @@
 package me.iatog.characterdialogue.dialogs.choice;
 
+import me.iatog.characterdialogue.dialogs.ChoiceContext;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.ChoiceSession;
@@ -14,8 +15,10 @@ public class DestroyChoice extends DialogChoice {
     }
 
     @Override
-    public void onSelect(String argument, DialogSession dialogSession, ChoiceSession choiceSession) {
-        Player player = dialogSession.getPlayer();
+    public void onSelect(ChoiceContext context) {
+        Player player = context.getPlayer();
+        String argument = context.getArgument();
+        DialogSession dialogSession = context.getDialogSession();
 
         if (!argument.isEmpty()) {
             AdventureUtil.sendMessage(player,

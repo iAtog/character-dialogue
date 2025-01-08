@@ -3,6 +3,7 @@ package me.iatog.characterdialogue.dialogs.choice;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.CharacterDialogueAPI;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
+import me.iatog.characterdialogue.dialogs.ChoiceContext;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
@@ -17,15 +18,16 @@ public class StartDialogChoice extends DialogChoice {
     }
 
     @Override
-    public void onSelect(String argument, DialogSession session, ChoiceSession choiceSession) {
+    public void onSelect(ChoiceContext context) {
         CharacterDialogueAPI api = main.getApi();
-        Dialogue dialogue = api.getDialogue(argument);
-        session.destroy();
+        Dialogue dialogue = api.getDialogue(context.getArgument());
+        context.getDialogSession().destroy();
 
         if (dialogue != null) {
-            api.runDialogue(session.getPlayer(), dialogue, session.isOnDebugMode(), session.getNPC());
+            api.runDialogue(context.getPlayer(), dialogue,
+                  context.getDialogSession().isOnDebugMode(), context.getDialogSession().getNPC());
         } else {
-            main.getLogger().severe("The dialogue \"" + argument + "\" doesn't exists");
+            main.getLogger().severe("The dialogue \"" + context.getArgument() + "\" doesn't exists");
         }
     }
 

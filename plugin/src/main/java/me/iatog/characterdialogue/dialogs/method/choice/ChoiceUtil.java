@@ -1,13 +1,8 @@
 package me.iatog.characterdialogue.dialogs.method.choice;
 
-import dev.dejvokep.boostedyaml.YamlDocument;
-import dev.dejvokep.boostedyaml.block.implementation.Section;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.events.ChoiceSelectEvent;
-import me.iatog.characterdialogue.dialogs.Choice;
-import me.iatog.characterdialogue.dialogs.ChoiceInfo;
-import me.iatog.characterdialogue.dialogs.DialogChoice;
-import me.iatog.characterdialogue.dialogs.MethodContext;
+import me.iatog.characterdialogue.dialogs.*;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
@@ -139,7 +134,7 @@ public class ChoiceUtil {
             return;
         }
 
-        choiceTarget.onSelect(choiceObject.getArgument(), dialogSession, session);
+        choiceTarget.onSelect(new ChoiceContext(choiceObject.getArgument(), dialogSession, session));
         sessions.remove(uuid);
         removeTaskIfPresent(uuid);
     }

@@ -1,6 +1,7 @@
 package me.iatog.characterdialogue.dialogs.choice;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.dialogs.ChoiceContext;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
@@ -16,10 +17,12 @@ public class RunMethodChoice extends DialogChoice {
     }
 
     @Override
-    public void onSelect(String argument, DialogSession dialogSession, ChoiceSession choiceSession) {
+    public void onSelect(ChoiceContext context) {
+        DialogSession dialogSession = context.getDialogSession();
+
         main.getApi().runDialogueExpression(
-              dialogSession.getPlayer(),
-              argument,
+              context.getPlayer(),
+              context.getArgument(),
               dialogSession.getDisplayName(),
               SingleUseConsumer.create((r) -> {
                   dialogSession.startNext();
