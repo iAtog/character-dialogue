@@ -236,8 +236,9 @@ public class ApiImplementation implements CharacterDialogueAPI {
             return;
         }
         session.sendDebugMessage("Running method '" + methodName + "'", "API:197");
-        arg = arg.replace("%npc_name%", npcName);
+        
         arg = Placeholders.translate(player, arg);
+        arg = arg.replace("%npc_name%", npcName);
 
         MethodConfiguration configuration = new MethodConfiguration(arg, Placeholders.translate(player, configPart));
 
