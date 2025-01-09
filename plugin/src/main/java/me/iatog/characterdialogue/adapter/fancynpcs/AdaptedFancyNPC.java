@@ -103,8 +103,22 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public void faceLocation(Player player) {
-        npc.lookAt(player, player.getLocation());
-        npc.update(player);
+        Location entityLocation = npc.getData().getLocation();
+        Location targetLocation = player.getLocation();
+
+        double deltaX = targetLocation.getX() - entityLocation.getX();
+        double deltaY = targetLocation.getY() - entityLocation.getY();
+        double deltaZ = targetLocation.getZ() - entityLocation.getZ();
+        double distanceXZ = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+
+        float yaw = (float) Math.toDegrees(Math.atan2(deltaZ, deltaX)) - 90;
+        float pitch = (float) -Math.toDegrees(Math.atan2(deltaY, distanceXZ));
+        
+        entityLocation.setYaw(yaw); entityLocation.setPitch(pitch);
+        entityLocation.setPitch(pitch);
+        //npc.lookAt(player, player.getLocation());
+        //npc.update(player);
+        teleport(entityLocation);
     }
 
     @Override
