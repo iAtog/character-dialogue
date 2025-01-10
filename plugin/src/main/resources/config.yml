@@ -1,4 +1,4 @@
-file-version: 4
+file-version: '1'
 cooldown-time: 2
 placeholders:
   npc: '<yellow>[NPC] <red>%npc_name%<white>:'
