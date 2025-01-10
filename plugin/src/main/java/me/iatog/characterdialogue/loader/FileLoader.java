@@ -5,7 +5,7 @@ import me.iatog.characterdialogue.libraries.FileFactoryImpl;
 
 public class FileLoader implements Loader {
 
-    private CharacterDialoguePlugin main;
+    private final CharacterDialoguePlugin main;
 
     public FileLoader(CharacterDialoguePlugin main) {
         this.main = main;

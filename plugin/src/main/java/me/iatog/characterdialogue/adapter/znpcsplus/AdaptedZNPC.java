@@ -203,13 +203,13 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     @Override
     public void show(Player player) {
-        //npc.getNpc().show(player);
-        //npc.getNpc().respawn(player);
         NpcImpl impl = (NpcImpl) npc.getNpc();
         HologramImpl hologram = impl.getHologram();
+
         if(hologram != null && !hologram.isVisibleTo(player)) {
             hologram.show(player);
         }
+
         impl.getEntity().spawn(player);
     }
 

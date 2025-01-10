@@ -7,7 +7,7 @@ public enum ClickType {
     RIGHT(Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK),
     ALL(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK, Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK);
 
-    private Action[] actions;
+    private final Action[] actions;
 
     ClickType(Action... actions) {
         this.actions = actions;

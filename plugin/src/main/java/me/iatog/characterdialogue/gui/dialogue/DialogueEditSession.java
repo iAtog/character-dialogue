@@ -61,9 +61,7 @@ public class DialogueEditSession extends GUI {
             if(!dialogueLine.getConfigurationTypes().isEmpty()) {
                 configurations.add("&7");
                 configurations.add("&8&l> &6Configuration&8:");
-                dialogueLine.getConfigurationTypes().forEach((key, valueType) -> {
-                    configurations.add("&6" + key + "&8: &f" + config.get(key, "&c&ndefault"));
-                });
+                dialogueLine.getConfigurationTypes().forEach((key, valueType) -> configurations.add("&6" + key + "&8: &f" + config.get(key, "&c&ndefault")));
             }
 
             configurations.add("&7");

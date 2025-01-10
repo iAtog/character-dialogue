@@ -114,7 +114,6 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
         Player player = event.getPlayer();
         if (registries.containsKey(player.getUniqueId())) {
             registries.remove(player.getUniqueId()).clearAll();
-            return;
         }
     }
 

@@ -118,7 +118,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
         }
 
         if(!wasReadedBy(player, dialog, firstInteraction)) {
-            List<String> list = null;
+            List<String> list;
 
             if(firstInteraction) {
                 list = data.getFirstInteractions();
@@ -142,7 +142,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
             return false;
         }
 
-        List<String> list = null;
+        List<String> list;
 
         if(firstInteraction) {
             list = data.getFirstInteractions();
@@ -360,7 +360,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
     @Override
     public void saveDialogue(Player player, String name, boolean firstInteraction) {
         PlayerData data = main.getCache().getPlayerData().get(player.getUniqueId());
-        List<String> list = null;
+        List<String> list;
 
         if(firstInteraction) {
             list = data.getFirstInteractions();

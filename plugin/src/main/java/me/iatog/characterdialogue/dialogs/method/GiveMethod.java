@@ -23,6 +23,7 @@ public class GiveMethod extends DialogMethod<CharacterDialoguePlugin> {
         setDescription("Gives an item to the player, it can be a custom item.");
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void execute(MethodContext context) {
         MethodConfiguration configuration = context.getConfiguration();

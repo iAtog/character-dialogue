@@ -38,9 +38,7 @@ public class DialoguesGUI extends GUI {
         gui.setItem(5, 1, ItemBuilder.from(Material.ARROW)
               .name(colorizeComponent("&cGo back"))
               .lore(buildLore("&7Go back to main menu"))
-              .asGuiItem(event -> {
-                  main.getGUIFactory().getGui("main").load((Player) event.getWhoClicked());
-              }));
+              .asGuiItem(event -> main.getGUIFactory().getGui("main").load((Player) event.getWhoClicked())));
 
         gui.setItem(5, 2, GUI.previousItem
               .asGuiItem(event -> gui.previous()));

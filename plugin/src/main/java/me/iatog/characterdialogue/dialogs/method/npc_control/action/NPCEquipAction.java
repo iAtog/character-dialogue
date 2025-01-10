@@ -28,7 +28,7 @@ public class NPCEquipAction implements NPCControlAction {
             String equipment = configuration.getString("slot");
             boolean useMaterial = item == null || item.equals("null");
 
-            ItemStack itemStack = null;
+            ItemStack itemStack;
 
             if(equipment == null || equipment.isEmpty()) {
                 Objects.requireNonNull(equipment, "Invalid equipment type provided '" + equipment + "' in npc_control method");

@@ -75,9 +75,7 @@ public class PlayerJoinListener implements Listener {
             if(lines != null && !lines.isEmpty()) {
                 InitializeSession initializeSession = new InitializeSession(main, lines, player, session);
 
-                initializeSession.start((x) -> {
-                    session.start();
-                }, 0);
+                initializeSession.start((x) -> session.start(), 0);
             } else {
                 session.start();
             }

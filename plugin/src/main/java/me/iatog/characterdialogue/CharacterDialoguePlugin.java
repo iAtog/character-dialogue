@@ -18,8 +18,6 @@ import me.iatog.characterdialogue.libraries.Cache;
 import me.iatog.characterdialogue.libraries.Services;
 import me.iatog.characterdialogue.loader.PluginLoader;
 import me.iatog.characterdialogue.path.PathStorage;
-import me.iatog.characterdialogue.placeholders.CharacterDialogueExpansion;
-import me.iatog.characterdialogue.util.TextUtils;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -29,8 +27,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 public class CharacterDialoguePlugin extends JavaPlugin {
 
@@ -48,7 +44,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private BukkitAudiences audiences;
 
     private boolean isPaper;
-    private String serverVersion;
     private String[] serverVersionArray;
 
     /**
@@ -74,7 +69,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         instance = this;
         getLogger().info("Server version: " + Bukkit.getVersion());
 
-        serverVersion = Bukkit.getVersion().split("\\(MC: ")[1].split("\\)")[0];
+        String serverVersion = Bukkit.getVersion().split("\\(MC: ")[1].split("\\)")[0];
         serverVersionArray = serverVersion.split("\\.");
 
         this.audiences = BukkitAudiences.create(this);
@@ -318,24 +313,6 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
     public String language(String route, Object ...format) {
         return language(false, route, format);
-    }
-
-    public String[] languageList(String route, Object ...format) {
-        YamlDocument lang = getFileFactory().getLanguage();
-        return translateList(lang.getStringList(route), format).toArray(String[]::new);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T getLoader(Class<T> loader) {
-        return (T) this.loader.getLoaders().get(loader);
-    }
-
-    private List<String> translateList(List<String> list, Object ...format) {
-        List<String> newList = new ArrayList<>();
-        list.forEach((line) -> {
-            newList.add(colorize(line.formatted(format)));
-        });
-        return newList;
     }
 
     public boolean isPaper() {

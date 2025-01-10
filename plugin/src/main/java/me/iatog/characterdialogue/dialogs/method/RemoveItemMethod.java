@@ -45,7 +45,6 @@ public class RemoveItemMethod extends DialogMethod<CharacterDialoguePlugin> {
                 int itemAmount = item.getAmount();
                 if (itemAmount > remaining) {
                     item.setAmount(itemAmount - remaining);
-                    remaining = 0;
                     break;
                 } else {
                     remaining -= itemAmount;

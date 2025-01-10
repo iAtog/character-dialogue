@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class ChoiceMethod extends DialogMethod<CharacterDialoguePlugin> {
 
-    public static String COMMAND_NAME = "/;;$/5-choice";
+    public static final String COMMAND_NAME = "/;;$/5-choice";
 
     // 'choice{type=chat, timeout=15}: choice_sample'
     // 'choice{type=bedrock, timeout=20}: choice_sample'

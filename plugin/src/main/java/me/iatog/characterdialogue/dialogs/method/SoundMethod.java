@@ -25,7 +25,7 @@ public class SoundMethod extends DialogMethod<CharacterDialoguePlugin> {
         MethodConfiguration configuration = context.getConfiguration();
         Player player = context.getPlayer();
 
-        Sound sound = null;
+        Sound sound;
 
         try {
             sound = Sound.valueOf(configuration.getString("sound"));

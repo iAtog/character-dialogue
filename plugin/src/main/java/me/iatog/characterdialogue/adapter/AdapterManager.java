@@ -7,8 +7,6 @@ import me.iatog.characterdialogue.adapter.fancynpcs.FancyNPCsAdapter;
 import me.iatog.characterdialogue.adapter.znpcsplus.ZNPCsAdapter;
 import me.iatog.characterdialogue.api.events.AdapterNPCInteractEvent;
 import me.iatog.characterdialogue.api.events.AdapterNPCSpawnEvent;
-import me.iatog.characterdialogue.dialogs.DialogMethod;
-import me.iatog.characterdialogue.dialogs.method.conditional.ConditionalMethod;
 import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.enums.ConditionType;
 import org.bukkit.Bukkit;

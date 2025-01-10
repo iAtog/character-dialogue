@@ -6,5 +6,5 @@ public enum EquipmentType {
     LEGS,
     BOOTS,
     MAIN_HAND,
-    OFF_HAND;
+    OFF_HAND
 }

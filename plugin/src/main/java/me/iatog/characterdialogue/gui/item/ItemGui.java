@@ -7,8 +7,6 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.libraries.ItemManager;
 import me.iatog.characterdialogue.util.TextUtils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -44,11 +42,7 @@ public class ItemGui extends GUI {
 
         Map<String, ItemStack> items = manager.getItems();
 
-        items.forEach((id, item) -> {
-            gui.addItem(ItemBuilder.from(item).asGuiItem((event) -> {
-                event.getWhoClicked().sendMessage(TextUtils.colorize("&aClicked item ID:&7 " + id));
-            }));
-        });
+        items.forEach((id, item) -> gui.addItem(ItemBuilder.from(item).asGuiItem((event) -> event.getWhoClicked().sendMessage(TextUtils.colorize("&aClicked item ID:&7 " + id)))));
 
         gui.open(player);
     }

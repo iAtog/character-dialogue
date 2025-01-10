@@ -13,11 +13,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class ControlUtil {
 
-    private final CharacterDialoguePlugin main;
     private final HologramLibrary hologramLibrary;
 
     public ControlUtil(CharacterDialoguePlugin main) {
-        this.main = main;
         this.hologramLibrary = main.getApi().getHologramLibrary();
     }
 

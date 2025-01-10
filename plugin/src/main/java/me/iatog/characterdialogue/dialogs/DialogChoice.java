@@ -1,8 +1,5 @@
 package me.iatog.characterdialogue.dialogs;
 
-import me.iatog.characterdialogue.session.ChoiceSession;
-import me.iatog.characterdialogue.session.DialogSession;
-
 public abstract class DialogChoice {
 
     private final String id;

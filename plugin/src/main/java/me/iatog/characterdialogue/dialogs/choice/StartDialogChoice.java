@@ -5,8 +5,6 @@ import me.iatog.characterdialogue.api.CharacterDialogueAPI;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.dialogs.ChoiceContext;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
-import me.iatog.characterdialogue.session.ChoiceSession;
-import me.iatog.characterdialogue.session.DialogSession;
 
 public class StartDialogChoice extends DialogChoice {
 

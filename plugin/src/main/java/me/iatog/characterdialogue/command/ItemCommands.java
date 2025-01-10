@@ -7,20 +7,13 @@ import me.fixeddev.commandflow.annotated.annotation.Usage;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.command.object.CSubCommand;
-import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.libraries.ItemManager;
 import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.CustomItem;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 @Command(
       names = "item"
@@ -114,7 +107,7 @@ public class ItemCommands extends CSubCommand implements CommandClass {
             return;
         }
 
-        Player target = null;
+        Player target;
 
         if (playerOpt == null) {
             if (!(sender instanceof Player player)) {

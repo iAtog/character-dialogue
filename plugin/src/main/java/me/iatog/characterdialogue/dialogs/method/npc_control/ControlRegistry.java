@@ -55,9 +55,7 @@ public class ControlRegistry {
 
 
     public void clearAll() {
-        this.npcMap.forEach((id, data) -> {
-            data.getCopy().destroy();
-        });
+        this.npcMap.forEach((id, data) -> data.getCopy().destroy());
 
         this.npcMap.clear();
     }

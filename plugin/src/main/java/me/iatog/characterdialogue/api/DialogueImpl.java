@@ -7,7 +7,6 @@ import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.dialog.DialogHologram;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.enums.ClickType;
-import me.iatog.characterdialogue.player.PlayerData;
 import org.bukkit.entity.Player;
 
 import java.util.List;

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RecordPart implements ArgumentPart {
     private final String name;
-    private PathStorage storage;
+    private final PathStorage storage;
 
     public RecordPart(String name, CharacterDialoguePlugin main) {
         this.name = name;

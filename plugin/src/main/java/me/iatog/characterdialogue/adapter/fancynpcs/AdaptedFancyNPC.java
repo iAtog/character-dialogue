@@ -116,8 +116,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         
         entityLocation.setYaw(yaw); entityLocation.setPitch(pitch);
         entityLocation.setPitch(pitch);
-        //npc.lookAt(player, player.getLocation());
-        //npc.update(player);
+
         teleport(entityLocation);
     }
 
@@ -209,16 +208,12 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     @Override
     public void show(Player player) {
-        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-            npc.spawn(player);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> npc.spawn(player));
     }
 
     @Override
     public void hide(Player player) {
-        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-            npc.remove(player);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> npc.remove(player));
     }
 
     @Override

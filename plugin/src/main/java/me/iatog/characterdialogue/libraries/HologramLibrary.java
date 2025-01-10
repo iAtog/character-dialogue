@@ -72,9 +72,7 @@ public class HologramLibrary {
                 hologram.delete();
             }
 
-            config.getSection("npc").getRoutesAsStrings(false).forEach((id) -> {
-                main.getApi().loadHologram(id);
-            });
+            config.getSection("npc").getRoutesAsStrings(false).forEach((id) -> main.getApi().loadHologram(id));
         } else if (decentHolograms) {
             for (String id : decentHologramsList) {
                 eu.decentsoftware.holograms.api.holograms.Hologram hologram = DHAPI.getHologram(name + id);
@@ -88,9 +86,7 @@ public class HologramLibrary {
 
             decentHologramsList.clear();
 
-            config.getSection("npc").getRoutesAsStrings(false).forEach((id) -> {
-                main.getApi().loadHologram(id);
-            });
+            config.getSection("npc").getRoutesAsStrings(false).forEach((id) -> main.getApi().loadHologram(id));
         }
     }
 

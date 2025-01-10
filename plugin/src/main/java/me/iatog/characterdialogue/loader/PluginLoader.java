@@ -21,6 +21,7 @@ public class PluginLoader implements Loader {
         this.loaders = new HashMap<>();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void load() {
         ((Logger) LogManager.getRootLogger()).addFilter(new ConsoleFilter());
@@ -50,9 +51,7 @@ public class PluginLoader implements Loader {
         loaders.forEach((clazz, loader) -> loader.unload());
         loaders.clear();
 
-        NPCControlMethod.registries.forEach((_uuid, npcs) -> {
-            npcs.clearAll();
-        });
+        NPCControlMethod.registries.forEach((_uuid, npcs) -> npcs.clearAll());
 
         main.getServices().getPlayerDataDatabase().saveAll();
 

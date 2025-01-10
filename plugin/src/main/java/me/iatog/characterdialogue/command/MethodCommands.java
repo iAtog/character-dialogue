@@ -9,7 +9,6 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.TestDialogueImpl;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.command.object.CSubCommand;
-import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.enums.CompletedType;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
@@ -17,13 +16,10 @@ import me.iatog.characterdialogue.util.SingleUseConsumer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 @Command(
       names = "method",

@@ -4,7 +4,6 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.method.choice.ChoiceData;
 import me.iatog.characterdialogue.dialogs.method.choice.ChoiceUtil;
 import me.iatog.characterdialogue.util.AdventureUtil;
-import me.iatog.characterdialogue.util.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;

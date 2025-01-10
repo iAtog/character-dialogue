@@ -3,7 +3,6 @@ package me.iatog.characterdialogue.dialogs.choice;
 import me.iatog.characterdialogue.dialogs.ChoiceContext;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.placeholders.Placeholders;
-import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.entity.Player;

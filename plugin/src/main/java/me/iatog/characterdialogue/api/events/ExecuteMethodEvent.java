@@ -13,10 +13,10 @@ public class ExecuteMethodEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private DialogMethod<? extends JavaPlugin> method;
-    private ClickType clickType;
-    private int npcId;
-    private String dialogName;
+    private final DialogMethod<? extends JavaPlugin> method;
+    private final ClickType clickType;
+    private final int npcId;
+    private final String dialogName;
     private boolean cancelled;
 
     public ExecuteMethodEvent(Player player, DialogMethod<? extends JavaPlugin> method, ClickType clickType, int npcId, String dialogName) {

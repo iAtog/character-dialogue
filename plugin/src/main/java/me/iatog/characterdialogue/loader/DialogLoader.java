@@ -4,12 +4,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.DialogueImpl;
-import me.iatog.characterdialogue.api.dialog.RegionalDialogue;
-import me.iatog.characterdialogue.enums.ConditionType;
 import me.iatog.characterdialogue.libraries.Cache;
-import me.iatog.characterdialogue.util.TextUtils;
-
-import java.util.List;
 
 public class DialogLoader implements Loader {
 
@@ -27,9 +22,7 @@ public class DialogLoader implements Loader {
             Section section = dialogueFile.getSection("dialogue");
 
             if (section != null) {
-                section.getRoutesAsStrings(false).forEach(name -> {
-                    cache.getDialogues().put(name, new DialogueImpl(main, name, dialogueFile));
-                });
+                section.getRoutesAsStrings(false).forEach(name -> cache.getDialogues().put(name, new DialogueImpl(main, name, dialogueFile)));
             }
         }
 

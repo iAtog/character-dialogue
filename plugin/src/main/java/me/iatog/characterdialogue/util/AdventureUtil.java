@@ -8,6 +8,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
 public class AdventureUtil {
@@ -89,8 +90,12 @@ public class AdventureUtil {
         CharacterDialoguePlugin.getInstance().getAudiences().player(player).showTitle(title);
     }
 
-    public static void sendCenteredMessage(Player player, String message, String afterMsg) {
-        TextUtils.sendCenteredMessage(player, message, afterMsg);
+    public static void sendCenteredMessage(Player player, String message, String beforeText) {
+        TextUtils.sendCenteredMessage(player, message, beforeText);
+    }
+
+    public static void sendCenteredMessage(Player player, String message) {
+        TextUtils.sendCenteredMessage(player, message, "");
     }
 
     public static Component minimessage(String text) {
@@ -101,8 +106,7 @@ public class AdventureUtil {
         return minimessage.deserialize(text, resolvers);
     }
 
-    public static TagResolver placeholder(String key, String value) {
+    public static TagResolver placeholder(@Subst("key") String key, String value) {
         return Placeholder.unparsed(key, value);
     }
-
 }

@@ -18,11 +18,11 @@ public abstract class GUI {
     private final String path;
     private final List<UUID> observers;
 
-    public static SkullBuilder previousItem = ItemBuilder.skull()
+    public static final SkullBuilder previousItem = ItemBuilder.skull()
           .name(colorizeComponent("&aPrevious"))
           .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTFmMDU5Yzk5ZThlOTIyZjhjYjdmYThlNjA0YTcwMTQ3ZmExMTg0OWIzYjNkYmJmZjIyNjU3OTEyMTRlMjM5MSJ9fX0=");
 
-    public static SkullBuilder nextItem = ItemBuilder.skull()
+    public static final SkullBuilder nextItem = ItemBuilder.skull()
           .name(colorizeComponent("&aNext"))
           .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTFjMmUyOTE5MWNiYmZhZWM0OWYyYzY0MWE0MGFhODA4ZDQ5ODQ2YjcwNWRmM2M5ZjAyYjIzOTZkYThlMTE2In19fQ==");
 

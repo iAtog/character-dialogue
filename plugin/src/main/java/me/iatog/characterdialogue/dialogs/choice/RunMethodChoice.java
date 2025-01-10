@@ -3,7 +3,6 @@ package me.iatog.characterdialogue.dialogs.choice;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.ChoiceContext;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
-import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
 
@@ -24,9 +23,7 @@ public class RunMethodChoice extends DialogChoice {
               context.getPlayer(),
               context.getArgument(),
               dialogSession.getDisplayName(),
-              SingleUseConsumer.create((r) -> {
-                  dialogSession.startNext();
-              }),
+              SingleUseConsumer.create((r) -> dialogSession.startNext()),
               dialogSession,
               dialogSession.getNPC()
         );

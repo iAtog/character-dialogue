@@ -14,13 +14,9 @@ import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.command.object.CSubCommand;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.libraries.Cache;
-import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.apache.logging.log4j.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 
@@ -201,16 +197,13 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
                 Section section = dialogueFile.getSection("dialogue");
 
                 if (section != null) {
-                    section.getRoutesAsStrings(false).forEach(name -> {
-                        cache.getDialogues().put(name, new DialogueImpl(main, name, dialogueFile));
-                    });
+                    section.getRoutesAsStrings(false).forEach(name -> cache.getDialogues().put(name, new DialogueImpl(main, name, dialogueFile)));
                 }
             }
 
         } catch (IOException exception) {
             sender.sendMessage(main.language("command.reload.dialogue-error"));
             exception.printStackTrace();
-            return;
         }
     }
 

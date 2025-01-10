@@ -18,7 +18,6 @@ public class AdapterLoader implements Loader {
 
         if(manager.getAdapter() == null) {
             main.getLogger().severe("A compatible NPC plugin has not been found, this may cause problems.");
-            return;
         }
     }
 }

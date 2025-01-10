@@ -20,11 +20,7 @@ public class ConsoleFilter implements Filter {
     }
 
     public LifeCycle.State getState() {
-        try {
-            return LifeCycle.State.STARTED;
-        } catch (Exception localException) {
-        }
-        return null;
+        return LifeCycle.State.STARTED;
     }
 
     public void initialize() {

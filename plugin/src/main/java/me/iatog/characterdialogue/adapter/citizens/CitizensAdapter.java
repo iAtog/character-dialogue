@@ -40,9 +40,7 @@ public class CitizensAdapter extends NPCAdapter<NPC> {
         List<String> list = new ArrayList<>();
         NPCRegistry registry = CitizensAPI.getNPCRegistry();
         Iterator<NPC> npcIterator = registry.iterator();
-        npcIterator.forEachRemaining(npc -> {
-            list.add(String.valueOf(npc.getId()));
-        });
+        npcIterator.forEachRemaining(npc -> list.add(String.valueOf(npc.getId())));
 
         return list;
     }

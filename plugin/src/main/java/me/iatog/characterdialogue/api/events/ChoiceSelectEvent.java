@@ -16,9 +16,9 @@ public class ChoiceSelectEvent extends PlayerEvent implements Cancellable {
 
     private boolean cancelled;
     /*private DialogChoice choice;*/
-    private UUID uuid;
-    private ChoiceSession session;
-    private Choice choice;
+    private final UUID uuid;
+    private final ChoiceSession session;
+    private final Choice choice;
 
     public ChoiceSelectEvent(Player player, UUID uuid, Choice choice, ChoiceSession session) {
         super(player);
@@ -26,10 +26,6 @@ public class ChoiceSelectEvent extends PlayerEvent implements Cancellable {
         this.choice = choice;
         this.session = session;
     }
-	/*
-	public DialogChoice getChoice() {
-		return choice;
-	}*/
 
     /**
      * Gets a list of handlers handling this event.

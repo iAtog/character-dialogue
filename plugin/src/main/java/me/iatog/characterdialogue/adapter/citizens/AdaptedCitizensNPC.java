@@ -34,11 +34,6 @@ public class AdaptedCitizensNPC implements AdaptedNPC {
         return String.valueOf(npc.getId());
     }
 
-   // @Override
-    //public Entity getEntity() {
-    //    return npc.getEntity();
-    //}
-
     @Override
     public void setName(String name) {
         npc.setName(name);
@@ -106,16 +101,19 @@ public class AdaptedCitizensNPC implements AdaptedNPC {
         trait.setPaths(locations);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void show(Player player) {
         player.showEntity(CharacterDialoguePlugin.getInstance(), npc.getEntity());
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void hide(Player player) {
         player.hideEntity(CharacterDialoguePlugin.getInstance(), npc.getEntity());
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void hideForAll() {
         npc.getEntity().setVisibleByDefault(false);

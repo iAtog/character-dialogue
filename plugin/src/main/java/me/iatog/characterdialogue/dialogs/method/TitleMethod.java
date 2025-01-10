@@ -6,13 +6,11 @@ import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.MethodConfiguration;
 import me.iatog.characterdialogue.dialogs.MethodContext;
 import me.iatog.characterdialogue.util.AdventureUtil;
-import net.kyori.adventure.Adventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.title.Title;
 
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 
 public class TitleMethod extends DialogMethod<CharacterDialoguePlugin> {
 

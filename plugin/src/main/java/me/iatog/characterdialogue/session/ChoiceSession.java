@@ -41,8 +41,8 @@ public class ChoiceSession implements Session {
         return true;
     }
 
-    public boolean addChoice(String message, Class<? extends DialogChoice> clazz, String argument) {
-        return addChoice(choices.size(), message, clazz, argument);
+    public void addChoice(String message, Class<? extends DialogChoice> clazz, String argument) {
+        addChoice(choices.size(), message, clazz, argument);
     }
 
     public boolean addChoice(String message, Class<? extends DialogChoice> clazz) {

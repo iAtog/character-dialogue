@@ -58,7 +58,7 @@ public class CharacterDialogueExpansion extends PlaceholderExpansion {
         } else if(params.startsWith("readed_size")) {
             if(params.split(":").length != 2)
                 return "0";
-            List<String> list = null;
+            List<String> list;
             String param = params.split(":")[1];
 
             if(param.equals("finished")) {

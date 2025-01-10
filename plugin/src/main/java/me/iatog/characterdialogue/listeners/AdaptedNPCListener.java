@@ -77,7 +77,7 @@ public class AdaptedNPCListener implements Listener {
 
     public Dialogue getDialogue(AdaptedNPC npc) {
         String dialogues = main.getFileFactory().getConfig().getString("npc." + npc.getId());
-        Dialogue dialogue = null;
+        Dialogue dialogue;
 
         if(dialogues.contains(",")) {
             String[] split = dialogues.split(",");

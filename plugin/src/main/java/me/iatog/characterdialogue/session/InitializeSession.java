@@ -16,8 +16,8 @@ public class InitializeSession implements Session {
     private final CharacterDialoguePlugin main;
 
     private final DialogSession session;
-    private List<String> lines;
-    private UUID playerId;
+    private final List<String> lines;
+    private final UUID playerId;
     private int index;
 
     public InitializeSession(CharacterDialoguePlugin main, List<String> lines, Player player, DialogSession session) {

@@ -9,15 +9,9 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.command.object.CSubCommand;
-import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 @Command(names = "dialogue",
       desc = "Blah",

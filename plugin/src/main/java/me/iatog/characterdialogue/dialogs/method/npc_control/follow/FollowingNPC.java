@@ -22,6 +22,7 @@ public class FollowingNPC {
         this.main = main;
     }
 
+    @SuppressWarnings("deprecation")
     public void scheduleNPCMovement(AdaptedNPC npc, Entity entity, Player player) {
         if(!main.isPaper()) {
             main.getLogger().severe("In order to use the follow the player feature, you need to use PaperMC.");

@@ -17,7 +17,6 @@ public class RecordListener implements Listener {
         this.main = main;
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onSwap(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();

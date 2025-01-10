@@ -31,7 +31,7 @@ public class TalkRunnable extends BukkitRunnable {
 
     private int index = 0;
     private boolean finished = false;
-    private String color;
+    private final String color;
 
     public TalkRunnable(List<UUID> players, UUID uuid, String message, boolean skip, TalkType type, Player player, Sound sound, String translatedMessage, float volume, float pitch, DialogSession session, SingleUseConsumer<CompletedType> completed, String npcName, CharacterDialoguePlugin provider, String color) {
         this.players = players;

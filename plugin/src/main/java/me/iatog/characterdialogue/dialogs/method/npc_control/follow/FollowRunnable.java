@@ -49,9 +49,7 @@ public class FollowRunnable extends BukkitRunnable {
             mob.getPathfinder().stopPathfinding();
             Location behind = behind(player.getLocation());
 
-            mob.teleportAsync(behind, PlayerTeleportEvent.TeleportCause.PLUGIN).thenRunAsync(() -> {
-                npc.teleport(behind);
-            });
+            mob.teleportAsync(behind, PlayerTeleportEvent.TeleportCause.PLUGIN).thenRunAsync(() -> npc.teleport(behind));
             return;
         } else {
             mob.lookAt(player);

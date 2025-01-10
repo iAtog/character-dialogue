@@ -31,9 +31,7 @@ public class MainGUI extends GUI {
         gui.setItem(2, 2, ItemBuilder.from(Material.WRITABLE_BOOK)
               .name(Component.text(colorize("&a&lDialogues")))
               .lore(buildLore("&7", "&7See all dialogues."))
-              .asGuiItem(event -> {
-                  main.getGUIFactory().getGui("dialogues").load((Player) event.getWhoClicked());
-              }));
+              .asGuiItem(event -> main.getGUIFactory().getGui("dialogues").load((Player) event.getWhoClicked())));
 
         gui.setItem(2, 4,
               ItemBuilder.from(Material.ENCHANTED_GOLDEN_APPLE)

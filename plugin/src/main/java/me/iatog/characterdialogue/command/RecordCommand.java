@@ -8,7 +8,6 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.command.object.CSubCommand;
-import me.iatog.characterdialogue.command.object.CommandInfo;
 import me.iatog.characterdialogue.path.Record;
 import me.iatog.characterdialogue.path.*;
 import me.iatog.characterdialogue.util.AdventureUtil;
@@ -17,8 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 @Command(
       names = "record"
