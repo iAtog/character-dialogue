@@ -1,4 +1,4 @@
-file-version: 3
+file-version: 4
 cooldown-time: 2
 placeholders:
   npc: '<yellow>[NPC] <red>%npc_name%<white>:'
@@ -26,9 +26,11 @@ regional-dialogues:
       - "%characterdialogue_readed_otherDialogue% == yes"
     conditions-type: "all"
     dialogue: "myDialogue"
-use-actionbar: false
 choice:
   text-model: '<gray>[<red><number><gray>] <message>'
+  select-sound: BLOCK_NOTE_BLOCK_PLING,
+  select-sound-volume: 1.0
+  select-sound-pitch: 1.0
   number-heads:
     '1': "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTZhYmI5Y2Y0MjUzMTBlOWRkZjFiNGE4OWExZjQ1ZjMwZGQzY2RiYzAyYzljMzdkN2Y2YzhmMWQ2NjA2ZCJ9fX0="
     '2': "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2YyOWViYTZjY2YyOTc3Y2E5N2U0OWI1YjE1Mjc2OGM1NTA4Zjc0M2Q5OTQwZTgzM2JiZjA1YzkwMTFkYzg2In19fQ=="

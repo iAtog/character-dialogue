@@ -89,6 +89,10 @@ public class AdventureUtil {
         CharacterDialoguePlugin.getInstance().getAudiences().player(player).showTitle(title);
     }
 
+    public static void sendCenteredMessage(Player player, String message, String afterMsg) {
+        TextUtils.sendCenteredMessage(player, message, afterMsg);
+    }
+
     public static Component minimessage(String text) {
         return minimessage.deserialize(text);
     }

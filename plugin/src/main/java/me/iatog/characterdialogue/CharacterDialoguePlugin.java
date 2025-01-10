@@ -9,6 +9,7 @@ import me.iatog.characterdialogue.api.dialog.RegionalDialogue;
 import me.iatog.characterdialogue.dialogs.ChoiceInfo;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
+import me.iatog.characterdialogue.dialogs.LoadedChoice;
 import me.iatog.characterdialogue.enums.ConditionType;
 import me.iatog.characterdialogue.gui.GUIFactory;
 import me.iatog.characterdialogue.api.interfaces.FileFactory;
@@ -250,12 +251,17 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     }
 
     private void loadChoices(YamlDocument document) {
-        Map<String, List<ChoiceInfo>> loadedChoices = getCache().getLoadedChoices();
+        Map<String, LoadedChoice> loadedChoices = getCache().getLoadedChoices();
 
         for(String choiceName : document.getSection("choices").getRoutesAsStrings(false)) {
             List<ChoiceInfo> choices = new ArrayList<>();
+            String msg = document.getString("choices." + choiceName + ".message", "");
 
             for(String option : document.getSection("choices." + choiceName).getRoutesAsStrings(false)) {
+                if(option.equals("message")) {
+                    continue;
+                }
+
                 Section section = document.getSection("choices." + choiceName + "." + option);
                 String type = section.getString("type");
                 String message = section.getString("message", "no message specified");
@@ -264,7 +270,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
                 choices.add(info);
             }
 
-            loadedChoices.put(choiceName, choices);
+            loadedChoices.put(choiceName, new LoadedChoice(choices, msg));
         }
     }
 

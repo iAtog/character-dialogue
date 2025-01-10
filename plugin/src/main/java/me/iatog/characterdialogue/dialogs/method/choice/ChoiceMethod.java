@@ -39,6 +39,7 @@ public class ChoiceMethod extends DialogMethod<CharacterDialoguePlugin> {
         addConfigurationType("timeout", ConfigurationType.INTEGER);
 
         Bukkit.getPluginManager().registerEvents(new ChoiceChatTypeListener(provider), provider);
+        new ChoiceRunnable(provider).runTaskTimer(provider, 20, 5);
 
         setDescription("Displays options to the player");
     }

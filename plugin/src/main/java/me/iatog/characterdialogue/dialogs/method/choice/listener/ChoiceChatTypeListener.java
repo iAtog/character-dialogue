@@ -1,14 +1,19 @@
 package me.iatog.characterdialogue.dialogs.method.choice.listener;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.api.events.ChoiceSelectEvent;
 import me.iatog.characterdialogue.dialogs.method.choice.ChoiceUtil;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import java.util.Map;
 import java.util.UUID;
@@ -18,9 +23,11 @@ import static me.iatog.characterdialogue.dialogs.method.choice.ChoiceMethod.COMM
 public class ChoiceChatTypeListener implements Listener {
 
     private final CharacterDialoguePlugin main;
+    private final Map<UUID, ChoiceSession> sessions;
 
     public ChoiceChatTypeListener(CharacterDialoguePlugin main) {
         this.main = main;
+        this.sessions = main.getCache().getChoiceSessions();
     }
 
     @EventHandler
@@ -28,7 +35,6 @@ public class ChoiceChatTypeListener implements Listener {
         String command = event.getMessage();
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
-        Map<UUID, ChoiceSession> sessions = main.getCache().getChoiceSessions();
         Map<UUID, DialogSession> dialogSessionMap = main.getCache().getDialogSessions();
 
         // /<cmd> <choice-uuid> <selected-option>
@@ -59,9 +65,69 @@ public class ChoiceChatTypeListener implements Listener {
     }
 
     @EventHandler
+    public void selectChoice(PlayerSwapHandItemsEvent event) {
+        Player player = event.getPlayer();
+
+        if(main.getCache().getChoiceSessions().containsKey(player.getUniqueId())) {
+            ChoiceSession session = main.getCache().getChoiceSessions().get(player.getUniqueId());
+            if(session.isUseChat()) {
+                ChoiceUtil.runChoice(player, session.getSelected());
+            }
+        }
+    }
+
+    @EventHandler
     public void onHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
 
-        ChoiceUtil.runChoice(player, (event.getNewSlot() + 1));
+        if(sessions.containsKey(player.getUniqueId())) {
+            ChoiceSession session = sessions.get(player.getUniqueId());
+
+            if(!session.isUseChat()) {
+                return;
+            }
+
+            int previousSlot = event.getPreviousSlot();
+            int newSlot = event.getNewSlot();
+            int direction = (newSlot > previousSlot) ? 1 : -1;
+            int selected = session.getSelected();
+            int size = session.getChoices().size();
+            int newSelected = (selected + direction);
+
+            if (newSelected < 0) {
+                newSelected = size - 1;
+            }
+            if(newSelected >= size) {
+                newSelected = 0;
+            }
+
+            session.setSelected(newSelected);
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void playSound(ChoiceSelectEvent event) {
+        Player player = event.getPlayer();
+
+        if(!event.isCancelled()) {
+            if(event.getSession().isUseChat()) {
+                for(int i = 0; i < 20; i++) {
+                    player.sendMessage(" ");
+                }
+            }
+
+            YamlDocument config = main.getFileFactory().getConfig();
+            String soundName = config.getString("choice.select-sound");
+            float volume = config.getFloat("choice.select-sound-volume", 1f);
+            float pitch = config.getFloat("choice.select-sound-pitch", 1f);
+
+            try {
+                Sound sound = Sound.valueOf(soundName.toUpperCase());
+                player.playSound(player.getLocation(), sound, volume, pitch);
+            } catch(Exception e) {
+                main.getLogger().warning("Invalid choice select sound provided: " + soundName);
+            }
+        }
     }
 }

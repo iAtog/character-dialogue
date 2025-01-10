@@ -17,6 +17,9 @@ public class ChoiceSession implements Session {
     private final UUID uuid;
     private final Map<Integer, Choice> choices;
     private boolean destroyed;
+    private int selected = 0;
+    private boolean useChat;
+    private String message;
 
     public ChoiceSession(CharacterDialoguePlugin main, Player player) {
         this.main = main;
@@ -39,15 +42,11 @@ public class ChoiceSession implements Session {
     }
 
     public boolean addChoice(String message, Class<? extends DialogChoice> clazz, String argument) {
-        return addChoice(choices.size() + 1, message, clazz, argument);
+        return addChoice(choices.size(), message, clazz, argument);
     }
 
     public boolean addChoice(String message, Class<? extends DialogChoice> clazz) {
-        return addChoice(choices.size() + 1, message, clazz, "");
-    }
-
-    public boolean check() {
-        return false;
+        return addChoice(choices.size(), message, clazz, "");
     }
 
     public Player getPlayer() {
@@ -66,6 +65,31 @@ public class ChoiceSession implements Session {
     public void destroy() {
         main.getCache().getChoiceSessions().remove(player.getUniqueId());
         this.destroyed = true;
+        this.useChat = false;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selection) {
+        this.selected = selection;
+    }
+
+    public boolean isUseChat() {
+        return useChat;
+    }
+
+    public void setUseChat(boolean useChat) {
+        this.useChat = useChat;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public boolean isDestroyed() {

@@ -37,7 +37,6 @@ public class SneakMethod extends DialogMethod<CharacterDialoguePlugin> implement
     @Override
     public void execute(MethodContext context) {
         Player player = context.getPlayer();
-        //boolean actionBar = getProvider().getFileFactory().getConfig().getBoolean("use-actionbar", true);
         waitingPlayers.put(player.getUniqueId(), context.getConsumer());
     }
 

@@ -1,5 +1,6 @@
 choices:
   king:
+    message: "Whats ur question?"
     continue:
       type: message
       message: Ask what happened 3 decades ago
@@ -22,6 +23,7 @@ choices:
       message: Inquire about calls for proposals
       argument: '%user% When are the covocations to become a soldier of the kingdom?'
   choice-examplee:
+    message: "What do you want?"
     teleport:
       type: dialogue
       message: I want to go to 0, 0

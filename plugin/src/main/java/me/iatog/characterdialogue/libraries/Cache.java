@@ -2,9 +2,9 @@ package me.iatog.characterdialogue.libraries;
 
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.api.dialog.RegionalDialogue;
-import me.iatog.characterdialogue.dialogs.ChoiceInfo;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
+import me.iatog.characterdialogue.dialogs.LoadedChoice;
 import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
@@ -22,7 +22,7 @@ public class Cache {
     private final List<UUID> frozenPlayers;
     private final Map<UUID, PlayerData> playerDataMap;
     private final Map<String, RegionalDialogue> regionalDialogues;
-    private final Map<String, List<ChoiceInfo>> loadedChoices;
+    private final Map<String, LoadedChoice> loadedChoices;
 
     public Cache() {
         this.methods = new HashMap<>();
@@ -60,7 +60,7 @@ public class Cache {
         return frozenPlayers;
     }
 
-    public Map<String, List<ChoiceInfo>> getLoadedChoices() {
+    public Map<String, LoadedChoice> getLoadedChoices() {
         return loadedChoices;
     }
 

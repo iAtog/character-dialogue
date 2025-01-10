@@ -56,13 +56,15 @@ public class ChoiceUtil {
 
     public static void addChoices(ChoiceSession choiceSession, String choiceName) {
         CharacterDialoguePlugin provider = CharacterDialoguePlugin.getInstance();
-        Map<String, List<ChoiceInfo>> loadedChoices = main.getCache().getLoadedChoices();
+        Map<String, LoadedChoice> loadedChoices = main.getCache().getLoadedChoices();
 
         if(!loadedChoices.containsKey(choiceName)) {
             return;
         }
+        LoadedChoice loadedChoice = loadedChoices.get(choiceName);
+        choiceSession.setMessage(loadedChoice.getMessage());
 
-        for (ChoiceInfo choice : loadedChoices.get(choiceName)) {
+        for (ChoiceInfo choice : loadedChoice.getChoices()) {
             String type = choice.getType();
             String message = choice.getMessage();
             String argument = choice.getArgument();
@@ -108,7 +110,7 @@ public class ChoiceUtil {
         Map<UUID, ChoiceSession> sessions = CharacterDialoguePlugin.getInstance().getCache().getChoiceSessions();
         UUID uuid = player.getUniqueId();
 
-        if (! sessions.containsKey(uuid)) {
+        if (!sessions.containsKey(uuid)) {
             return;
         }
 

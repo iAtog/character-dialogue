@@ -63,9 +63,13 @@ public class TextUtils {
     }
 
     public static void sendCenteredMessage(Player player, String rawMessage) {
-        if (rawMessage == null || rawMessage.isEmpty()) return;
+        sendCenteredMessage(player, rawMessage, "");
+    }
 
-        String message = TextUtils.colorize(rawMessage);
+    public static void sendCenteredMessage(Player player, String message, String afterMsg) {
+        if (message == null || message.isEmpty()) return;
+
+        //String message = TextUtils.colorize(rawMessage);
 
         int messagePxSize = 0;
         boolean previousCode = false;
@@ -96,6 +100,6 @@ public class TextUtils {
         }
 
         //player.sendMessage(sb + message);
-        AdventureUtil.sendMessage(player, sb + message);
+        AdventureUtil.sendMessage(player, sb + afterMsg + message);
     }
 }

@@ -3,17 +3,11 @@ package me.iatog.characterdialogue.enums;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.method.choice.ChoiceData;
 import me.iatog.characterdialogue.dialogs.method.choice.ChoiceGUI;
-import me.iatog.characterdialogue.dialogs.method.choice.ChoiceUtil;
 import me.iatog.characterdialogue.dialogs.method.choice.form.ChoiceForm;
-import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
-import me.iatog.characterdialogue.util.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.entity.Player;
 import org.geysermc.floodgate.api.FloodgateApi;
 
@@ -23,6 +17,9 @@ import static me.iatog.characterdialogue.dialogs.method.choice.ChoiceMethod.COMM
 
 public enum ChoiceType {
     CHAT(data -> {
+        data.getChoiceSession().setUseChat(true);
+    }, d -> {d.getPlayer().closeInventory();}),
+    CHATE(data -> {
         String model = data.getConfigFile().getString("choice.text-model", "<gray>[<red><number><gray>] <message>");
         ChoiceSession session = data.getChoiceSession();
         TextComponent.Builder builder = Component.text().append(Component.newline());
