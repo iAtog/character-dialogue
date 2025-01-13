@@ -55,21 +55,22 @@ public class AdaptedFancyNPC implements AdaptedNPC {
     @SuppressWarnings("deprecation")
     @Override
     public AdaptedNPC copy() {
-        NpcData data = new NpcData(getId() + "-" + generateId(5) + "_cloned",
+        String id = generateId(9);
+        NpcData data = new NpcData((getId() + "_" + id + "_cloned"),
               UUID.randomUUID(),
               npc.getData().getLocation().clone());
         data.setType(npc.getData().getType());
         data.setCollidable(false);
+
         if(npc.getData().getType() == EntityType.PLAYER) {
             data.setSkin(npc.getData().getSkin());
         }
 
         data.applyAllAttributes(npc);
         data.setLocation(npc.getData().getLocation());
-        data.setCollidable(npc.getData().isCollidable());
         data.setDisplayName("<empty>");
 
-        final Npc copied = FancyNpcsPlugin.get().getNpcAdapter().apply(data);
+        Npc copied = FancyNpcsPlugin.get().getNpcAdapter().apply(data);
 
         copied.setSaveToFile(false);
         copied.create();

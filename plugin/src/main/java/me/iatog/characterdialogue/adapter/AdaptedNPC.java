@@ -34,10 +34,10 @@ public interface AdaptedNPC {
 
     default String generateId(int length) {
         StringBuilder str = new StringBuilder();
-        String a = "abcdefghijkmnopqrstuvwxyz1234567890";
+        String a = "abcdefghijkmnopqrstuvwxyzABCDEFGHIJKMNOPQRSTUVWXYZ1234567890";
 
-        for (int i=0;i<length;i++) {
-            str.append(a.charAt(i));
+        for (int i = 0 ; i < length; i++) {
+            str.append(a.charAt((int)(Math.random() * a.length())));
         }
 
         return str.toString();
