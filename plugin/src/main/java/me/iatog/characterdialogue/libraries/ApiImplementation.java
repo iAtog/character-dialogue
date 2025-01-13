@@ -419,4 +419,8 @@ public class ApiImplementation implements CharacterDialogueAPI {
     public int getBukkitVersion() {
         return Integer.parseInt(Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1]);
     }
+
+    public PlayerData getData(Player player) {
+        return main.getCache().getPlayerData().get(player.getUniqueId());
+    }
 }

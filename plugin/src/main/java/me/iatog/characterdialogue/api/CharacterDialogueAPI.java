@@ -6,13 +6,16 @@ import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.enums.CompletedType;
 import me.iatog.characterdialogue.enums.ConditionType;
 import me.iatog.characterdialogue.libraries.HologramLibrary;
+import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public interface CharacterDialogueAPI {
@@ -70,4 +73,10 @@ public interface CharacterDialogueAPI {
     Pattern getLineRegex();
 
     HologramLibrary getHologramLibrary();
+
+    PlayerData getData(Player player);
+
+    default PlayerData getData(UUID uuid) {
+        return getData(Bukkit.getPlayer(uuid));
+    }
 }
