@@ -23,8 +23,15 @@ public class ListenerLoader implements Loader {
               new RecordListener(main),
               new AdaptedNPCListener(main),
               new FollowListener(),
-              new RegionalDialoguesListener(main)
+              new RegionalDialoguesListener(main),
+              new PlayerChatListener(main)
         );
+
+        if(main.isPaper()) {
+            registerListeners(
+                  new PaperEventsListener(main)
+            );
+        }
     }
 
     public void registerListeners(Listener... listeners) {

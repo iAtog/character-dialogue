@@ -15,6 +15,7 @@ dependencies {
 
     compileOnly('com.sk89q.worldguard:worldguard-bukkit:7.1.0-SNAPSHOT')
     compileOnly('com.sk89q.worldguard:worldguard-core:7.1.0-SNAPSHOT')
+    compileOnly("com.github.retrooper:packetevents-spigot:2.7.0")
 
     compileOnly(name:'ZNPCsPlus-2.0.0', ext:'jar')
     compileOnly("de.oliver:FancyNpcs:2.4.1")
@@ -74,7 +75,8 @@ bukkit {
             'Citizens',
             'ZNPCsPlus',
             'FancyNpcs',
-            'WorldGuard'
+            'WorldGuard',
+            'packetevents'
     ]
     load = 'POSTWORLD'
     commands {

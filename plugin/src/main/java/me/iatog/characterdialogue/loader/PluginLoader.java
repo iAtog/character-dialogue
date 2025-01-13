@@ -8,6 +8,7 @@ import me.iatog.characterdialogue.util.AdventureUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.*;
 
@@ -24,6 +25,7 @@ public class PluginLoader implements Loader {
     @SuppressWarnings("deprecation")
     @Override
     public void load() {
+        PluginManager manager = Bukkit.getPluginManager();
         ((Logger) LogManager.getRootLogger()).addFilter(new ConsoleFilter());
 
         loadLoaders(
@@ -39,11 +41,16 @@ public class PluginLoader implements Loader {
               new ChoiceLoader(main)
         );
 
-        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+
+        if(manager.isPluginEnabled("PlaceholderAPI")) {
             new CharacterDialogueExpansion(main).register();
         }
 
-        AdventureUtil.sendMessage(Bukkit.getConsoleSender(), "<gray>[<rainbow>CharacterDialogue<gray>] <green>Plugin enabled. <gold>v" + main.getDescription().getVersion());
+        if(manager.isPluginEnabled("packetevents")) {
+            //PacketEvents.getAPI().getEventManager().registerListener(new PlayerPacketListenerManager(main), PacketListenerPriority.NORMAL);
+        }
+
+        AdventureUtil.sendMessage(Bukkit.getConsoleSender(), "<gray>[<red>CharacterDialogue<gray>] <green>Plugin has been enabled. <gold>v" + main.getDescription().getVersion());
     }
 
     @Override
