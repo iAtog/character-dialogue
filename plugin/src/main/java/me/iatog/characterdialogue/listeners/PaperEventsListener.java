@@ -42,7 +42,7 @@ public class PaperEventsListener implements Listener {
 
             Player receiver = Bukkit.getPlayer(identity.get());
 
-            if(receiveMessage(receiver, event.message())) {
+            if(interceptMessage(receiver, event.message())) {
                 event.viewers().remove(audience);
             }
         }
@@ -52,7 +52,7 @@ public class PaperEventsListener implements Listener {
         return main.getCache().getDialogSessions().containsKey(player.getUniqueId());
     }
 
-    private boolean receiveMessage(Player player, Component message) {
+    private boolean interceptMessage(Player player, Component message) {
         boolean hasSession = hasSession(player);
         PlayerData data = main.getApi().getData(player);
 
