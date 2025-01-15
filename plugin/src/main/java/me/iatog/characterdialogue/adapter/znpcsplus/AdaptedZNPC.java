@@ -3,6 +3,7 @@ package me.iatog.characterdialogue.adapter.znpcsplus;
 import lol.pyr.znpcsplus.hologram.HologramImpl;
 import lol.pyr.znpcsplus.libraries.packetevents.impl.util.SpigotConversionUtil;
 import lol.pyr.znpcsplus.npc.NpcImpl;
+import lol.pyr.znpcsplus.util.NpcPose;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import lol.pyr.znpcsplus.api.NpcApiProvider;
 import lol.pyr.znpcsplus.api.entity.EntityProperty;
@@ -105,7 +106,7 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     @Override
     public void spawn(Location location) {
-        //teleport(location);
+        teleport(location);
     }
 
     @Override
@@ -133,10 +134,11 @@ public class AdaptedZNPC implements AdaptedNPC {
     @Override
     public void sneak(Player player, boolean sneaking) {
         EntityProperty<?> property = NpcApiProvider.get().getPropertyRegistry().getByName("pose");
+
         if(sneaking) {
-            setProperty(npc, property, "CROUCHING");
+            setProperty(npc, property, NpcPose.CROUCHING);
         } else {
-            npc.getNpc().getAppliedProperties().remove(property);
+            setProperty(npc, property, NpcPose.STANDING);
         }
     }
 
@@ -209,8 +211,8 @@ public class AdaptedZNPC implements AdaptedNPC {
         if(hologram != null && !hologram.isVisibleTo(player)) {
             hologram.show(player);
         }
-
-        impl.getEntity().spawn(player);
+        impl.show(player);
+        //impl.getEntity().spawn(player);
     }
 
     @Override
@@ -221,8 +223,8 @@ public class AdaptedZNPC implements AdaptedNPC {
         if(hologram != null && hologram.isVisibleTo(player)) {
             hologram.hide(player);
         }
-
-        impl.getEntity().despawn(player);
+        impl.hide(player);
+        //impl.getEntity().despawn(player);
     }
 
     @Override

@@ -72,7 +72,7 @@ public class ZNPCsPlusListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void handleSpawn(NpcSpawnEvent event) {
-        AdaptedNPC npc = main.getAdapter().adapt(event.getNpc());
+        AdaptedNPC npc = main.getAdapter().adapt(event.getEntry());
         boolean result = main.getAdapterManager().handleHideNPCs(npc, event.getPlayer());
 
         if(result) {
