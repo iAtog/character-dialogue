@@ -20,16 +20,18 @@ public class NPCTeleportAction implements NPCControlAction {
         if(data != null) {
             AdaptedNPC clone = data.getCopy();
             Location newLocation = ctx.util().getConfigLocation(configuration, clone.getStoredLocation());
+            boolean lookPlayer = configuration.getBoolean("lookPlayer", false);
 
             if(newLocation == null) {
-                ctx.plugin().getLogger().warning("Invalid coordinates specified in teleport action.");
+                if(!lookPlayer)
+                    ctx.plugin().getLogger().warning("Invalid coordinates specified in teleport action.");
             } else {
                 clone.unfollow(ctx.player());
                 clone.teleport(newLocation);
+            }
 
-                if(configuration.getBoolean("lookPlayer", false)) {
-                    clone.faceLocation(ctx.player());
-                }
+            if(lookPlayer) {
+                clone.faceLocation(ctx.player());
             }
         }
 
