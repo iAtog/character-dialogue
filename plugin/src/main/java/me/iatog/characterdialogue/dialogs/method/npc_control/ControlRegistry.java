@@ -60,6 +60,10 @@ public class ControlRegistry {
         this.npcMap.clear();
     }
 
+    public int size() {
+        return npcMap.size();
+    }
+
     public UUID getOwner() {
         return playerId;
     }
