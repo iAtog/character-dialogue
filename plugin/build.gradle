@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'net.minecrell.plugin-yml.bukkit' version '0.6.0'
+    id 'de.eldoria.plugin-yml.bukkit' version '0.6.0'
 }
 
 version = project.findProperty('projectVersion')
@@ -64,7 +64,7 @@ bukkit {
     version = project.findProperty('projectVersion')
     author = 'iAtog'
     softDepend = [
-            'PlaceHolderAPI',
+            'PlaceholderAPI',
             'HolographicDisplays',
             'DecentHolograms',
             'floodgate',
@@ -76,7 +76,91 @@ bukkit {
             'packetevents'
     ]
     load = 'POSTWORLD'
-    commands {
 
+    commands {
+        characterdialogue {
+            description = 'CharacterDialogue main command'
+            aliases = ['characterd']
+            permission = 'characterdialogue.command'
+        }
+    }
+
+    permissions {
+        'characterdialogue.command.*' {
+            description = 'All commands permission'
+            children = [
+                    'characterdialogue.command.dialogue.*',
+                    'characterdialogue.command.gui',
+                    'characterdialogue.command.assign',
+                    'characterdialogue.command.clear-cache',
+                    'characterdialogue.command.item.*',
+                    'characterdialogue.command.method',
+                    'characterdialogue.command.player-data',
+                    'characterdialogue.command.record',
+                    'characterdialogue.command'
+            ]
+        }
+        'characterdialogue.command' {
+            description = 'Main command permission'
+        }
+
+        'characterdialogue.command.clear-cache' {
+            description = 'Clears the player\'s cache'
+        }
+        'characterdialogue.command.assign' {
+            description = 'Assign dialogs to an NPC'
+        }
+        'characterdialogue.command.gui' {
+            description = 'Open the CharacterDialogue GUIs'
+        }
+        'characterdialogue.command.dialogue.*' {
+            children = [
+                    'characterdialogue.command.dialogue.start',
+                    'characterdialogue.command.dialogue.info'
+            ]
+        }
+        'characterdialogue.command.dialogue' {
+            children = ['characterdialogue.command.dialogue.info']
+            description = 'Dialogue subcommand'
+        }
+        'characterdialogue.command.dialogue.start' {
+            description = 'Start a dialogue with command'
+        }
+        'characterdialogue.command.dialogue.info' {
+            description = 'See dialogue info'
+        }
+        'characterdialogue.command.group-create' {
+            description = 'Create dialogue file with command'
+        }
+
+        'characterdialogue.command.item.*' {
+            children = [
+                    'characterdialogue.command.item.gui',
+                    'characterdialogue.command.item.save',
+                    'characterdialogue.command.item.delete',
+                    'characterdialogue.command.item.give'
+            ]
+        }
+        'characterdialogue.command.item.gui' {
+            description = 'See items gui'
+        }
+        'characterdialogue.command.item.save' {
+            description = 'Save main hand item'
+        }
+        'characterdialogue.command.item.delete' {
+            description = 'Delete saved item'
+        }
+        'characterdialogue.command.item.give' {
+            description = 'Give saved item'
+        }
+        'characterdialogue.command.method' {
+            description = 'Method subcommand'
+        }
+        'characterdialogue.command.player-data' {
+            description = 'Manage player data'
+        }
+        'characterdialogue.command.record' {
+            description = 'Recording subcommand'
+        }
     }
 }
