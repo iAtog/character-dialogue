@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-@Command(names = {
-      "characterdialogue", "characterd"
-}, permission = "characterdialogue.use",
+@Command(
+      names = {"characterd", "characterdialogue"},
+      permission = "characterdialogue.command",
       desc = "CharacterDialogue main command")
 @SubCommandClasses({
       DialogueCommands.class,
@@ -106,7 +106,7 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
 
     @Usage("<player>")
     @Command(names = "clear-cache",
-          permission = "characterdialogue.clear-cache",
+          permission = "characterdialogue.command.clear-cache",
           desc = "Clear a player memory cache")
     public void clearCache(CommandSender sender, Player target) {
         if (target == null || !target.isOnline()) {
@@ -138,7 +138,7 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
     @Usage("<dialogue> [npcId]")
     @Command(
           names = "assign",
-          permission = "characterdialogue.assign",
+          permission = "characterdialogue.command.assign",
           desc = "Assign a dialogue to npc"
     )
     public void assignNpc(@Sender CommandSender sender, Dialogue dialogue, AdaptedNPC npc) {
@@ -176,7 +176,7 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
     @Usage("<name>")
     @Command(
           names = "gui",
-          permission = "characterdialogue.gui"
+          permission = "characterdialogue.command.gui"
     )
     public void openGUI(@Sender Player player, GUI gui) {
         if (gui == null) {

@@ -13,7 +13,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 @Command(
-      names = "player-data"
+      names = "player-data",
+      permission = "characterdialogue.command.player-data"
 )
 public class PlayerDataCommands extends CSubCommand implements CommandClass {
 

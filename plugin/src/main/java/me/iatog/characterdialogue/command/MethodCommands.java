@@ -39,12 +39,19 @@ public class MethodCommands extends CSubCommand implements CommandClass {
         addCommand("characterd method execute", "<methodLine>", "Execute dialogue line");
     }
 
-    @Command(names = "", desc = "Main command")
+    @Command(
+          names = "",
+          desc = "Main command",
+          permission = "characterdialogue.command.method"
+    )
     public void mainCommand(CommandSender sender) {
         mainCommandLogic(main, sender);
     }
 
-    @Command(names = "list")
+    @Command(
+          names = "list",
+          permission = "characterdialogue.command.method"
+    )
     public void list(@Sender CommandSender sender) {
         AdventureUtil.sendMessage(sender, main.language("command.method.list-title"));
 
@@ -58,7 +65,10 @@ public class MethodCommands extends CSubCommand implements CommandClass {
     }
 
     @Usage("<methodLine>")
-    @Command(names = "execute")
+    @Command(
+          names = "execute",
+          permission = "characterdialogue.command.method"
+    )
     public void execute(@Sender Player sender, @ConsumeAll List<String> args) {
         if (args == null || args.isEmpty()) {
             AdventureUtil.sendMessage(sender, main.language(true, "command.method.no-args"));

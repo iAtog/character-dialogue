@@ -78,7 +78,8 @@ public class ItemCommands extends CSubCommand implements CommandClass {
 
     @Usage("<id>")
     @Command(
-          names = "delete"
+          names = "delete",
+          permission = "characterdialogue.command.item.delete"
     )
     public void deleteItem(CommandSender sender, CustomItem item) {
         ItemManager manager = main.getServices().getItemManager();

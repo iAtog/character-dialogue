@@ -25,7 +25,7 @@ public class GroupsCommands implements CommandClass {
     @Usage("<fileName>")
     @Command(
           names = "create",
-          permission = "characterdialogue.create"
+          permission = "characterdialogue.command.group-create"
     )
     public void create(@Sender CommandSender sender, @OptArg String groupName) {
         CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();

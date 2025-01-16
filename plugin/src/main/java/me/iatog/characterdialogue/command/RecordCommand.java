@@ -18,7 +18,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 @Command(
-      names = "record"
+      names = "record",
+      permission = "characterdialogue.command.record"
 )
 public class RecordCommand extends CSubCommand implements CommandClass {
 
@@ -41,7 +42,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
         addCommand("characterd record replay", "<name> <npc>", "Replay recording on a npc");
     }
 
-    @Command(names = "", desc = "Main command")
+    @Command(names = "", desc = "Main command", permission = "characterdialogue.command.record")
     public void mainCommand(CommandSender sender) {
         mainCommandLogic(main, sender);
     }
@@ -49,7 +50,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     @Usage("<newName>")
     @Command(
           names = "start",
-          permission = "characterdialogue.command.replay",
+          permission = "characterdialogue.command.record",
           desc = "Start recording the path"
     )
     public void startRecording(@Sender Player sender, String name) {
@@ -85,7 +86,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
 
     @Command(
           names = "stop",
-          permission = "characterdialogue.command.replay"
+          permission = "characterdialogue.command.record"
     )
     public void stopRecording(@Sender Player sender) {
         if(!isPresent(sender)) {
@@ -101,7 +102,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     @Usage("<name>")
     @Command(
           names = "view",
-          permission = "characterdialogue.command.record.view"
+          permission = "characterdialogue.command.record"
     )
     public void recordData(CommandSender sender, Record record) {
         if(record == null) {
@@ -126,7 +127,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     @Command(
           names = "delete",
           desc = "Delete recording",
-          permission = "characterdialogue.command.record.delete"
+          permission = "characterdialogue.command.record"
     )
     public void deleteRecording(CommandSender sender, Record record) {
         if(record == null) {
@@ -140,7 +141,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
 
     @Command(
           names = "cancel",
-          permission = "characterdialogue.command.replay"
+          permission = "characterdialogue.command.record"
     )
     public void cancelRecording(@Sender Player sender) {
         if(!isPresent(sender)) {
@@ -157,7 +158,7 @@ public class RecordCommand extends CSubCommand implements CommandClass {
     @Usage("<name> <npc>")
     @Command(
           names = "replay",
-          permission = "characterdialogue.command.viewreplay"
+          permission = "characterdialogue.command.record"
     )
     public void replay(@Sender Player sender, Record record, AdaptedNPC npc) {
         if(record == null) {
