@@ -112,8 +112,13 @@ When starting to record, the movements are saved precisely (each tick), this cou
 `/characterd record view <name>` - Displays some data of the recording and the time it lasts <br>
 `/characterd record replay <name> <npcId>` - Plays a recording to an npc, it is for testing purposes, it does not create an npc from 0, so it will not teleport the npc to its original location. <br>
 `/characterd record delete <name>` - Deletes a record permanently.
-
 These recordings can be used in the `npc_control` method, bringing npcs to life.
+## Regional Dialogues
+Info here: https://absolute-algorithmic.gitbook.io/character-dialogue-documentation/usage/regional-dialogues
+## Handle Custom Items
+Info here: https://absolute-algorithmic.gitbook.io/character-dialogue-documentation/usage/handling-custom-items
+## Random Dialogues
+Info here: https://absolute-algorithmic.gitbook.io/character-dialogue-documentation/usage/random-dialogues
 ### More plugins support
 * [zNPCS Plus](https://www.spigotmc.org/resources/znpcsplus.109380/) support has been added.
 * [FancyNpcs](https://modrinth.com/plugin/fancynpcs) support has been added.
