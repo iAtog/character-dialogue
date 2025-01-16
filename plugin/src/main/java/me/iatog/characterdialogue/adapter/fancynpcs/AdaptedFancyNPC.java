@@ -27,6 +27,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
 
     private static final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
 
+    private boolean destroyed;
     private final Npc npc;
     private final FancyNPCsAdapter adapter;
 
@@ -35,6 +36,11 @@ public class AdaptedFancyNPC implements AdaptedNPC {
     public AdaptedFancyNPC(Npc npc, FancyNPCsAdapter adapter) {
         this.npc = npc;
         this.adapter = adapter;
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     @Override
@@ -89,6 +95,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         npc.removeForAll();
         FancyNpcsPlugin.get().getNpcManager().removeNpc(npc);
         npc.updateForAll();
+        destroyed = true;
     }
 
     @Override

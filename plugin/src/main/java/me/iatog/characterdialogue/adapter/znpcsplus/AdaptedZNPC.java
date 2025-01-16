@@ -1,9 +1,7 @@
 package me.iatog.characterdialogue.adapter.znpcsplus;
 
-import lol.pyr.znpcsplus.hologram.HologramImpl;
-import lol.pyr.znpcsplus.libraries.packetevents.impl.util.SpigotConversionUtil;
-import lol.pyr.znpcsplus.npc.NpcImpl;
 import lol.pyr.znpcsplus.util.NpcPose;
+import lol.pyr.znpcsplus.util.Viewable;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import lol.pyr.znpcsplus.api.NpcApiProvider;
 import lol.pyr.znpcsplus.api.entity.EntityProperty;
@@ -28,6 +26,7 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     private static final CharacterDialoguePlugin main = CharacterDialoguePlugin.getInstance();
 
+    private boolean destroyed;
     private final NpcEntry npc;
     private final ZNPCsAdapter adapter;
 
@@ -36,6 +35,11 @@ public class AdaptedZNPC implements AdaptedNPC {
     public AdaptedZNPC(NpcEntry npc, ZNPCsAdapter adapter) {
         this.npc = npc;
         this.adapter = adapter;
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     @Override
@@ -93,9 +97,12 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     @Override
     public void destroy() {
+        this.destroyed = true;
+
         if(this.npc == null) {
             return;
         }
+
         if(this.task != null) {
             task.cancel();
             task = null;
@@ -126,9 +133,9 @@ public class AdaptedZNPC implements AdaptedNPC {
         if(property == null || item == null || player == null) {
             return;
         }
-
-        lol.pyr.znpcsplus.libraries.packetevents.api.protocol.item.ItemStack i = SpigotConversionUtil.fromBukkitItemStack(item);
-        setProperty(npc, property, i);
+        npc.getNpc().setItemProperty(property, item);
+        //lol.pyr.znpcsplus.libraries.packetevents.api.protocol.item.ItemStack i = SpigotConversionUtil.fromBukkitItemStack(item);
+        //setProperty(npc, property, i);
     }
 
     @Override
@@ -205,25 +212,15 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     @Override
     public void show(Player player) {
-        NpcImpl impl = (NpcImpl) npc.getNpc();
-        HologramImpl hologram = impl.getHologram();
-
-        if(hologram != null && !hologram.isVisibleTo(player)) {
-            hologram.show(player);
-        }
-        impl.show(player);
+        ((Viewable)npc.getNpc()).show(player);
+        //npc.getNpc().show(player);
         //impl.getEntity().spawn(player);
     }
 
     @Override
     public void hide(Player player) {
         //npc.getNpc().hide(player);
-        NpcImpl impl = (NpcImpl) npc.getNpc();
-        HologramImpl hologram = impl.getHologram();
-        if(hologram != null && hologram.isVisibleTo(player)) {
-            hologram.hide(player);
-        }
-        impl.hide(player);
+        ((Viewable)npc.getNpc()).hide(player);
         //impl.getEntity().despawn(player);
     }
 

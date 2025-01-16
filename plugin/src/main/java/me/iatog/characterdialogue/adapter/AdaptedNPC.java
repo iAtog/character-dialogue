@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface AdaptedNPC {
 
+    boolean isDestroyed();
     String getName();
     String getId();
     //Entity getEntity();

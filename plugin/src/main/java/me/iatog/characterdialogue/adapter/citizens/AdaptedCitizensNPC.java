@@ -19,9 +19,15 @@ import java.util.List;
 public class AdaptedCitizensNPC implements AdaptedNPC {
 
     private final NPC npc;
+    private boolean destroyed;
 
     public AdaptedCitizensNPC(NPC npc) {
         this.npc = npc;
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     @Override
@@ -52,6 +58,7 @@ public class AdaptedCitizensNPC implements AdaptedNPC {
     @Override
     public void destroy() {
         npc.destroy();
+        this.destroyed = true;
     }
 
     @Override

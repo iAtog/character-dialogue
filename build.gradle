@@ -46,6 +46,5 @@ subprojects {
         compileOnly 'org.geysermc.floodgate:api:2.2.3-SNAPSHOT'
         compileOnly 'com.github.ajneb97:ConditionalEvents:4.47.1'
         compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
-        compileOnly "lol.pyr:znpcsplus-api:2.0.0-SNAPSHOT"
     }
 }

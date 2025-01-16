@@ -27,7 +27,7 @@ public class PathRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (index == locations.size()) {
+        if (index == locations.size() || npc.isDestroyed()) {
             cancel();
             return;
         }
