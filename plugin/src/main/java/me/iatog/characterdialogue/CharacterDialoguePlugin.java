@@ -189,7 +189,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
         if (!folder.exists()) {
             folder.mkdir();
-            YamlDocument defaultDialogues = YamlDocument.create(new File(getDataFolder() + "/" + folderName + "/examples.yml"), Objects.requireNonNull(getResource("dialogues/dialogs.yml")));
+            YamlDocument defaultDialogues = YamlDocument.create(new File(getDataFolder() + "/" + folderName + "/examples.yml"), Objects.requireNonNull(getResource("dialogues/examples.yml")));
             dialogues.add(defaultDialogues);
             return;
         }
