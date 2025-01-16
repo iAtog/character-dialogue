@@ -34,7 +34,6 @@ subprojects {
     }
 
     dependencies {
-        compileOnly 'net.citizensnpcs:citizensapi:2.0.35-SNAPSHOT'
         compileOnly 'net.md-5:bungeecord-chat:1.8-SNAPSHOT'
         compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
         compileOnly 'me.clip:placeholderapi:2.11.6'
