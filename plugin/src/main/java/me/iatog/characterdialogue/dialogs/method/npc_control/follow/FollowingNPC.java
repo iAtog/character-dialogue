@@ -71,7 +71,7 @@ public class FollowingNPC {
         mob.setInvisible(true);
         mob.setSilent(true);
         mob.setRemoveWhenFarAway(false);
-        mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2, true, true));
+        mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2, true, false));
         mob.setVisibleByDefault(false);
 
         // Protecting the entity with events
