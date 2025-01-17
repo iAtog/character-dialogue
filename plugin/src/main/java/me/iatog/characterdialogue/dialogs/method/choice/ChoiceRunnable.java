@@ -3,6 +3,7 @@ package me.iatog.characterdialogue.dialogs.method.choice;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.Choice;
 import me.iatog.characterdialogue.session.ChoiceSession;
+import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -54,6 +55,7 @@ public class ChoiceRunnable extends BukkitRunnable {
     public void sendMessage(ChoiceSession session) {
         String model = main.getFileFactory().getConfig().getString("choice.text-model", "<gray>[<red><number><gray>] <message>");
         Player player = session.getPlayer();
+        DialogSession dialogSession = main.getCache().getDialogSessions().get(player.getUniqueId());
         TextComponent.Builder builder = Component.text().append(Component.newline());
 
         session.getChoices().forEach((index, choice) ->
@@ -65,11 +67,17 @@ public class ChoiceRunnable extends BukkitRunnable {
         }
 
         String message = session.getMessage();
-
         AdventureUtil.sendMessage(player, "<gray><strikethrough>" + line);
 
         if (message != null && !message.isEmpty()) {
-            String npc = main.getCache().getDialogSessions().get(player.getUniqueId()).getDisplayName();
+            String npc;
+
+            if(dialogSession != null) {
+                npc = dialogSession.getDisplayName();
+            } else {
+                npc = "John Doe";
+            }
+
             AdventureUtil.sendMessage(player, "<gray>" + message.replace("<npc>", npc));
             AdventureUtil.sendMessage(player, Component.empty());
         }
