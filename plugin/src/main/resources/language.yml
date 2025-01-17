@@ -66,7 +66,7 @@ command:
     on-session: '<red>You cant run this command while in a dialogue session.'
     executed: '<green>Method <gray>''%s'' <green>executed correctly with result: <red>%s'
   record:
-    in-recording: '<red>You are already in a recording, use <click:run_command:/characterd record stop><gold>/characterd record stop</click> <red>to stop it.'
+    in-recording: "<red>You are already in a recording, use <hover:show_text:'<green>Click here to stop'><click:run_command:/characterd record stop><gold>/characterd record stop</click></hover> <red>to stop it."
     not-recording: '<red>You are not currently on a recording.'
     starting: '<green>Starting in %ss'
     replaying: '<green>Starting replay on npc: %s'
@@ -76,7 +76,7 @@ command:
     saved: '<green>Recording <red>''%s'' <green>has been saved.'
     cancelled: '<green>Recording cancelled <red>(not saved)'
     deleted: '<green>Successfully deleted <gray>''%s'' <green>recording!'
-    guide: '<gray>Recording started... type <click:run_command:/characterdialogue record cancel><gold>/characterdialogue record cancel</click> <gray>to cancel'
+    guide: "<gray>Recording started... type <hover:show_text:'<green>Click here to cancel'><click:run_command:/characterdialogue record cancel><gold>/characterdialogue record cancel</click></hover> <gray>to cancel"
     action-bar: '<red>[ Press <key:key.swapOffhand> to stop] <seconds>s elapsed'
     view:
       record: '<gray><bold>>> <reset><yellow>Recording name<white>: <gold><bold>%s'
