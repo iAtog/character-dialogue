@@ -15,10 +15,12 @@ import java.util.Map;
 
 public class ChoiceForm {
 
+    private final CharacterDialoguePlugin main;
     private final Map<String, Integer> buttonValues;
     private final LegacyComponentSerializer serializer = LegacyComponentSerializer.legacySection();
 
-    public ChoiceForm() {
+    public ChoiceForm(CharacterDialoguePlugin main) {
+        this.main = main;
         this.buttonValues = new HashMap<>();
     }
 
@@ -26,7 +28,7 @@ public class ChoiceForm {
         Player player = data.getPlayer();
         SimpleForm.Builder form = SimpleForm.builder();
         String model = data.getConfigFile().getString("choice.text-model");
-        String title = CharacterDialoguePlugin.getInstance().getFileFactory().getLanguage().getString("choice-title", "Select an option");
+        String title = main.getFileFactory().getLanguage().getString("choice-title", "Select an option");
 
         form.title(serializer.serialize(AdventureUtil.minimessage(title)));
 

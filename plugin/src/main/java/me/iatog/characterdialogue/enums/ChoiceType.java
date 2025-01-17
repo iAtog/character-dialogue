@@ -22,7 +22,7 @@ public enum ChoiceType {
         if (!FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
             ChoiceType.GUI.generateQuestions(data);
         } else {
-            ChoiceForm choiceForm = new ChoiceForm();
+            ChoiceForm choiceForm = new ChoiceForm(CharacterDialoguePlugin.getInstance());
             FloodgateApi.getInstance().sendForm(player.getUniqueId(), choiceForm.load(data));
         }
     }, data ->
