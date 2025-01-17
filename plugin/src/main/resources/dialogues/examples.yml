@@ -4,27 +4,27 @@ dialogue:
     display-name: Soldier
     permission:
       value: characterdialogue.permission
-      message: '&8Oh, apparently you are unable to talk to the mercenary....'
+      message: '<gray>Oh, apparently you are unable to talk to the mercenary....'
     dialog:
-      - 'send: &e[NPC] &b%npc_name%&f: Hello %player_name%!'
+      - 'send: <yellow>[NPC] <aqua>%npc_name%<white>: Hello %player_name%!'
       - 'sound: ENTITY_VILLAGER_YES,0.7,0.5'
       - 'wait: 1'
-      - "send: &e[NPC] &b%npc_name%&f: You are new around here, aren't you?"
+      - "send: <yellow>[NPC] <aqua>%npc_name%<white>: You are new around here, aren't you?"
       - 'sound{sound=ENTITY_VILLAGER_YES,volume=0.7,pitch=0.6}'
       - 'wait: 1'
-      - 'send: &e[NPC] &b%npc_name%&f: I recommend going &bsouth &fto find the city.'
+      - 'send: <yellow>[NPC] <aqua>%npc_name%<white>: I recommend going <aqua>south <white>to find the city.'
       - 'sound{sound=ENTITY_VILLAGER_YES,volume=0.7,pitch=0.6}'
       - 'wait: 2'
       - 'send: &7'
-      - 'send: &7          &7&lNext objective&f: enter the city.'
+      - 'send: <gray>          <bold>Next objective<reset><bold>: enter the city.'
       - 'sound{sound=BLOCK_NOTE_PLING,volume=1,pitch=0.1}'
     hologram:
       enabled: false
       # Optional
       y-position: 0.4
       lines:
-        - '&b%npc_name%'
-        - '&6&lCLICK'
+        - '<aqua>%npc_name%'
+        - '<gold><bold>CLICK'
   placeholder-example:
     click: RIGHT
     display-name: EXAMPLE
@@ -38,9 +38,9 @@ dialogue:
     permission: characterdialogue.first
     dialog:
       - 'wait: 2'
-      - 'send: &e[NPC] &4%npc_name%&f: Go away!'
+      - 'send: <yellow>[NPC] <aqua>%npc_name%<white>: Go away!'
     first-interaction:
-      - 'send: &c[NPC] &b%npc_name%&f: What you want? dumb.'
+      - 'send: <red>[NPC] <aqua>%npc_name%<white>: What do you want? dumb.'
   aphrodisius:
     click: RIGHT
     display-name: The King
@@ -87,7 +87,7 @@ dialogue:
       - 'sound{sound=ENTITY_VILLAGER_YES,volume=0.7,pitch=0.7}'
       - 'wait: 2'
       - 'send: &7'
-      - 'send: &6&lMISSION COMPLETED&7:&f Talk with the king'
+      - 'send: <gold><bold>MISSION COMPLETED<reset><gray>:<white> Talk with the king'
       - 'sound{sound=BLOCK_NOTE_PLING,volume=1,pitch=0.4}'
   choice-sample:
     click: RIGHT
@@ -95,7 +95,7 @@ dialogue:
     allow-movement: false
     permission:
       value: npc.king.talk
-      message: '&e[NPC] &b%npc_name%&f: Hey, you''re not allowed to be here'
+      message: '<yellow>[NPC] <aqua>%npc_name%<white>: Hey, you''re not allowed to be here'
     dialog:
       - 'send: %npc% Hi, I''m the king, since you''re here, what do you need?'
       - 'sound{sound=ENTITY_VILLAGER_YES,volume=0.7,pitch=0.5}'
@@ -151,7 +151,7 @@ dialogue:
       - 'sound{sound=ENTITY_VILLAGER_YES,volume=0.7,pitch=0.5}'
       - 'wait: 2'
       - 'send: &7'
-      - 'send: &6&lMISSION COMPLETED&7:&f Talk with the king'
+      - 'send: <gold><bold>MISSION COMPLETED<gray>:<white> Talk with the king'
       - 'sound{sound=BLOCK_NOTE_PLING,volume=1,pitch=0.2}'
     hologram:
       enabled: true

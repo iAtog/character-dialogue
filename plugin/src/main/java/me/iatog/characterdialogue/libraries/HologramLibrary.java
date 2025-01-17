@@ -5,7 +5,8 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import eu.decentsoftware.holograms.api.DHAPI;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
-import me.iatog.characterdialogue.util.TextUtils;
+import me.iatog.characterdialogue.util.AdventureUtil;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -51,13 +52,15 @@ public class HologramLibrary {
             Hologram holo = HologramsAPI.createHologram(main, location);
 
             for (String line : lines) {
-                holo.appendTextLine(TextUtils.colorize(line.replace("%npc_name%", npcName)));
+                String legacy = LegacyComponentSerializer.legacySection().serialize(AdventureUtil.minimessage(line.replace("%npc_name%", npcName)));
+                holo.appendTextLine(legacy);
             }
         } else if (decentHolograms) {
             List<String> formattedLines = new ArrayList<>();
 
             for (String line : lines) {
-                formattedLines.add(TextUtils.colorize(line.replace("%npc_name%", npcName)));
+                String legacy = LegacyComponentSerializer.legacySection().serialize(AdventureUtil.minimessage(line.replace("%npc_name%", npcName)));
+                formattedLines.add(legacy);
             }
 
             DHAPI.createHologram(name + npcId, location, formattedLines);

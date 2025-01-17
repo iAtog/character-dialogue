@@ -8,7 +8,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.Choice;
 import me.iatog.characterdialogue.util.AdventureUtil;
-import me.iatog.characterdialogue.util.TextUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 
 public class ChoiceGUI {
 
-    private final String empty = TextUtils.colorize("&7");
+    //private final String empty = TextUtils.colorize("&7");
     private boolean destroy = true;
 
     private final CharacterDialoguePlugin main;
@@ -39,7 +38,7 @@ public class ChoiceGUI {
 
         gui.getFiller().fillBorder(
               ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE)
-                    .name(Component.text(empty)).asGuiItem());
+                    .name(Component.empty()).asGuiItem());
 
         data.getChoiceSession().getChoices().forEach((index, choice) -> {
             GuiItem choiceItem = createChoiceItem(index, choice, hover);

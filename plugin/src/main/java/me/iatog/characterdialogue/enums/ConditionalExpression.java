@@ -22,7 +22,7 @@ public enum ConditionalExpression {
 
         if (!data.getMain().getCache().getDialogues().containsKey(expression) || expression.isEmpty()) {
             data.getMain().getLogger().severe("The dialogue '" + expression + "' was not found.");
-            player.sendMessage(TextUtils.colorize("&c&lUnknown dialogue found."));
+            AdventureUtil.sendMessage(player, "<red><bold>Unknown dialogue found.");
             return;
         }
 

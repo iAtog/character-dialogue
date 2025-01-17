@@ -9,6 +9,7 @@ import me.iatog.characterdialogue.enums.ConditionalExpression;
 import me.iatog.characterdialogue.enums.Operator;
 import me.iatog.characterdialogue.placeholders.Placeholders;
 import me.iatog.characterdialogue.session.DialogSession;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.entity.Player;
 
@@ -63,7 +64,7 @@ public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
             try {
                 conditionResult = evaluateCondition(context.getPlayer(), condition);
             } catch (IllegalArgumentException e) {
-                context.getPlayer().sendMessage(TextUtils.colorize("&c&lFatal error occurred."));
+                AdventureUtil.sendMessage(context.getPlayer(), "<red><bold>Fatal error occurred.");
                 getProvider().getLogger().warning("The dialogue '" + session.getDialogue().getName() + "' has an invalid condition in L" + session.getCurrentIndex());
                 context.destroy();
                 return;
@@ -85,7 +86,7 @@ public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
             conditionalExpression.execute(new ConditionData(session, getProvider(),
                   Placeholders.translate(context.getPlayer(), argument)), context.getConsumer());
         } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
-            context.getPlayer().sendMessage(TextUtils.colorize("&c&lFatal error occurred."));
+            AdventureUtil.sendMessage(context.getPlayer(), "<red><bold>Fatal error occurred.");
             getProvider().getLogger().warning("The dialogue '" + session.getDialogue().getName() + "' has an invalid format in L" + session.getCurrentIndex());
             e.printStackTrace();
             context.destroy();

@@ -1,5 +1,6 @@
 package me.iatog.characterdialogue.dialogs.method.talk;
 
+import com.google.common.base.Strings;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.dialog.ConfigurationType;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
@@ -24,6 +25,10 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
 
     // List of players to wait sneak
     private final List<UUID> players;
+
+    public static final String line = Strings.repeat(" ", 80);
+    public static String[] emptyList = new String[0];
+
     /**
      * DESIGN:
      * talk: <type>|<message>
@@ -36,6 +41,8 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
     public TalkMethod(CharacterDialoguePlugin main) {
         super("talk", main);
         this.players = new ArrayList<>();
+        emptyList = TalkType.getEmptyList();
+
         addConfigurationType("type", ConfigurationType.TEXT);
         addConfigurationType("name", ConfigurationType.TEXT);
         addConfigurationType("sound", ConfigurationType.TEXT);

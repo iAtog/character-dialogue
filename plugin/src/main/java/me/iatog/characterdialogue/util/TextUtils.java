@@ -16,8 +16,8 @@ public class TextUtils {
     private final static int CENTER_PX = 154;
     private final static Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");
 
-    @SuppressWarnings("deprecation")
     @NotNull
+    @Deprecated
     public static String colorize(String message) {
         String version = Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1];
 

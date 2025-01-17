@@ -85,6 +85,14 @@ public class AdventureUtil {
               minimessage.deserialize(message)
         );
     }
+    /**
+     * Sends an action bar to the player
+     * @param player the player who receives the message
+     * @param component the action bar content
+     */
+    public static void sendActionBar(@NotNull Player player, @NotNull Component component) {
+        CharacterDialoguePlugin.getInstance().getAudiences().player(player).sendActionBar(component);
+    }
 
     public static void sendTitle(Player player, Title title) {
         CharacterDialoguePlugin.getInstance().getAudiences().player(player).showTitle(title);

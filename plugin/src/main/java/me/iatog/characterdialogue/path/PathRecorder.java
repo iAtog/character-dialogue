@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.command.RecordCommand;
+import me.iatog.characterdialogue.util.AdventureUtil;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.KeybindComponent;
@@ -14,8 +16,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static me.iatog.characterdialogue.util.TextUtils.colorize;
 
 public class PathRecorder {
 
@@ -36,11 +36,11 @@ public class PathRecorder {
         this.playerId = player.getUniqueId();
     }
 
-    @SuppressWarnings("deprecation")
     public void startRecording() {
         if(recording || task != null) {
             return;
         }
+        String message = main.language("command.record.action-bar");
 
         startTime = System.currentTimeMillis();
         recording = true;
@@ -49,12 +49,12 @@ public class PathRecorder {
                 int elapsed = (int) ((System.currentTimeMillis() - startTime) / 1000);
                 int seconds = elapsed == 0 ? 1 : elapsed;
                 paths.add(new RecordLocation(player().getLocation(), player().isSneaking()));
-                KeybindComponent keybind = new KeybindComponent("key.swapOffhand");
-                ComponentBuilder builder = new ComponentBuilder(colorize("&c[ Press "));
-                builder.append(keybind);
-                builder.append(colorize("&c to stop ] "));
-                builder.append(colorize("&7(" + seconds + "s elapsed)"));
-                player().spigot().sendMessage(ChatMessageType.ACTION_BAR, builder.create());
+                Component component = AdventureUtil.minimessage(
+                      message,
+                      AdventureUtil.placeholder("seconds", seconds+"")
+                );
+
+                AdventureUtil.sendActionBar(player(), component);
             }
         }, 0, 1);
     }

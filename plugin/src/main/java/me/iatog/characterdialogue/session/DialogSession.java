@@ -8,8 +8,8 @@ import me.iatog.characterdialogue.enums.ClickType;
 import me.iatog.characterdialogue.enums.CompletedType;
 import me.iatog.characterdialogue.api.interfaces.Session;
 import me.iatog.characterdialogue.player.PlayerData;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
-import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -214,8 +214,9 @@ public class DialogSession implements Session {
     }
 
     public void sendDebugMessage(String message, String codeReference) {
-        if (getPlayer() != null && debug) {
-            getPlayer().sendMessage(TextUtils.colorize("&7[&cCD-DEBUG&7] &7" + message + " &8(&7" + codeReference + "&8)"));
+        Player player = getPlayer();
+        if (player != null && debug) {
+            AdventureUtil.sendMessage(player, "<gray>[<red>Session<gray>] " + message + " <#242424>(<gray>" + codeReference + "<#242424>)");
         }
     }
 }

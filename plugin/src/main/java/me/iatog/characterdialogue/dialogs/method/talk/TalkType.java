@@ -2,6 +2,7 @@ package me.iatog.characterdialogue.dialogs.method.talk;
 
 import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.TextUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -15,38 +16,36 @@ public enum TalkType {
         String npcName = context.npcName();
 
         AdventureUtil.sendActionBar(player,
-              "<gray>[<aqua>" + npcName + "<gray>] " +
-                    context.color() +
-                    text
+              "<gray>[<aqua>" + npcName + "<gray>] " + context.color() + text
         );
     }),
     MESSAGE(context -> {
         Player player = context.player();
         String text = context.text();
         String npcName = context.npcName();
-        String npc = TextUtils.colorize("&8[&b" + npcName + "&8] &7");
+        String npc = "<#242424>[<aqua>" + npcName + "<#242424>] <gray>";
 
-        player.sendMessage(getEmptyList());
-        player.sendMessage(npc + text);
+        player.sendMessage(TalkMethod.emptyList);
+        AdventureUtil.sendMessage(player, npc + text);
     }),
     FULL_CHAT(context -> {
         Player player = context.player();
         String text = context.text();
         String npcName = context.npcName();
-        String line = "&7&m                                                                                ";
-        String colorizedText = TextUtils.colorize("&8[&b" + npcName + "&8] &7" + text);
+        String line = "<gray><strikethrough>" + TalkMethod.line;
+        String colorizedText = "<#242424>[<aqua>" + npcName + "<#242424>] <gray>" + text;
         List<String> wrapped = TextUtils.wrapText(colorizedText, 55);
 
-        player.sendMessage(getEmptyList());
-        player.sendMessage(TextUtils.colorize(line));
-        player.sendMessage(TextUtils.colorize("&7"));
+        player.sendMessage(TalkMethod.emptyList);
+        AdventureUtil.sendMessage(player, line);
+        AdventureUtil.sendMessage(player, Component.empty());
 
         for (String wrap : wrapped) {
-            TextUtils.sendCenteredMessage(player, "<gray>" + wrap);
+            TextUtils.sendCenteredMessage(player, context.color() + wrap);
         }
 
-        player.sendMessage(TextUtils.colorize("&7"));
-        player.sendMessage(TextUtils.colorize(line));
+        AdventureUtil.sendMessage(player, Component.empty());
+        AdventureUtil.sendMessage(player, line);
     });
 
     private final Consumer<TalkContext> consumer;
@@ -59,7 +58,7 @@ public enum TalkType {
         List<String> list = new ArrayList<>();
 
         for (int i = 0; i < 40; i++) {
-            list.add(TextUtils.colorize("&7"));
+            list.add("");
         }
 
         return list.toArray(String[]::new);

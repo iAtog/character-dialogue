@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.PaginatedGui;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.gui.GUI;
 import me.iatog.characterdialogue.libraries.ItemManager;
+import me.iatog.characterdialogue.util.AdventureUtil;
 import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -42,7 +43,8 @@ public class ItemGui extends GUI {
 
         Map<String, ItemStack> items = manager.getItems();
 
-        items.forEach((id, item) -> gui.addItem(ItemBuilder.from(item).asGuiItem((event) -> event.getWhoClicked().sendMessage(TextUtils.colorize("&aClicked item ID:&7 " + id)))));
+        items.forEach((id, item) -> gui.addItem(ItemBuilder.from(item).asGuiItem((event) ->
+              AdventureUtil.sendMessage(event.getWhoClicked(), "<green>Clicked item ID: <gray>" + id))));
 
         gui.open(player);
     }
