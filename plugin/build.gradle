@@ -18,8 +18,7 @@ dependencies {
     compileOnly("com.github.retrooper:packetevents-spigot:2.7.0")
 
     compileOnly 'net.citizensnpcs:citizensapi:2.0.35-SNAPSHOT'
-    compileOnly(name:'ZNPCsPlus-2.0.0', ext:'jar')
-    //compileOnly "lol.pyr:znpcsplus-api:2.0.0-SNAPSHOT"
+    compileOnly "lol.pyr:znpcsplus-api:2.1.0-SNAPSHOT"
     compileOnly("de.oliver:FancyNpcs:2.4.1")
 
     implementation "net.kyori:adventure-api:4.18.0"

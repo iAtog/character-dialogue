@@ -1,7 +1,6 @@
 package me.iatog.characterdialogue.adapter.znpcsplus;
 
 import lol.pyr.znpcsplus.util.NpcPose;
-import lol.pyr.znpcsplus.util.Viewable;
 import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import lol.pyr.znpcsplus.api.NpcApiProvider;
 import lol.pyr.znpcsplus.api.entity.EntityProperty;
@@ -212,16 +211,12 @@ public class AdaptedZNPC implements AdaptedNPC {
 
     @Override
     public void show(Player player) {
-        ((Viewable)npc.getNpc()).show(player);
-        //npc.getNpc().show(player);
-        //impl.getEntity().spawn(player);
+        npc.getNpc().show(player);
     }
 
     @Override
     public void hide(Player player) {
-        //npc.getNpc().hide(player);
-        ((Viewable)npc.getNpc()).hide(player);
-        //impl.getEntity().despawn(player);
+        npc.getNpc().hide(player);
     }
 
     @Override
