@@ -72,6 +72,8 @@ public class FollowingNPC {
         mob.setSilent(true);
         mob.setRemoveWhenFarAway(false);
         mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2, true, true));
+        mob.setVisibleByDefault(false);
+
         // Protecting the entity with events
         mob.setMetadata("characterDialogue-followingPlayer", new FixedMetadataValue(main, true));
         return mob;
