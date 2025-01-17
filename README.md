@@ -27,12 +27,10 @@ Wiki: https://absolute-algorithmic.gitbook.io/character-dialogue-documentation/
   * ZNPCs Plus
   * FancyNPCs
 ## Compiling the project
-Compiling the plugin will be troublesome, since you need the `ZNPCS Plus` plugin in the `libs` folder inside the project.
+
 ````shell
 $ git clone https://github.com/iAtog/character-dialogue
 $ cd ./character-dialogue
 $ gradlew shadowJar
 ````
-Download https://github.com/Pyrbu/ZNPCsPlus/releases/tag/2.0.0 and put it in ``/libs`` folder.
-
-Then run ``gradlew shadowJar`` and the plugin will be in `/build`
+When running ``gradlew shadowJar`` the plugin will be in `/build` folder
