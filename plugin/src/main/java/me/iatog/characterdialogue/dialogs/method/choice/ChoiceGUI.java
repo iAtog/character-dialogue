@@ -17,7 +17,6 @@ import java.util.Arrays;
 
 public class ChoiceGUI {
 
-    //private final String empty = TextUtils.colorize("&7");
     private boolean destroy = true;
 
     private final CharacterDialoguePlugin main;
@@ -58,13 +57,13 @@ public class ChoiceGUI {
 
     public GuiItem createChoiceItem(int index, Choice choice, String hover) {
         return ItemBuilder
-              .skull(new ItemStack(Material.PLAYER_HEAD, index))
-              .texture(getTexture(index))
-              .amount(index)
+              .skull(new ItemStack(Material.PLAYER_HEAD, index + 1))
+              .texture(getTexture(index + 1))
+              .amount(index + 1)
               .name(AdventureUtil.minimessage("<reset>" + choice.getMessage()))
               .lore(Arrays.asList(
                     Component.empty(),
-                    AdventureUtil.minimessage("<reset>" + hover.replace("%str%", index+""))
+                    AdventureUtil.minimessage("<reset>" + hover.replace("%str%", (index + 1)+""))
               ))
               .asGuiItem(action -> {
                   destroy = false;

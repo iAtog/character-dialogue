@@ -34,7 +34,7 @@ public class ChoiceForm {
             Component component = AdventureUtil.minimessage(
                   model.replace("<message>", choice.getMessage()),
                   AdventureUtil.placeholder("player", data.getPlayer().getName()),
-                  AdventureUtil.placeholder("number", index+"")
+                  AdventureUtil.placeholder("number", (index + 1)+"")
             );
 
             String parsedModel = serializer.serialize(component);
