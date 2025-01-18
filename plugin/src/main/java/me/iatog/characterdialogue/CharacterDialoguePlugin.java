@@ -197,6 +197,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         );
 
         if(!res) {
+            clearAllDialogues();
             load(folder, (document) -> dialogues.add(document));
         }
     }
