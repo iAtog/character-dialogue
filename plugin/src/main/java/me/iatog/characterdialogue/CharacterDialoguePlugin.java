@@ -27,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class CharacterDialoguePlugin extends JavaPlugin {
 
@@ -184,27 +185,19 @@ public class CharacterDialoguePlugin extends JavaPlugin {
      * Load all files from the folder CharacterDialogue/dialogues/
      */
     public void loadAllDialogues() throws IOException {
-        String folderName = "dialogues";
-        File folder = new File(this.getDataFolder() + "/" + folderName);
+        String folderName = getDataFolder() + "/" + "dialogues";
+        File folder = new File(folderName);
 
-        if (!folder.exists()) {
-            folder.mkdir();
-            YamlDocument defaultDialogues = YamlDocument.create(new File(getDataFolder() + "/" + folderName + "/examples.yml"), Objects.requireNonNull(getResource("dialogues/examples.yml")));
-            dialogues.add(defaultDialogues);
-            return;
-        }
+        boolean res = loadDefault(
+              folder,
+              folderName,
+              "dialogues/examples.yml",
+              "examples.yml",
+              (document) -> dialogues.add(document)
+        );
 
-        if (folder.isDirectory()) {
-            clearAllDialogues();
-            File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
-            if (files != null) {
-                for (File file : files) {
-                    if (! file.isFile()) continue;
-                    YamlDocument yamlDocument = YamlDocument.create(file);
-
-                    dialogues.add(yamlDocument);
-                }
-            }
+        if(!res) {
+            load(folder, (document) -> dialogues.add(document));
         }
     }
 
@@ -212,18 +205,36 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         String folderName = getDataFolder() + "/" + "choices";
         File folder = new File(folderName);
 
+        boolean res = loadDefault(
+              folder,
+              folderName,
+              "choice.yml",
+              "choice-example.yml",
+              this::loadChoices
+        );
+
+        if(!res) {
+            load(folder, this::loadChoices);
+        }
+    }
+
+    private boolean loadDefault(File folder, String folderName, String defName, String finalName, Consumer<YamlDocument> action) {
         if(!folder.exists()) {
             folder.mkdir();
             try {
-                YamlDocument defaultChoices = YamlDocument.create(new File(folderName + "/choice-example.yml"), Objects.requireNonNull(getResource("choices.yml")));
-                loadChoices(defaultChoices);
+                YamlDocument defFile = YamlDocument.create(new File(folderName + "/" + finalName), Objects.requireNonNull(getResource(defName)));
+                action.accept(defFile);
             } catch (IOException e) {
-                getLogger().warning("Error loading default choices file: " + e.getMessage());
+                getLogger().warning("Error loading default file: " + e.getMessage());
             }
 
-            return;
+            return true;
         }
 
+        return false;
+    }
+
+    private void load(File folder, Consumer<YamlDocument> action) {
         if(folder.isDirectory()) {
             File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
             if (files != null) {
@@ -232,9 +243,10 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
                     try {
                         YamlDocument yamlDocument = YamlDocument.create(file);
-                        loadChoices(yamlDocument);
+
+                        action.accept(yamlDocument);
                     } catch(IOException e) {
-                        getLogger().severe("Error loading choices: " + e.getMessage());
+                        getLogger().severe("Error loading folder: " + e.getMessage());
                     }
                 }
             }
