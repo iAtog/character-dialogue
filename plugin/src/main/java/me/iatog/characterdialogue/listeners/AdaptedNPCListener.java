@@ -96,7 +96,11 @@ public class AdaptedNPCListener implements Listener {
         if (player.hasMetadata("dialogueCooldown")) {
             long cooldown = player.getMetadata("dialogueCooldown").getFirst().asLong();
             if (currentTime < cooldown) {
-                AdventureUtil.sendMessage(player, main.language("cooldown-message"));
+                String message = main.language("cooldown-message");
+
+                if(!message.trim().isEmpty() && !message.equals("cooldown-message")) {
+                    AdventureUtil.sendMessage(player, message);
+                }
                 return false;
             }
         }
