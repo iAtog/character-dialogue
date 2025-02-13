@@ -48,10 +48,9 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     private String[] serverVersionArray;
 
     /**
-     * I only set this method for third party plugins, I do not use this method and
-     * even less abuse it. <br>
+     * bruh
      * <br>
-     * Get the main class of the CharacterDialogue.
+     * Get the main class of character-dialogue.
      *
      * @return the plugin main class
      */
