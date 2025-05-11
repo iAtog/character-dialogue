@@ -58,7 +58,7 @@ tasks.named('shadowJar').configure {
 
 bukkit {
     name = 'CharacterDialogue'
-    main = 'me.iatog.characterdialogue.CharacterDialoguePlugin'
+    main = 'me.iatog.characterdialogue.core.plugin.CorePlugin'
     apiVersion = '1.20'
     version = project.findProperty('projectVersion')
     author = 'iAtog'
