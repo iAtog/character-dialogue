@@ -19,7 +19,9 @@ public class PluginModule implements Module {
     @Override
     public void load() {
         Collections.addAll(modules,
-              new CommandModule(core));
+              new AdapterModule(core),
+              new CommandModule(core)
+        );
 
         modules.forEach(Module::load);
     }
