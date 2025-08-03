@@ -208,7 +208,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         boolean res = loadDefault(
               folder,
               folderName,
-              "choice.yml",
+              "choices.yml",
               "choice-example.yml",
               this::loadChoices
         );
