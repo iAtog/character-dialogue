@@ -1,10 +1,8 @@
 package me.iatog.characterdialogue.loader;
 
-import com.sk89q.worldguard.WorldGuard;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.libraries.WGHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 public class WorldGuardLoader implements Loader {
 
@@ -16,19 +14,23 @@ public class WorldGuardLoader implements Loader {
 
     @Override
     public void load() {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
-
-        if(plugin == null) {
+        if(!Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             return;
         }
 
-        String version = WorldGuard.getVersion();
+        try {
+            Class.forName("com.sk89q.worldguard.protection.regions.ProtectedRegion");
+        } catch(Exception ex) {
+            return;
+        }
+
+        String version = WGHandler.Util.version();
 
         if(!version.startsWith("7.")) {
             main.getLogger().warning("Consider updating WorldGuard to version 7.x");
         }
 
-        if(!WorldGuard.getInstance().getPlatform().getSessionManager().registerHandler(WGHandler.factory, null)) {
+        if(!WGHandler.Util.registerHandler()) {
             main.getLogger().severe("Could not register the WorldGuard handler...");
         }
     }

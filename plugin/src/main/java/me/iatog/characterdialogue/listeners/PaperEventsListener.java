@@ -2,7 +2,6 @@ package me.iatog.characterdialogue.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
-import me.iatog.characterdialogue.api.events.DialogueFinishEvent;
 import me.iatog.characterdialogue.player.PlayerData;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;

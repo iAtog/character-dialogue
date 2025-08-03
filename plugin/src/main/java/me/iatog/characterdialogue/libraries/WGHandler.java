@@ -2,6 +2,7 @@ package me.iatog.characterdialogue.libraries;
 
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.session.MoveType;
@@ -40,5 +41,15 @@ public class WGHandler extends Handler {
         }
 
         return true;
+    }
+
+    public static class Util {
+        public static boolean registerHandler() {
+            return WorldGuard.getInstance().getPlatform().getSessionManager().registerHandler(WGHandler.factory, null);
+        }
+
+        public static String version() {
+            return WorldGuard.getVersion();
+        }
     }
 }

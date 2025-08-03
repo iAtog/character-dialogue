@@ -23,9 +23,12 @@ public class ListenerLoader implements Loader {
               new RecordListener(main),
               new AdaptedNPCListener(main),
               new FollowListener(),
-              new RegionalDialoguesListener(main),
               new PlayerChatListener(main)
         );
+
+        if(Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            Bukkit.getPluginManager().registerEvents(new RegionalDialoguesListener(main), main);
+        }
 
         if(main.isPaper()) {
             registerListeners(
