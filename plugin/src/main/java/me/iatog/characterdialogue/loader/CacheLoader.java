@@ -43,7 +43,11 @@ public class CacheLoader implements Loader {
               new ChoiceMethod(main),
               new ConditionalEventsMethod(main),
               new RemoveItemMethod(main),
-              new ActionBarMethod()
+              new ActionBarMethod(),
+
+              new ExperienceMethod(main),
+              new WeatherMethod(main),
+              new TimeMethod(main)
         );
 
         main.registerChoices(
