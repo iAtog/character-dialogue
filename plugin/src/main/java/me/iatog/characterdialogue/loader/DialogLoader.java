@@ -26,7 +26,7 @@ public class DialogLoader implements Loader {
             }
         }
 
-        main.loadRegionalDialogues();
+        main.getInitializer().loadRegionalDialogues();
 
         main.getLogger().info("Successfully loaded " + cache.getDialogues().size() + " dialogues.");
     }

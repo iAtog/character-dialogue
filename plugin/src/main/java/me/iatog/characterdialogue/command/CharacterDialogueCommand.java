@@ -95,10 +95,10 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
         cache.getRegionalDialogues().clear();
 
         reloadDialogues(sender, cache);
-        main.loadRegionalDialogues();
+        main.getInitializer().loadRegionalDialogues();
 
-        main.clearAllChoices();
-        main.loadAllChoices();
+        main.getInitializer().clearAllChoices();
+        main.getInitializer().loadAllChoices();
 
         AdventureUtil.sendMessage(sender, main.language(true, "loaded-dialogues", cache.getDialogues().size()));
         AdventureUtil.sendMessage(sender, main.language(true, "command.reload.success"));
@@ -190,7 +190,7 @@ public class CharacterDialogueCommand extends CSubCommand implements CommandClas
 
     private void reloadDialogues(CommandSender sender, Cache cache) {
         try {
-            main.loadAllDialogues();
+            main.getInitializer().loadAllDialogues();
 
             for (YamlDocument dialogueFile : main.getAllDialogues()) {
                 if (dialogueFile == null) continue;

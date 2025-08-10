@@ -12,11 +12,11 @@ public class ChoiceLoader implements Loader {
 
     @Override
     public void load() {
-        main.loadAllChoices();
+        main.getInitializer().loadAllChoices();
     }
 
     @Override
     public void unload() {
-        main.clearAllChoices();
+        main.getInitializer().clearAllChoices();
     }
 }

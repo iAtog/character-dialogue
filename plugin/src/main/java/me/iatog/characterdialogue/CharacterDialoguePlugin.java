@@ -31,6 +31,8 @@ import java.util.function.Consumer;
 
 public class CharacterDialoguePlugin extends JavaPlugin {
 
+    private Initializer initializer;
+
     private static CharacterDialoguePlugin instance;
     private PluginLoader loader;
     private FileFactory fileFactory;
@@ -62,6 +64,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         this.startup = System.currentTimeMillis();
         this.dialogues = new ArrayList<>();
         this.guiFactory = new GUIFactory();
+        this.initializer = new Initializer(this);
     }
 
     @Override
@@ -74,7 +77,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
 
         this.audiences = BukkitAudiences.create(this);
         try {
-            loadAllDialogues();
+            initializer.loadAllDialogues();
         } catch (IOException e) {
             getLogger().severe("Error loading dialogues directory");
             return;
@@ -172,7 +175,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         }
     }
 
-    public PathStorage  getPathStorage() {
+    public PathStorage getPathStorage() {
         return pathStorage;
     }
 
@@ -180,129 +183,8 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         return dialogues;
     }
 
-    /**
-     * Load all files from the folder CharacterDialogue/dialogues/
-     */
-    public void loadAllDialogues() throws IOException {
-        String folderName = getDataFolder() + "/" + "dialogues";
-        File folder = new File(folderName);
-
-        boolean res = loadDefault(
-              folder,
-              folderName,
-              "dialogues/examples.yml",
-              "examples.yml",
-              (document) -> dialogues.add(document)
-        );
-
-        if(!res) {
-            clearAllDialogues();
-            load(folder, (document) -> dialogues.add(document));
-        }
-    }
-
-    public void loadAllChoices() {
-        String folderName = getDataFolder() + "/" + "choices";
-        File folder = new File(folderName);
-
-        boolean res = loadDefault(
-              folder,
-              folderName,
-              "choices.yml",
-              "choice-example.yml",
-              this::loadChoices
-        );
-
-        if(!res) {
-            load(folder, this::loadChoices);
-        }
-    }
-
-    private boolean loadDefault(File folder, String folderName, String defName, String finalName, Consumer<YamlDocument> action) {
-        if(!folder.exists()) {
-            folder.mkdir();
-            try {
-                YamlDocument defFile = YamlDocument.create(new File(folderName + "/" + finalName), Objects.requireNonNull(getResource(defName)));
-                action.accept(defFile);
-            } catch (IOException e) {
-                getLogger().warning("Error loading default file: " + e.getMessage());
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private void load(File folder, Consumer<YamlDocument> action) {
-        if(folder.isDirectory()) {
-            File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
-            if (files != null) {
-                for (File file : files) {
-                    if (!file.isFile()) continue;
-
-                    try {
-                        YamlDocument yamlDocument = YamlDocument.create(file);
-
-                        action.accept(yamlDocument);
-                    } catch(IOException e) {
-                        getLogger().severe("Error loading folder: " + e.getMessage());
-                    }
-                }
-            }
-        }
-    }
-
-    public void clearAllChoices() {
-        getCache().getLoadedChoices().clear();
-    }
-
-    private void loadChoices(YamlDocument document) {
-        Map<String, LoadedChoice> loadedChoices = getCache().getLoadedChoices();
-
-        for(String choiceName : document.getSection("choices").getRoutesAsStrings(false)) {
-            List<ChoiceInfo> choices = new ArrayList<>();
-            String msg = document.getString("choices." + choiceName + ".message", "");
-
-            for(String option : document.getSection("choices." + choiceName).getRoutesAsStrings(false)) {
-                if(option.equals("message")) {
-                    continue;
-                }
-
-                Section section = document.getSection("choices." + choiceName + "." + option);
-                String type = section.getString("type");
-                String message = section.getString("message", "no message specified");
-                String argument = section.getString("argument", "");
-                ChoiceInfo info = new ChoiceInfo(option, type, message, argument);
-                choices.add(info);
-            }
-
-            loadedChoices.put(choiceName, new LoadedChoice(choices, msg));
-        }
-    }
-
-    public void loadRegionalDialogues() {
-        YamlDocument config = getFileFactory().getConfig();
-
-        for (String regionName : config.getSection("regional-dialogues").getRoutesAsStrings(false)) {
-            Section section = config.getSection("regional-dialogues." + regionName);
-            List<String> conditions = section.getStringList("conditions");
-            String conditionType = section.getString("conditions-type", "all");
-
-            if(!conditionType.equalsIgnoreCase("all") && !conditionType.equalsIgnoreCase("one")) {
-                return;
-            }
-
-            ConditionType type = ConditionType.to(conditionType);
-            String dialogueName = section.getString("dialogue");
-            RegionalDialogue dialogue = new RegionalDialogue(type, conditions, dialogueName, regionName);
-
-            getCache().getRegionalDialogues().put(regionName, dialogue);
-        }
-    }
-
-    public void clearAllDialogues() {
-        dialogues.clear();
+    public Initializer getInitializer() {
+        return initializer;
     }
 
     public GUIFactory getGUIFactory() {
@@ -330,21 +212,7 @@ public class CharacterDialoguePlugin extends JavaPlugin {
     public boolean isPaper() {
         return isPaper;
     }
-
-    public boolean isVersionAtLeast(String requiredVersion) {
-        String[] requiredVersionArray = requiredVersion.split("\\.");
-        for (int i = 0; i < requiredVersionArray.length; i++) {
-            int versionNumber = Integer.parseInt(serverVersionArray[i]);
-            int requiredVersionNumber = Integer.parseInt(requiredVersionArray[i]);
-
-            if (versionNumber > requiredVersionNumber) {
-                return true;
-            }
-            else if (versionNumber < requiredVersionNumber) {
-                return false;
-            }
-        }
-        return true;
+    public String[] getServerVersion() {
+        return serverVersionArray;
     }
-
 }

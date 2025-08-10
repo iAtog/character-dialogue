@@ -15,7 +15,23 @@ public class PathTrait extends Trait {
 
     public PathTrait() {
         super("path_trait");
-        useSneak = CharacterDialoguePlugin.getInstance().isVersionAtLeast("1.20.6");
+        useSneak = isVersionAtLeast("1.20.6");
+    }
+
+    private boolean isVersionAtLeast(String requiredVersion) {
+        String[] requiredVersionArray = requiredVersion.split("\\.");
+        for (int i = 0; i < requiredVersionArray.length; i++) {
+            int versionNumber = Integer.parseInt(CharacterDialoguePlugin.getInstance().getServerVersion()[i]);
+            int requiredVersionNumber = Integer.parseInt(requiredVersionArray[i]);
+
+            if (versionNumber > requiredVersionNumber) {
+                return true;
+            }
+            else if (versionNumber < requiredVersionNumber) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
