@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MethodContext {
 
     private final Player player;
@@ -58,5 +61,13 @@ public class MethodContext {
 
     public void pause() {
         this.consumer.accept(CompletedType.PAUSE);
+    }
+
+    public void logError(Logger logger, Level level, String cause) {
+        logger.log(level, "Dialogue '" + session.getDialogue().getName() + "' L" + session.getCurrentIndex() + ": " + cause);
+    }
+
+    public void logError(Logger logger, String cause) {
+        logError(logger, Level.SEVERE, cause);
     }
 }
