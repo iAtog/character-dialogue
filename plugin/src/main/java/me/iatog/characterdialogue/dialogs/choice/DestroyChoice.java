@@ -16,12 +16,12 @@ public class DestroyChoice extends DialogChoice {
     @Override
     public void onSelect(ChoiceContext context) {
         Player player = context.getPlayer();
-        String argument = context.getArgument();
         DialogSession dialogSession = context.getDialogSession();
+        String argument = context.getArgument();
 
         if (!argument.isEmpty()) {
             AdventureUtil.sendMessage(player,
-                  Placeholders.translate(player, argument.replace("%npc_name%", dialogSession.getDisplayName())),
+                  Placeholders.translate(player, argument, dialogSession.getDisplayName()),
                   AdventureUtil.placeholder("player", player.getName())
             );
         }

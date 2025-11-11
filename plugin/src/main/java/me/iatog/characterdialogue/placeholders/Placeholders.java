@@ -24,4 +24,9 @@ public class Placeholders {
 
         return arg;
     }
+
+    public static String translate(Player player, String arg, String npcName) {
+        String a = translate(player, arg);
+        return a.replace("%npc_name%", npcName);
+    }
 }

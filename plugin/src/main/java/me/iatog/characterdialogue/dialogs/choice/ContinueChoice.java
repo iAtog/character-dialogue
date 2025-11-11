@@ -20,7 +20,10 @@ public class ContinueChoice extends DialogChoice {
 
         if (!context.getArgument().isEmpty()) {
             AdventureUtil.sendMessage(player,
-                  Placeholders.translate(player, context.getArgument().replace("%npc_name%", dialogSession.getDisplayName())),
+                  Placeholders.translate(
+                          player,
+                          context.getArgument(),
+                          dialogSession.getDisplayName()),
                   AdventureUtil.placeholder("player", player.getName())
             );
         }
