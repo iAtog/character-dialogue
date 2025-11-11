@@ -36,7 +36,7 @@ public class FollowingNPC {
         entity.setCustomName("CHARACTERDIALOGUE_HUSK_DELETE");
 
         FollowRunnable followRunnable = new FollowRunnable(entity, player, this, npc);
-        followRunnable.runTaskTimer(main, 0, 1);
+        followRunnable.runTaskTimer(main, 0, 3);
         followingEntities.put(npc.getId(), new FollowData(player.getUniqueId(), entity.getUniqueId(), followRunnable));
     }
 

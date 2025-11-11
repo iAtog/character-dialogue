@@ -10,18 +10,16 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.UUID;
-
 public class FollowRunnable extends BukkitRunnable {
 
     private final FollowingNPC followingNPC;
 
-    private final UUID playerId;
+    private final Player player;
     private final Entity entity;
     private final AdaptedNPC npc;
 
     public FollowRunnable(Entity entity, Player player, FollowingNPC followingNPC, AdaptedNPC npc) {
-        this.playerId = player.getUniqueId();
+        this.player = player;
         this.entity = entity;
         this.followingNPC = followingNPC;
         this.npc = npc;
@@ -29,7 +27,6 @@ public class FollowRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        Player player = Bukkit.getPlayer(playerId);
         Mob mob = ((Mob) entity);
 
         if(player == null || !player.isOnline() || mob == null || mob.isDead()) {
