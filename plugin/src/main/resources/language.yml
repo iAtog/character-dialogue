@@ -6,7 +6,7 @@ choice-title: 'Select an option'
 cooldown-message: '<red>Calm down.'
 choice-timeout: '<red>You took a long time to answer'
 sneak-continue: '[ Sneak to continue ]'
-choice-select: '[ Press <key:key.swapOffhand> to select ]'
+choice-select: '[ Press <key:key.swapOffhand>/<key:key.keyboard.left.shift> to select ]'
 general:
   offline-player: '<red>The specified player isn''t online.'
   only-player: '<red>Only players can execute this command.'

@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.Map;
 import java.util.UUID;
@@ -64,16 +65,23 @@ public class ChoiceChatTypeListener implements Listener {
         ChoiceUtil.runChoice(player, choice);
     }
 
-    @EventHandler
-    public void selectChoice(PlayerSwapHandItemsEvent event) {
-        Player player = event.getPlayer();
-
+    private void handleChoiceSelection(Player player) {
         if(main.getCache().getChoiceSessions().containsKey(player.getUniqueId())) {
             ChoiceSession session = main.getCache().getChoiceSessions().get(player.getUniqueId());
             if(session.isUseChat()) {
                 ChoiceUtil.runChoice(player, session.getSelected());
             }
         }
+    }
+
+    @EventHandler
+    public void selectChoice(PlayerSwapHandItemsEvent event) {
+        handleChoiceSelection(event.getPlayer());
+    }
+
+    @EventHandler
+    public void selectChoiceShift(PlayerToggleSneakEvent event) {
+        handleChoiceSelection(event.getPlayer());
     }
 
     @EventHandler
