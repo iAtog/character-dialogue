@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.iatog.characterdialogue'
-version = '0.9.1'
+version = '0.9.2'
 
 subprojects {
     apply plugin: 'java'
