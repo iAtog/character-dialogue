@@ -28,6 +28,7 @@ public class PathRecorder {
     private boolean recording;
     private BukkitTask task;
     private long startTime;
+    private int ticks;
 
     public PathRecorder(CharacterDialoguePlugin main, Player player, Gson gsonInstance) {
         this.main = main;
@@ -49,12 +50,15 @@ public class PathRecorder {
                 int elapsed = (int) ((System.currentTimeMillis() - startTime) / 1000);
                 int seconds = elapsed == 0 ? 1 : elapsed;
                 paths.add(new RecordLocation(player().getLocation(), player().isSneaking()));
-                Component component = AdventureUtil.minimessage(
-                      message,
-                      AdventureUtil.placeholder("seconds", seconds+"")
-                );
+                if(ticks % 20 == 0) {
+                    Component component = AdventureUtil.minimessage(
+                            message,
+                            AdventureUtil.placeholder("seconds", seconds+"")
+                    );
 
-                AdventureUtil.sendActionBar(player(), component);
+                    AdventureUtil.sendActionBar(player(), component);
+                }
+                ticks++;
             }
         }, 0, 1);
     }
