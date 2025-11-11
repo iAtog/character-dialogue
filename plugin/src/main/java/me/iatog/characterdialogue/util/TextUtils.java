@@ -15,12 +15,11 @@ public class TextUtils {
 
     private final static int CENTER_PX = 154;
     private final static Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");
+    private final static String version = Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1];
 
     @NotNull
     @Deprecated
     public static String colorize(String message) {
-        String version = Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1];
-
         if (Integer.parseInt(version) >= 16) {
             Matcher matcher = pattern.matcher(message);
 
