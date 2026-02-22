@@ -67,7 +67,7 @@ public class TalkRunnable extends BukkitRunnable {
                 stopAnimation();
                 return;
             }
-            if (index < message.length()) {
+            if (index < translatedMessage.length()) {
                 animateText();
             } else {
                 cancel();
@@ -91,6 +91,13 @@ public class TalkRunnable extends BukkitRunnable {
     }
 
     private void animateText() {
+        if (index < translatedMessage.length() && translatedMessage.charAt(index) == '<') {
+            int closingIndex = translatedMessage.indexOf('>', index);
+            if (closingIndex != -1) {
+                index = closingIndex;
+            }
+        }
+
         String writingMessage = translatedMessage.substring(0, index + 1);
         char currentChar = translatedMessage.charAt(index);
         index++;

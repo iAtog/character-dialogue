@@ -59,17 +59,18 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
         Player player = context.getPlayer();
         this.players.add(player.getUniqueId());
 
-        animateMessage(player, context.getSession(), context.getConfiguration(), context.getConsumer());
+        animateMessage(context);
     }
 
-    public void animateMessage(Player player,
-                               DialogSession session,
-                               MethodConfiguration configuration,
-                               SingleUseConsumer<CompletedType> completed) {
+    public void animateMessage(MethodContext context) {
+        MethodConfiguration configuration = context.getConfiguration();
+        DialogSession session = context.getSession();
+        SingleUseConsumer<CompletedType> completed = context.getConsumer();
+        Player player = context.getPlayer();
         String message = configuration.getArgument();
         UUID uuid = player.getUniqueId();
-        final String npcName = configuration.getString("name", session.getDialogue().getDisplayName());
-        final String translatedMessage = Placeholders.translate(player, message);
+        String npcName = configuration.getString("name", session.getDialogue().getDisplayName());
+        String translatedMessage = Placeholders.translate(player, message);
 
         float volume = configuration.getFloat("volume", 0.5f);
         float pitch = configuration.getFloat("pitch", 0.5f);
