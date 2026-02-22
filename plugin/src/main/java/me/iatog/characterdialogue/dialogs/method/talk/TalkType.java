@@ -23,7 +23,7 @@ public enum TalkType {
         Player player = context.player();
         String text = context.text();
         String npcName = context.npcName();
-        String npc = "<#242424>[<aqua>" + npcName + "<#242424>] <gray>";
+        String npc = "<gray>[<aqua>" + npcName + "<gray>] ";
 
         player.sendMessage(TalkMethod.emptyList);
         AdventureUtil.sendMessage(player, npc + text);
@@ -33,7 +33,7 @@ public enum TalkType {
         String text = context.text();
         String npcName = context.npcName();
         String line = "<gray><strikethrough>" + TalkMethod.line;
-        String colorizedText = "<#242424>[<aqua>" + npcName + "<#242424>] <gray>" + text;
+        String colorizedText = "<gray>[<aqua>" + npcName + "<gray>] " + text;
         List<String> wrapped = TextUtils.wrapText(colorizedText, 55);
 
         player.sendMessage(TalkMethod.emptyList);
