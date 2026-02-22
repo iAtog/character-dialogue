@@ -12,35 +12,13 @@ import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.SingleUseConsumer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements Listener {
-
-    // List of players to wait sneak
-    private final List<UUID> players;
+public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> {
 
     public static final String line = Strings.repeat(" ", 80);
     public static String[] emptyList = new String[0];
-
-    /**
-     * DESIGN:
-     * talk: <type>|<message>
-     * talk: message|Lorem ipsum
-     * talk: full_chat|Lorem ipsum
-     * <p>
-     * NEW
-     * talk{type='action_bar',sound='BLOCK_SCULK_VEIN_BREAK',volume=0.5,pitch=0.5,tickSpeed=2,skip=false}: Hello
-     */
     public TalkMethod(CharacterDialoguePlugin main) {
         super("talk", main);
-        this.players = new ArrayList<>();
         emptyList = TalkType.getEmptyList();
 
         addConfigurationType("type", ConfigurationType.TEXT);
@@ -56,26 +34,16 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
 
     @Override
     public void execute(MethodContext context) {
-        Player player = context.getPlayer();
-        this.players.add(player.getUniqueId());
-
-        animateMessage(context);
-    }
-
-    public void animateMessage(MethodContext context) {
         MethodConfiguration configuration = context.getConfiguration();
         DialogSession session = context.getSession();
         SingleUseConsumer<CompletedType> completed = context.getConsumer();
         Player player = context.getPlayer();
-        String message = configuration.getArgument();
-        UUID uuid = player.getUniqueId();
+        String message = Placeholders.translate(player, configuration.getArgument());
         String npcName = configuration.getString("name", session.getDialogue().getDisplayName());
-        String translatedMessage = Placeholders.translate(player, message);
 
         float volume = configuration.getFloat("volume", 0.5f);
         float pitch = configuration.getFloat("pitch", 0.5f);
         boolean skip = configuration.getBoolean("skip", false);
-
         int ticks = configuration.getInteger("tickSpeed", 2);
 
         TalkType type;
@@ -85,41 +53,25 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> implements
             type = TalkType.valueOf(configuration.getString("type", "action_bar").toUpperCase());
             sound = Sound.valueOf(configuration.getString("sound", "BLOCK_STONE_BUTTON_CLICK_OFF").toUpperCase());
         } catch (EnumConstantNotPresentException ex) {
-            getProvider().getLogger().severe("The line L" + session.getCurrentIndex() + " in " + session.getDialogue().getName() + " is not valid. (parse error)");
-            session.sendDebugMessage("Error parsing data: " + ex.getMessage(), "TalkMethod:60");
-            completed.accept(CompletedType.DESTROY);
+            getProvider().getLogger().severe(error(session, "invalid type/sound"));
+            session.sendDebugMessage("Error parsing data: " + ex.getMessage(), "TalkMethod:55");
+            context.destroy();
             return;
         }
 
         if (message.isEmpty()) {
-            getProvider().getLogger().severe("The line L" + session.getCurrentIndex() + " in " + session.getDialogue().getName() + " is not valid. (empty message)");
-            session.sendDebugMessage("Error parsing data: message is empty", "TalkMethod:80");
-            completed.accept(CompletedType.DESTROY);
-            return;
-        }
-        String color = configuration.getString("color", "<gray>");
-        new TalkRunnable(
-              players, uuid, message, skip,
-              type, player, sound, translatedMessage,
-              volume, pitch, session,
-              completed, npcName, getProvider(),
-              color
-        ).runTaskTimer(getProvider(), 20L, ticks);
-    }
-
-    @EventHandler
-    public void onLeave(PlayerQuitEvent event) {
-        players.remove(event.getPlayer().getUniqueId());
-    }
-
-    @EventHandler
-    public void onSneak(PlayerToggleSneakEvent event) {
-        Player player = event.getPlayer();
-
-        if (!players.contains(player.getUniqueId())) {
+            getProvider().getLogger().severe(error(session, "empty message"));
+            session.sendDebugMessage("Error parsing data: message is empty", "TalkMethod:64");
+            context.destroy();
             return;
         }
 
-        players.remove(player.getUniqueId());
+        TalkData data = new TalkData(player, sound, volume, pitch, skip, type, npcName, message, session, completed, getProvider());
+        new TalkRunnable(data).runTaskTimer(getProvider(), 20L, ticks);
     }
+
+    private String error(DialogSession s, String m) {
+        return "The line L" + s.getCurrentIndex() + " in " + s.getDialogue().getName() + " is not valid. (" + m + ")";
+    }
+
 }

@@ -16,7 +16,7 @@ public enum TalkType {
         String npcName = context.npcName();
 
         AdventureUtil.sendActionBar(player,
-              "<gray>[<aqua>" + npcName + "<gray>] " + context.color() + text
+              "<gray>[<aqua>" + npcName + "<gray>] " + text
         );
     }),
     MESSAGE(context -> {
@@ -41,7 +41,7 @@ public enum TalkType {
         AdventureUtil.sendMessage(player, Component.empty());
 
         for (String wrap : wrapped) {
-            TextUtils.sendCenteredMessage(player, context.color() + wrap);
+            TextUtils.sendCenteredMessage(player, "<gray>" + wrap);
         }
 
         AdventureUtil.sendMessage(player, Component.empty());
@@ -64,7 +64,7 @@ public enum TalkType {
         return list.toArray(String[]::new);
     }
 
-    public void execute(Player target, String message, String npcName, String color) {
-        consumer.accept(new TalkContext(target.getUniqueId(), message, npcName, color));
+    public void execute(Player target, String message, String npcName) {
+        consumer.accept(new TalkContext(target.getUniqueId(), message, npcName));
     }
 }

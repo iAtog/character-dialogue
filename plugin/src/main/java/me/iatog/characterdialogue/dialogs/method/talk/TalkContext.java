@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public record TalkContext(UUID uuid, String text, String npcName, String color) {
+public record TalkContext(UUID uuid, String text, String npcName) {
 
     public Player player() {
         return Bukkit.getPlayer(uuid);
