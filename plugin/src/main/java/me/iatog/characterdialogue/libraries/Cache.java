@@ -10,7 +10,11 @@ import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Cache {
 
@@ -19,21 +23,21 @@ public class Cache {
     private final Map<UUID, DialogSession> dialogSessions;
     private final Map<UUID, ChoiceSession> choiceSessions;
     private final Map<String, Dialogue> dialogues;
-    private final List<UUID> frozenPlayers;
+    private final Set<UUID> frozenPlayers;
     private final Map<UUID, PlayerData> playerDataMap;
     private final Map<String, RegionalDialogue> regionalDialogues;
     private final Map<String, LoadedChoice> loadedChoices;
 
     public Cache() {
-        this.methods = new HashMap<>();
-        this.dialogSessions = new HashMap<>();
-        this.choiceSessions = new HashMap<>();
-        this.choices = new HashMap<>();
-        this.dialogues = new HashMap<>();
-        this.frozenPlayers = new ArrayList<>();
-        this.playerDataMap = new HashMap<>();
-        this.regionalDialogues = new HashMap<>();
-        this.loadedChoices = new HashMap<>();
+        this.methods = new ConcurrentHashMap<>();
+        this.dialogSessions = new ConcurrentHashMap<>();
+        this.choiceSessions = new ConcurrentHashMap<>();
+        this.choices = new ConcurrentHashMap<>();
+        this.dialogues = new ConcurrentHashMap<>();
+        this.frozenPlayers = Collections.newSetFromMap(new ConcurrentHashMap<>());
+        this.playerDataMap = new ConcurrentHashMap<>();
+        this.regionalDialogues = new ConcurrentHashMap<>();
+        this.loadedChoices = new ConcurrentHashMap<>();
     }
 
     public Map<String, DialogMethod<? extends JavaPlugin>> getMethods() {
@@ -56,7 +60,7 @@ public class Cache {
         return dialogues;
     }
 
-    public List<UUID> getFrozenPlayers() {
+    public Set<UUID> getFrozenPlayers() {
         return frozenPlayers;
     }
 
