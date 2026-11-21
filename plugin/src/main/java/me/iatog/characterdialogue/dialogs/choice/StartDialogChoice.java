@@ -1,10 +1,12 @@
 package me.iatog.characterdialogue.dialogs.choice;
 
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
+import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import me.iatog.characterdialogue.api.CharacterDialogueAPI;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 import me.iatog.characterdialogue.dialogs.ChoiceContext;
 import me.iatog.characterdialogue.dialogs.DialogChoice;
+import org.bukkit.entity.Player;
 
 public class StartDialogChoice extends DialogChoice {
 
@@ -17,15 +19,20 @@ public class StartDialogChoice extends DialogChoice {
 
     @Override
     public void onSelect(ChoiceContext context) {
-        CharacterDialogueAPI api = main.getApi();
-        Dialogue dialogue = api.getDialogue(context.getArgument());
+        Dialogue dialogue = main.getApi().getDialogue(context.getArgument());
+        Player player = context.getPlayer();
+        AdaptedNPC npc = context.getDialogSession().getNPC();
         context.getDialogSession().destroy();
 
-        if (dialogue != null) {
-            api.runDialogue(context.getPlayer(), dialogue,
-                  context.getDialogSession().isOnDebugMode(), context.getDialogSession().getNPC());
-        } else {
+        if (dialogue == null) {
             main.getLogger().severe("The dialogue \"" + context.getArgument() + "\" doesn't exists");
+            return;
+        }
+
+        if (dialogue.isFirstInteractionEnabled() && !main.getApi().wasReadedBy(player, dialogue, true)) {
+            dialogue.startFirstInteraction(player, true, npc);
+        } else {
+            dialogue.start(player, context.getDialogSession().isOnDebugMode(), npc);
         }
     }
 
