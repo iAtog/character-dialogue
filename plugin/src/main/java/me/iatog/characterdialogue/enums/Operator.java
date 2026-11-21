@@ -6,7 +6,12 @@ public enum Operator {
     NOT_EQUAL_TO("!="),
     LESS_THAN("<"),
     MORE_THAN(">"),
-    EQUAL_TO("==");
+    EQUAL_TO("=="),
+
+    CONTAINS("contains"),
+    STARTS_WITH("startsWith"),
+    ENDS_WITH("endsWith")
+    ;
 
 
     private final String text;
