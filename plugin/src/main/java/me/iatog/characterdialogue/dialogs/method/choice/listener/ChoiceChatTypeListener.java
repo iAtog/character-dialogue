@@ -8,6 +8,7 @@ import me.iatog.characterdialogue.session.ChoiceSession;
 import me.iatog.characterdialogue.session.DialogSession;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -66,23 +67,26 @@ public class ChoiceChatTypeListener implements Listener {
         ChoiceUtil.runChoice(player, choice);
     }
 
-    private void handleChoiceSelection(Player player) {
+    private void handleChoiceSelection(Player player, Cancellable event) {
         if(main.getCache().getChoiceSessions().containsKey(player.getUniqueId())) {
             ChoiceSession session = main.getCache().getChoiceSessions().get(player.getUniqueId());
             if(session.isUseChat()) {
                 ChoiceUtil.runChoice(player, session.getSelected());
+                if(event != null) event.setCancelled(true);
+
             }
         }
     }
 
     @EventHandler
     public void selectChoice(PlayerSwapHandItemsEvent event) {
-        handleChoiceSelection(event.getPlayer());
+        handleChoiceSelection(event.getPlayer(), event);
+
     }
 
     @EventHandler
     public void selectChoiceShift(PlayerToggleSneakEvent event) {
-        handleChoiceSelection(event.getPlayer());
+        handleChoiceSelection(event.getPlayer(), event);
     }
 
     @EventHandler
