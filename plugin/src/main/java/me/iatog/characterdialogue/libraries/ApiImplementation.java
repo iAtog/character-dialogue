@@ -27,10 +27,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -377,9 +379,9 @@ public class ApiImplementation implements CharacterDialogueAPI {
 
     @Override
     public boolean evaluateConditions(Player player, List<String> conditions, ConditionType type) {
-        ConditionalMethod conditionalMethod = getMethod("conditional");
+        ConditionalMethod conditionalMethod = Objects.requireNonNull(getMethod("conditional"));
 
-        if(!conditions.isEmpty() && conditionalMethod != null) {
+        if(!conditions.isEmpty()) {
             boolean result = false;
 
             for(String condition : conditions) {
