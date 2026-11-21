@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -117,7 +118,7 @@ public class MethodConfiguration {
             return null;
         }
         if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
-            return Boolean.parseBoolean(value.toLowerCase());
+            return Boolean.parseBoolean(value.toLowerCase(Locale.ROOT));
         } else if (value.matches("-?\\d+(\\.\\d+)?")) {
             try {
                 if (value.contains(".")) {

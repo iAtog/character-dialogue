@@ -68,7 +68,7 @@ public class AdaptedZNPC implements AdaptedNPC {
         if(npc == null) {
             return null;
         }
-
+        
         NpcEntry newNpc = NpcApiProvider.get().getNpcRegistry().create(
               npc.getId() + "_" + generateId(5) + "_cloned",
               npc.getNpc().getWorld(),

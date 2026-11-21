@@ -11,6 +11,7 @@ import me.iatog.characterdialogue.adapter.AdaptedNPC;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class NPCPart implements ArgumentPart {
 
@@ -37,7 +38,7 @@ public class NPCPart implements ArgumentPart {
 
         List<String> suggest = new ArrayList<>();
         for (String npc : main.getAdapter().getNPCs()) {
-            if(npc.toLowerCase().startsWith(next.toLowerCase()) || next.isEmpty()) {
+            if(npc.toLowerCase(Locale.ROOT).startsWith(next.toLowerCase(Locale.ROOT)) || next.isEmpty()) {
                 suggest.add(npc);
             }
         }

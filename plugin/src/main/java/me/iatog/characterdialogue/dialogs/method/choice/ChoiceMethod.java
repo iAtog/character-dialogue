@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -59,7 +60,7 @@ public class ChoiceMethod extends DialogMethod<CharacterDialoguePlugin> {
             return;
         }
 
-        String type = configuration.getString("type", "chat").toUpperCase();
+        String type = configuration.getString("type", "chat").toUpperCase(Locale.ROOT);
         ChoiceType choiceType;
 
         try {

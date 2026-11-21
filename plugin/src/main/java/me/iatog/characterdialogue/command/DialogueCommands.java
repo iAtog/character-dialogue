@@ -13,6 +13,8 @@ import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 @Command(names = "dialogue",
       desc = "Blah",
       permission = "characterdialogue.command.dialogue")
@@ -84,7 +86,7 @@ public class DialogueCommands extends CSubCommand implements CommandClass {
         AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.display-name", dialogue.getDisplayName()));
         AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.lines", ""+dialogue.getLines().size()));
         AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.file", dialogue.getDocument().getName()));
-        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.click-type", dialogue.getClickType().toString().toLowerCase()));
+        AdventureUtil.sendMessage(sender, main.language("command.dialogue.info.click-type", dialogue.getClickType().toString().toLowerCase(Locale.ROOT)));
 
         if(dialogue.isPersistent()) {
             String persistenceText = dialogue.isPersistent() ? "yes" : "no";

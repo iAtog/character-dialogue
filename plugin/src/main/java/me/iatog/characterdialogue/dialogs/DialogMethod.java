@@ -42,7 +42,7 @@ public abstract class DialogMethod<T extends JavaPlugin> {
      * @return the id
      */
     public final String getID() {
-        return id.toLowerCase();
+        return id.toLowerCase(Locale.ROOT);
     }
 
     public final List<String> getDependencies() {

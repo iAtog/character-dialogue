@@ -11,6 +11,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Locale;
+
 public class GiveMethod extends DialogMethod<CharacterDialoguePlugin> {
     // give{material=flint, amount=32, name="Super flint"}
     public GiveMethod(CharacterDialoguePlugin main) {
@@ -49,7 +51,7 @@ public class GiveMethod extends DialogMethod<CharacterDialoguePlugin> {
         int amount = configuration.getInteger("amount", 1);
 
         try {
-            material = Material.valueOf(configuration.getString("material").toUpperCase());
+            material = Material.valueOf(configuration.getString("material").toUpperCase(Locale.ROOT));
         } catch (Exception exception) {
             String msg = "The item material '" + configuration.getString("material") + "' is not valid.";
             session.sendDebugMessage(msg, "GiveMethod");

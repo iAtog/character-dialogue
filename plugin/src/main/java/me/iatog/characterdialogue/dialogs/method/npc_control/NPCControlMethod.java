@@ -13,10 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> implements Listener {
 
@@ -79,7 +76,7 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
             return;
         }
 
-        if(!actions.containsKey(action.toLowerCase())) {
+        if(!actions.containsKey(action.toLowerCase(Locale.ROOT))) {
             getProvider().getLogger().severe("Error while executing npc_control method: action '" + action + "' not found.");
             context.destroy();
             return;
@@ -103,7 +100,7 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
             registries.put(player.getUniqueId(), new ControlRegistry(player));
         }
 
-        NPCControlAction controlAction = actions.get(action.toLowerCase());
+        NPCControlAction controlAction = actions.get(action.toLowerCase(Locale.ROOT));
         ActionData data = new ActionData(context, util, targetNpc);
 
         controlAction.execute(data);
@@ -122,7 +119,7 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
     }
 
     public void registerAction(NPCControlAction action) {
-        actions.put(action.getName().toLowerCase(), action);
+        actions.put(action.getName().toLowerCase(Locale.ROOT), action);
     }
 
     public void registerActions(NPCControlAction ...actions) {
@@ -132,6 +129,6 @@ public class NPCControlMethod extends DialogMethod<CharacterDialoguePlugin> impl
     }
 
     public void unregisterAction(String name) {
-        actions.remove(name.toLowerCase());
+        actions.remove(name.toLowerCase(Locale.ROOT));
     }
 }

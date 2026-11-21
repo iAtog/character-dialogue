@@ -9,10 +9,7 @@ import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.DialogMethod;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MethodPart implements ArgumentPart {
 
@@ -35,8 +32,8 @@ public class MethodPart implements ArgumentPart {
         List<String> suggest = new ArrayList<>();
 
         for (String name : main.getCache().getMethods().keySet()) {
-            if (next.isEmpty() || name.toLowerCase().startsWith(next.toLowerCase())) {
-                suggest.add(name.toLowerCase());
+            if (next.isEmpty() || name.toLowerCase(Locale.ROOT).startsWith(next.toLowerCase(Locale.ROOT))) {
+                suggest.add(name.toLowerCase(Locale.ROOT));
             }
         }
 

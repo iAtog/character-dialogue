@@ -7,6 +7,8 @@ import me.iatog.characterdialogue.dialogs.MethodContext;
 import org.bukkit.WeatherType;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 public class WeatherMethod extends DialogMethod<CharacterDialoguePlugin> {
 
     // weather: DOWNFALL or CLEAR or RESET
@@ -25,7 +27,7 @@ public class WeatherMethod extends DialogMethod<CharacterDialoguePlugin> {
         WeatherType weatherType = null;
 
         try {
-            weatherType = WeatherType.valueOf(arg.toUpperCase());
+            weatherType = WeatherType.valueOf(arg.toUpperCase(Locale.ROOT));
         } catch(Exception ex) {
             getProvider().getLogger().severe("Weather '" + arg + "' in " + context.getSession().getDialogue().getName() + " is not valid");
             context.next();

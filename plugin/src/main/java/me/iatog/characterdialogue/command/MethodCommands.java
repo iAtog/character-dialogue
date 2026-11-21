@@ -17,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -57,7 +58,7 @@ public class MethodCommands extends CSubCommand implements CommandClass {
 
         main.getCache().getMethods().forEach((id, method) -> {
             String description = method.getDescription();
-            String line = main.language("command.method.list-line", id.toLowerCase());
+            String line = main.language("command.method.list-line", id.toLowerCase(Locale.ROOT));
             AdventureUtil.sendMessage(sender, "");
             AdventureUtil.sendMessage(sender, line);
             AdventureUtil.sendMessage(sender, description);
@@ -86,7 +87,7 @@ public class MethodCommands extends CSubCommand implements CommandClass {
             return;
         }
 
-        String methodName = matcher.group(1).toLowerCase().trim();
+        String methodName = matcher.group(1).toLowerCase(Locale.ROOT).trim();
         if (!main.getCache().getMethods().containsKey(methodName)) {
             AdventureUtil.sendMessage(sender, main.language(true, "command.method.invalid-method", methodName));
             return;
@@ -106,7 +107,7 @@ public class MethodCommands extends CSubCommand implements CommandClass {
         SingleUseConsumer<CompletedType> onComplete = SingleUseConsumer.create((res) -> {
                   sessions.remove(sender.getUniqueId());
                   AdventureUtil.sendMessage(sender, main.language(true, "command.method.executed",
-                        methodName, res.toString().toLowerCase()));
+                        methodName, res.toString().toLowerCase(Locale.ROOT)));
         });
 
         main.getApi().runDialogueExpression(

@@ -29,10 +29,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -227,7 +224,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
             return;
         }
 
-        String methodName = matcher.group(1).toLowerCase().trim();
+        String methodName = matcher.group(1).toLowerCase(Locale.ROOT).trim();
         String configPart = (matcher.group(2) != null ? matcher.group(2).trim() : "")
               .replace("%npc_name%", npcName);
         String arg = matcher.group(3) != null ? matcher.group(3).trim() : "";

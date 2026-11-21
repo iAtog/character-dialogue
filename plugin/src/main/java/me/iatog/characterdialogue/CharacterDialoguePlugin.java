@@ -149,11 +149,11 @@ public class CharacterDialoguePlugin extends JavaPlugin {
         Map<String, DialogMethod<? extends JavaPlugin>> mapMethods = getCache().getMethods();
 
         for (DialogMethod<? extends JavaPlugin> method : methods) {
-            if (mapMethods.containsKey(method.getID().toLowerCase())) {
+            if (mapMethods.containsKey(method.getID().toLowerCase(Locale.ROOT))) {
                 continue;
             }
 
-            mapMethods.put(method.getID().toLowerCase(), method);
+            mapMethods.put(method.getID().toLowerCase(Locale.ROOT), method);
             if (method instanceof Listener) {
                 PluginManager pluginManager = Bukkit.getPluginManager();
                 JavaPlugin provider = method.getProvider() == null ? this : method.getProvider();

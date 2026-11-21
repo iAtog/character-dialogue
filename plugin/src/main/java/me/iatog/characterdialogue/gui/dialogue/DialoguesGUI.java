@@ -11,6 +11,8 @@ import me.iatog.characterdialogue.util.TextUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 import static me.iatog.characterdialogue.util.TextUtils.colorizeComponent;
 
 public class DialoguesGUI extends GUI {
@@ -60,7 +62,7 @@ public class DialoguesGUI extends GUI {
                   .lore(buildLore(
                         "&7",
                         "&bDisplay name&8: &7" + dialogue.getDisplayName(),
-                        "&bClick type&8: &7" + dialogue.getClickType().toString().toLowerCase(),
+                        "&bClick type&8: &7" + dialogue.getClickType().toString().toLowerCase(Locale.ROOT),
                         "&bLines&8: &7" + dialogue.getLines().size(),
                         "&bPermission&8: &7" + (permissions == null ? "&eeveryone" : permissions.getPermission())
                   ))

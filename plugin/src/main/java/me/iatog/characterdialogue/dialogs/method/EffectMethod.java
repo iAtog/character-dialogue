@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Locale;
 import java.util.Optional;
 
 public class EffectMethod extends DialogMethod<CharacterDialoguePlugin> {
@@ -51,7 +52,7 @@ public class EffectMethod extends DialogMethod<CharacterDialoguePlugin> {
         boolean clear = configuration.getBoolean("clear", false);
 
         for (String effectName : effects) {
-            Optional<PotionEffectType> effect = Optional.ofNullable(PotionEffectType.getByName(effectName.trim().toUpperCase()));
+            Optional<PotionEffectType> effect = Optional.ofNullable(PotionEffectType.getByName(effectName.trim().toUpperCase(Locale.ROOT)));
             if (effect.isEmpty()) {
                 String msg = "The name of the \"" + effectName + "\" effect has not been found.";
                 getProvider().getLogger().warning(msg);

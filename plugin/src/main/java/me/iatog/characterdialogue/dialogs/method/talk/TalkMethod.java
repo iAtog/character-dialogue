@@ -13,6 +13,8 @@ import me.iatog.characterdialogue.util.SingleUseConsumer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> {
 
     public static final String line = Strings.repeat(" ", 80);
@@ -50,8 +52,8 @@ public class TalkMethod extends DialogMethod<CharacterDialoguePlugin> {
         Sound sound;
 
         try {
-            type = TalkType.valueOf(configuration.getString("type", "action_bar").toUpperCase());
-            sound = Sound.valueOf(configuration.getString("sound", "BLOCK_STONE_BUTTON_CLICK_OFF").toUpperCase());
+            type = TalkType.valueOf(configuration.getString("type", "action_bar").toUpperCase(Locale.ROOT));
+            sound = Sound.valueOf(configuration.getString("sound", "BLOCK_STONE_BUTTON_CLICK_OFF").toUpperCase(Locale.ROOT));
         } catch (EnumConstantNotPresentException ex) {
             getProvider().getLogger().severe(error(session, "invalid type/sound"));
             session.sendDebugMessage("Error parsing data: " + ex.getMessage(), "TalkMethod:55");

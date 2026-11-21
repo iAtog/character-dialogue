@@ -8,10 +8,7 @@ import me.fixeddev.commandflow.stack.ArgumentStack;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.api.dialog.Dialogue;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DialoguePart implements ArgumentPart {
 
@@ -51,7 +48,7 @@ public class DialoguePart implements ArgumentPart {
 
     @Override
     public List<Dialogue> parseValue(CommandContext commandContext, ArgumentStack argumentStack, CommandPart commandPart) throws ArgumentParseException {
-        String possibleDialogue = argumentStack.next().toLowerCase();
+        String possibleDialogue = argumentStack.next().toLowerCase(Locale.ROOT);
         Map<String, Dialogue> dialogues = main.getCache().getDialogues();
 
         if (! dialogues.containsKey(possibleDialogue)) {

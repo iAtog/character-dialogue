@@ -12,6 +12,7 @@ import me.iatog.characterdialogue.gui.GUIFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class GUIPart implements ArgumentPart {
     private final CharacterDialoguePlugin main;
@@ -44,7 +45,7 @@ public class GUIPart implements ArgumentPart {
 
     @Override
     public List<GUI> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
-        String gui = stack.next().toLowerCase();
+        String gui = stack.next().toLowerCase(Locale.ROOT);
         GUIFactory factory = main.getGUIFactory();
 
         if (! factory.existsGUI(gui)) {

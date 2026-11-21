@@ -6,6 +6,8 @@ import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.MethodConfiguration;
 import me.iatog.characterdialogue.dialogs.MethodContext;
 
+import java.util.Locale;
+
 public class ExperienceMethod extends DialogMethod<CharacterDialoguePlugin> {
     public ExperienceMethod(CharacterDialoguePlugin provider) {
         super("experience", provider);
@@ -22,7 +24,7 @@ public class ExperienceMethod extends DialogMethod<CharacterDialoguePlugin> {
         ExperienceActions actionEnum = null;
 
         try {
-            actionEnum = ExperienceActions.valueOf(action.toUpperCase());
+            actionEnum = ExperienceActions.valueOf(action.toUpperCase(Locale.ROOT));
         } catch(Exception ex) {
             getProvider().getLogger().severe("Experience action '" + action + "' in " + context.getSession().getDialogue().getName() + " is not valid");
             context.next();

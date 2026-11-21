@@ -9,10 +9,7 @@ import me.iatog.characterdialogue.enums.ConditionType;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Initializer {
@@ -60,7 +57,7 @@ public class Initializer {
 
     public void load(File folder, Consumer<YamlDocument> action) {
         if(folder.isDirectory()) {
-            File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
+            File[] files = folder.listFiles((dir, name) -> name.toLowerCase(Locale.ROOT).endsWith(".yml"));
             if (files != null) {
                 for (File file : files) {
                     if (!file.isFile()) continue;

@@ -12,6 +12,7 @@ import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.util.AdventureUtil;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
@@ -60,14 +61,14 @@ public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
             }
 
             String expression = (conditionResult ? ifTrue : ifFalse).replace("%apostrophe%", "'");
-            String method = expression.trim().toUpperCase();
+            String method = expression.trim().toUpperCase(Locale.ROOT);
             String argument = "";
 
             session.sendDebugMessage("&a" + condition + "&7: &c" + conditionResult, "ConditionalMethod");
 
             if (expression.contains(":")) {
                 String[] parts = expression.split(":", 2);
-                method = parts[0].trim().toUpperCase();
+                method = parts[0].trim().toUpperCase(Locale.ROOT);
                 argument = parts.length > 1 ? parts[1].trim() : "";
             }
 

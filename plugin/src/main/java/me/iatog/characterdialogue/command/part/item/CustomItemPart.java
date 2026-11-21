@@ -12,6 +12,7 @@ import me.iatog.characterdialogue.util.CustomItem;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class CustomItemPart implements ArgumentPart {
 
@@ -25,7 +26,7 @@ public class CustomItemPart implements ArgumentPart {
 
     @Override
     public List<CustomItem> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
-        String itemName = stack.next().toLowerCase();
+        String itemName = stack.next().toLowerCase(Locale.ROOT);
         ItemManager manager = main.getServices().getItemManager();
 
         if(!manager.existsItem(itemName)) {

@@ -12,6 +12,7 @@ import me.iatog.characterdialogue.path.Record;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class RecordPart implements ArgumentPart {
     private final String name;
@@ -33,8 +34,8 @@ public class RecordPart implements ArgumentPart {
         List<String> suggest = new ArrayList<>();
 
         for(String name : storage.getAllPaths().keySet()) {
-            if(next.isEmpty() || name.toLowerCase().startsWith(next.toLowerCase())) {
-                suggest.add(name.toLowerCase());
+            if(next.isEmpty() || name.toLowerCase(Locale.ROOT).startsWith(next.toLowerCase(Locale.ROOT))) {
+                suggest.add(name.toLowerCase(Locale.ROOT));
             }
         }
 

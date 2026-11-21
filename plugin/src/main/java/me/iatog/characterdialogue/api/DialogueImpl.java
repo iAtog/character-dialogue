@@ -10,6 +10,7 @@ import me.iatog.characterdialogue.enums.ClickType;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Locale;
 
 public class DialogueImpl implements Dialogue {
 
@@ -39,7 +40,7 @@ public class DialogueImpl implements Dialogue {
             return;
         }
         this.document = dialogsFile;
-        String click = section.getString("click", "RIGHT").toUpperCase();
+        String click = section.getString("click", "RIGHT").toUpperCase(Locale.ROOT);
 
         this.lines = section.getStringList("dialog");
         this.clickType = ClickType.match(click) ? ClickType.valueOf(click) : ClickType.RIGHT;

@@ -9,10 +9,7 @@ import me.fixeddev.commandflow.stack.ArgumentStack;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.dialogs.Group;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class GroupPart implements ArgumentPart {
     private final CharacterDialoguePlugin main;
@@ -34,9 +31,9 @@ public class GroupPart implements ArgumentPart {
         List<String> suggest = new ArrayList<>();
 
         for (YamlDocument document : main.getAllDialogues()) {
-            String name = Objects.requireNonNull(document.getFile()).getName().split("\\.")[0].toLowerCase();
-            if (next.isEmpty() || name.toLowerCase().startsWith(next.toLowerCase())) {
-                suggest.add(name.toLowerCase());
+            String name = Objects.requireNonNull(document.getFile()).getName().split("\\.")[0].toLowerCase(Locale.ROOT);
+            if (next.isEmpty() || name.toLowerCase(Locale.ROOT).startsWith(next.toLowerCase(Locale.ROOT))) {
+                suggest.add(name.toLowerCase(Locale.ROOT));
             }
         }
 
@@ -45,13 +42,13 @@ public class GroupPart implements ArgumentPart {
 
     @Override
     public List<Group> parseValue(CommandContext context, ArgumentStack stack, CommandPart caller) throws ArgumentParseException {
-        String group = stack.next().toLowerCase();
+        String group = stack.next().toLowerCase(Locale.ROOT);
 
         YamlDocument doc = null;
 
         for (YamlDocument document : main.getAllDialogues()) {
-            String name = Objects.requireNonNull(document.getFile()).getName().split("\\.")[0].toLowerCase();
-            if (name.toLowerCase().startsWith(group.toLowerCase())) {
+            String name = Objects.requireNonNull(document.getFile()).getName().split("\\.")[0].toLowerCase(Locale.ROOT);
+            if (name.toLowerCase(Locale.ROOT).startsWith(group.toLowerCase(Locale.ROOT))) {
                 doc = document;
                 break;
             }

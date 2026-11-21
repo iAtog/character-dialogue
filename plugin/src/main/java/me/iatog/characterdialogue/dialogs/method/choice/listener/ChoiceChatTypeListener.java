@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -131,7 +132,7 @@ public class ChoiceChatTypeListener implements Listener {
             float pitch = config.getFloat("choice.select-sound-pitch", 1f);
 
             try {
-                Sound sound = Sound.valueOf(soundName.toUpperCase());
+                Sound sound = Sound.valueOf(soundName.toUpperCase(Locale.ROOT));
                 player.playSound(player.getLocation(), sound, volume, pitch);
             } catch(Exception e) {
                 main.getLogger().warning("Invalid choice select sound provided: " + soundName);

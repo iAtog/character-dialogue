@@ -6,6 +6,7 @@ import me.iatog.characterdialogue.dialogs.DialogMethod;
 import me.iatog.characterdialogue.dialogs.MethodConfiguration;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -22,7 +23,7 @@ public class DialogueLine {
             return;
         }
 
-        String methodName = matcher.group(1).toLowerCase().trim();
+        String methodName = matcher.group(1).toLowerCase(Locale.ROOT).trim();
         String configPart = (matcher.group(2) != null ? matcher.group(2).trim() : "No configuration specified");
         String arg = matcher.group(3) != null ? matcher.group(3).trim() : "No argument specified";
 

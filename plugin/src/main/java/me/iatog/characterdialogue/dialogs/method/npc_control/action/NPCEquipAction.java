@@ -11,6 +11,7 @@ import me.iatog.characterdialogue.libraries.ItemManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import static me.iatog.characterdialogue.dialogs.method.npc_control.NPCControlMethod.registries;
@@ -39,7 +40,7 @@ public class NPCEquipAction implements NPCControlAction {
             if(useMaterial) {
                 String mat = configuration.getString("material", "BARRIER");
                 try {
-                    Material material = Material.valueOf(mat.toUpperCase());
+                    Material material = Material.valueOf(mat.toUpperCase(Locale.ROOT));
                     itemStack = new ItemStack(material);
                 } catch(Exception ex) {
                     ctx.plugin().getLogger().severe("Invalid item material provided '" + mat +
@@ -62,7 +63,7 @@ public class NPCEquipAction implements NPCControlAction {
 
             try {
                 if(itemStack != null) {
-                    EquipmentType equipmentType = EquipmentType.valueOf(equipment.toUpperCase());
+                    EquipmentType equipmentType = EquipmentType.valueOf(equipment.toUpperCase(Locale.ROOT));
                     clone.equip(ctx.player(), equipmentType, itemStack);
                 }
             } catch (Exception ex) {
