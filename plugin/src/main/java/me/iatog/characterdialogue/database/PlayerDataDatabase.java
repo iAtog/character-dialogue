@@ -3,6 +3,7 @@ package me.iatog.characterdialogue.database;
 import me.iatog.characterdialogue.CharacterDialoguePlugin;
 import me.iatog.characterdialogue.player.PlayerData;
 import org.apache.logging.log4j.util.Strings;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -42,10 +43,11 @@ public class PlayerDataDatabase {
     // GET AND SET METHODS
     // DATA: uuid(text), readedDialogs(text), removeEffect(boolean), lastSpeed(double)
 
-    private String listToString(List<String> list1) {
-        Set<String> set = new HashSet<>(list1);
-        List<String> list = new ArrayList<>(set);
-        return Strings.join(list, ',');
+    private String listToString(List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        }
+        return String.join(",", list);
     }
 
     public void save(Player player, List<String> finishedDialogs, List<String> firstInteractions, boolean removeEffect, double lastSpeed) {
@@ -105,14 +107,10 @@ public class PlayerDataDatabase {
 
     public void saveAll() {
         Map<UUID, PlayerData> players = main.getCache().getPlayerData();
-
-        for(PlayerData data : players.values()) {
-            PlayerDataDatabase database = main.getServices().getPlayerDataDatabase();
-
-            database.save(data);
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            for(PlayerData data : players.values()) {
+                main.getServices().getPlayerDataDatabase().save(data);
+            }
+        });
     }
-
-
-
 }
