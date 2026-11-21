@@ -7,6 +7,7 @@ import me.iatog.characterdialogue.database.PlayerDataDatabase;
 import me.iatog.characterdialogue.player.PlayerData;
 import me.iatog.characterdialogue.session.DialogSession;
 import me.iatog.characterdialogue.session.InitializeSession;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
@@ -30,7 +32,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        List<UUID> cache = main.getCache().getFrozenPlayers();
+        Set<UUID> cache = main.getCache().getFrozenPlayers();
 
         cache.remove(player.getUniqueId());
 
@@ -84,21 +86,23 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void addData(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        PlayerDataDatabase database = main.getServices().getPlayerDataDatabase();
-        PlayerData data = database.get(player);
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            Player player = event.getPlayer();
+            PlayerDataDatabase database = main.getServices().getPlayerDataDatabase();
+            PlayerData data = database.get(player);
 
-        if(data == null) {
-            data = new PlayerData(
-                  player.getUniqueId(),
-                  new ArrayList<>(),
-                  new ArrayList<>(),
-                  false,
-                  player.getWalkSpeed()
-            );
-        }
+            if(data == null) {
+                data = new PlayerData(
+                        player.getUniqueId(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        false,
+                        player.getWalkSpeed()
+                );
+            }
 
-        main.getCache().getPlayerData().put(player.getUniqueId(), data);
+            main.getCache().getPlayerData().put(player.getUniqueId(), data);
+        });
     }
 
 }
