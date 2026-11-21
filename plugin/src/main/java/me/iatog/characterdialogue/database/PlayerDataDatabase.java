@@ -106,11 +106,18 @@ public class PlayerDataDatabase {
     }
 
     public void saveAll() {
+        if (!main.isEnabled() || Bukkit.isStopping()) {
+            performSaveAll();
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskAsynchronously(main, this::performSaveAll);
+    }
+
+    public void performSaveAll() {
         Map<UUID, PlayerData> players = main.getCache().getPlayerData();
-        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-            for(PlayerData data : players.values()) {
-                main.getServices().getPlayerDataDatabase().save(data);
-            }
-        });
+        for(PlayerData data : players.values()) {
+            main.getServices().getPlayerDataDatabase().save(data);
+        }
     }
 }
