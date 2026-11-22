@@ -23,7 +23,7 @@ dependencies {
 
     compileOnly 'net.citizensnpcs:citizensapi:2.0.35-SNAPSHOT'
     compileOnly "lol.pyr:znpcsplus-api:2.1.0-SNAPSHOT"
-    compileOnly("de.oliver:FancyNpcs:2.4.1")
+    compileOnly("de.oliver:FancyNpcs:2.9.2")
 
     implementation "net.kyori:adventure-api:4.24.0"
     implementation 'net.kyori:adventure-platform-bukkit:4.4.1'
