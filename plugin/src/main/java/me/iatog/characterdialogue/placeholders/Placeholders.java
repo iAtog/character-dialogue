@@ -19,6 +19,7 @@ public class Placeholders {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceHolderAPI")) {
             arg = PlaceholderAPI.setPlaceholders(player, arg);
         } else {
+            if(player == null) return arg;
             arg = arg.replace("%player_name%", player.getName());
         }
 
