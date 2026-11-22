@@ -58,7 +58,6 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         return npc.getData().getLocation();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public AdaptedNPC copy() {
         String id = generateId(9);
@@ -69,7 +68,7 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         data.setCollidable(false);
 
         if(npc.getData().getType() == EntityType.PLAYER) {
-            data.setSkin(npc.getData().getSkin());
+            data.setSkinData(npc.getData().getSkinData());
         }
 
         data.applyAllAttributes(npc);
