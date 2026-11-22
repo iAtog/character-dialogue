@@ -17,8 +17,11 @@ import java.util.regex.Pattern;
 
 public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
 
+    private final ConditionEvaluator conditionEvaluator;
+
     public ConditionalMethod(CharacterDialoguePlugin main) {
         super("conditional", main);
+        this.conditionEvaluator = new ConditionEvaluator();
         addConfigurationType("condition", ConfigurationType.TEXT);
         addConfigurationType("ifTrue", ConfigurationType.TEXT);
         addConfigurationType("ifFalse", ConfigurationType.TEXT);
@@ -52,10 +55,10 @@ public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
             boolean conditionResult;
 
             try {
-                conditionResult = evaluateCondition(context.getPlayer(), condition);
+                conditionResult = conditionEvaluator.evaluate(context.getPlayer(), condition);
             } catch (IllegalArgumentException e) {
                 AdventureUtil.sendMessage(context.getPlayer(), "<red><bold>Fatal error occurred.");
-                getProvider().getLogger().warning("The dialogue '" + session.getDialogue().getName() + "' has an invalid condition in L" + session.getCurrentIndex());
+                getProvider().getLogger().warning("The dialogue '" + session.getDialogue().getName() + "' has an invalid condition in L" + session.getCurrentIndex() + " (" + e.getMessage() + ")");
                 context.destroy();
                 return;
             }
@@ -85,54 +88,12 @@ public class ConditionalMethod extends DialogMethod<CharacterDialoguePlugin> {
         }
     }
 
+    public ConditionEvaluator getEvaluator() {
+        return conditionEvaluator;
+    }
+
     private String found(boolean bool) {
         return bool ? "Found" : "Not found";
-    }
-
-    public boolean evaluateCondition(Player player, String condition) {
-        Operator operator = null;
-        String leftSide = null;
-        String rightSide = null;
-
-        for (Operator op : Operator.values()) {
-            if (condition.contains(op.getText())) {
-                operator = op;
-                String[] parts = condition.split(Pattern.quote(op.getText()));
-                leftSide = Placeholders.translate(player, parts[0].trim());
-                rightSide = Placeholders.translate(player, parts[1].trim());
-                break;
-            }
-        }
-
-        if (operator == null || leftSide == null || rightSide == null) {
-            throw new IllegalArgumentException("Invalid format");
-        }
-
-        return compareCondition(leftSide, rightSide, operator);
-    }
-
-    private boolean compareCondition(String left, String right, Operator operator) {
-        try {
-            return switch (operator) {
-                case LESS_THAN -> parseToDouble(left) < parseToDouble(right);
-                case LESS_THAN_EQUAL -> parseToDouble(left) <= parseToDouble(right);
-                case MORE_THAN -> parseToDouble(left) > parseToDouble(right);
-                case MORE_THAN_EQUAL -> parseToDouble(left) >= parseToDouble(right);
-
-                case EQUAL_TO -> left.equals(right);
-                case NOT_EQUAL_TO -> !left.equals(right);
-                case CONTAINS -> left.contains(right);
-                case ENDS_WITH -> left.endsWith(right);
-                case STARTS_WITH -> left.startsWith(right);
-            };
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("The values cannot be compared: " + left + " & " + right);
-        }
-    }
-
-    private double parseToDouble(String value) {
-        return (value == null || value.isEmpty()) ? 0 : Double.parseDouble(value);
-
     }
 
     private void debug(DialogSession session, String txt) {

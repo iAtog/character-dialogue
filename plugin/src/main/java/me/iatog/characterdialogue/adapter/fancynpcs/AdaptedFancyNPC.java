@@ -143,11 +143,11 @@ public class AdaptedFancyNPC implements AdaptedNPC {
         NpcAttribute poseAttr = FancyNpcsPlugin.get().getAttributeManager().getAttributeByName(EntityType.PLAYER, "pose");
 
         if(sneaking) {
-            npc.getData().addAttribute(poseAttr, "CROUCHING");
+            npc.getData().addAttribute(poseAttr, "crouching");
         } else {
             npc.getData().getAttributes().remove(poseAttr);
         }
-
+        npc.update(player, false);
         npc.move(player, false);
     }
 

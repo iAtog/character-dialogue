@@ -382,7 +382,7 @@ public class ApiImplementation implements CharacterDialogueAPI {
             boolean result = false;
 
             for(String condition : conditions) {
-                if(conditionalMethod.evaluateCondition(player, condition.trim())) {
+                if(conditionalMethod.getEvaluator().evaluate(player, condition.trim())) {
                     result = true;
 
                     if(type == ConditionType.ONE) {
